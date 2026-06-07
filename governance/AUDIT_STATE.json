@@ -1,0 +1,82 @@
+{
+  "findings": [
+    {
+      "category": "documentation_entropy",
+      "closed_at": null,
+      "id": "F-001",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-001-charter-indexes-specs.yaml",
+      "status": "open",
+      "title": "Root build specs not indexed in PROJECT_CHARTER",
+      "verification_script": "tests/governance/test_f001_charter_indexes_specs.py"
+    },
+    {
+      "category": "partial_migration",
+      "closed_at": null,
+      "id": "F-002",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-002-dual-prototype.yaml",
+      "status": "open",
+      "title": "Root prototype coexists with driver_tree_studio package",
+      "verification_script": "tests/governance/test_f002_no_dual_prototype.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-003",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-003-failing-vitest.yaml",
+      "status": "open",
+      "title": "driver_tree_studio vitest suite has failing test",
+      "verification_script": "tests/governance/test_f003_driver_tree_tests_pass.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": null,
+      "id": "F-004",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-004-missing-engine-tests.yaml",
+      "status": "open",
+      "title": "Phase 1 montecarlo and recommend tests missing",
+      "verification_script": "tests/governance/test_f004_phase1_test_artifacts.py"
+    },
+    {
+      "category": "claim_without_evidence",
+      "closed_at": null,
+      "id": "F-005",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-005-empty-charter-business-case.yaml",
+      "status": "open",
+      "title": "PROJECT_CHARTER \u00a73 Business Case is unfilled template",
+      "verification_script": "tests/governance/test_f005_charter_business_case.py"
+    }
+  ],
+  "generated_at": "2026-06-07T19:30:16.212851+00:00",
+  "git_branch": "unknown",
+  "git_head_sha": "unknown",
+  "migrations": [],
+  "summary": {
+    "findings_closed": 0,
+    "findings_closed_historical": 0,
+    "findings_in_progress": 0,
+    "findings_open": 5,
+    "findings_total": 5,
+    "findings_wont_fix": 0,
+    "migrations_in_progress": 0,
+    "migrations_total": 0,
+    "open_by_category": {
+      "claim_without_evidence": 1,
+      "documentation_entropy": 1,
+      "fake_completion": 1,
+      "missing_artifact": 1,
+      "partial_migration": 1
+    }
+  },
+  "validation_errors": [],
+  "writer": "scripts/write_audit_state.py"
+}

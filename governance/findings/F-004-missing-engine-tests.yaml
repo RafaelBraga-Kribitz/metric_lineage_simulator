@@ -1,0 +1,15 @@
+id: F-004
+title: "Phase 1 montecarlo and recommend tests missing"
+category: missing_artifact
+kind: recurrence_invariant
+status: open
+opened_at: 2026-06-07
+closed_at: null
+recurrence_count: 0
+evidence: |
+  phase-1_Metric_Driver-Tree_Studio.md:36-37 — lists montecarlo.test.ts, recommend.test.ts
+  driver_tree_studio/tests/engine/ — contains graph, compute, whatif, sensitivity only
+verification_script: tests/governance/test_f004_phase1_test_artifacts.py
+notes: |
+  Add tests/engine/montecarlo.test.ts and tests/engine/recommend.test.ts per
+  metric_driver_tree_studio_build_spec_v4.md before marking Phase 1 complete.

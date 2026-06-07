@@ -1,0 +1,16 @@
+id: F-003
+title: "driver_tree_studio vitest suite has failing test"
+category: fake_completion
+kind: recurrence_invariant
+status: open
+opened_at: 2026-06-07
+closed_at: null
+recurrence_count: 0
+evidence: |
+  phase-1_Metric_Driver-Tree_Studio.md:7 — "Stop after tests pass for human review"
+  driver_tree_studio/tests/lib/formula.test.ts:16-19 — expects addend/subtrahend roles
+  driver_tree_studio/src/lib/formula.ts — parseFormula maps + to factor (test fails)
+verification_script: tests/governance/test_f003_driver_tree_tests_pass.py
+notes: |
+  Fix parseFormula operator-to-role mapping for + and -, or update test if spec
+  convention differs. Closure requires npm test exit 0 in driver_tree_studio/.

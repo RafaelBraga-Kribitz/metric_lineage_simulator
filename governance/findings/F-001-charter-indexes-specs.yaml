@@ -1,0 +1,21 @@
+id: F-001
+title: "Root build specs not indexed in PROJECT_CHARTER"
+category: documentation_entropy
+kind: recurrence_invariant
+status: open
+opened_at: 2026-06-07
+closed_at: null
+recurrence_count: 0
+evidence: |
+  metric_lineage_simulator_build_spec_v2.md — authoritative spec candidate, not in charter
+  metric_driver_tree_studio_build_spec_v3.md — parallel spec, not in charter
+  metric_driver_tree_studio_build_spec_v4.md — parallel spec, not in charter
+  phase-1_Metric_Driver-Tree_Studio.md — phase plan, not in charter
+  tool_workflow_and_prompts_v3.md — workflow doc, not in charter
+  tool_workflow_and_prompts_v4.md — workflow doc, not in charter
+  prompts_addendum_v4.md — addendum, not in charter
+  PROJECT_CHARTER.md:88-96 — Documentation Index lists governance docs only
+verification_script: tests/governance/test_f001_charter_indexes_specs.py
+notes: |
+  Add rows to §4 Documentation Index for each root spec, or consolidate specs
+  and supersede duplicates via ADR before indexing a single authoritative copy.
