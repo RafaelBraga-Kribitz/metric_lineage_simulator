@@ -21,8 +21,8 @@ forbidden. Cap at 200 lines.
 <!-- SSOT_METADATA_START
 version: 0.1.0
 status: active
-last_updated: 2026-01-01
-last_reviewed: 2026-01-01
+last_updated: 2026-06-07
+last_reviewed: 2026-06-07
 owner: Rafael Braga
 project_codename: metric_lineage_simulator
 SSOT_METADATA_END -->
@@ -41,7 +41,7 @@ SSOT_METADATA_END -->
 | Project codename | `metric_lineage_simulator` |
 | Owner | Rafael Braga |
 | Primary goal | Typed driver-tree engine for metric lineage, validation, and what-if simulation |
-| Status | bootstrapping |
+| Status | Phase 1 core complete; UI deferred |
 
 ## 2. Documentation Discipline
 
@@ -56,11 +56,11 @@ Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ### 3.1 Problem Statement
 
-<!-- 2-4 sentences. What problem does this project address? Who has it? -->
+Marketing and analytics teams model metrics as driver trees, but most tools blur three things that must stay separate: relationships true by definition (`identity`), declared behavioral effects with explicit uncertainty (`modeled`), and directional beliefs not yet tested (`hypothesized`). That blur produces false precision, weak test prioritization, and casual causal language. This project gives a typed, validated engine and seed models that enforce the distinction before any UI ships.
 
 ### 3.2 Project Goal
 
-<!-- 1 sentence. The single thing that, when done, makes this project a success. -->
+Deliver a strict-mode TypeScript driver-tree core (schema, validation, compute, what-if, sensitivity, Monte Carlo, recommender) with vitest coverage and a reconciled DTC seed — no React or Vite in Phase 1.
 
 ### 3.3 Success Criteria
 
@@ -68,8 +68,10 @@ The project succeeds if **all** of these are true at completion:
 
 | Criterion | Measurement | Verification |
 |---|---|---|
-| <criterion 1> | <how measured> | <where verified> |
-| <criterion 2> | <how measured> | <where verified> |
+| Typed core matches spec v4 | Schema, engine, formula parser, DTC seed | `driver_tree_studio/` source + `metric_driver_tree_studio_build_spec_v4.md` |
+| Validation gate | DTC seed passes all validate rules incl. reconciliation | `npm test` in `driver_tree_studio/`; `validate.test.ts`, `dtc_seed.test.ts` |
+| Phase 1 test suite | All engine/lib/schema/content tests green | `npx vitest run` in `driver_tree_studio/` |
+| Governance closure | Open Phase 1 findings closed with passing scripts | `make verify` |
 
 ### 3.4 Stakeholders
 
@@ -79,11 +81,17 @@ The project succeeds if **all** of these are true at completion:
 
 ### 3.5 Out of Scope
 
-<!-- Hard scope locks. Adding anything here requires an ADR + scope-change review. -->
+- React components, Vite, or any UI (Phase 2+).
+- Value-of-Information panel and experimentation flywheel UI (later phases).
+- Additional business-model seeds beyond DTC ecommerce in Phase 1.
+- Backend, crowdsourcing, or community layers (Path A: single-player rigorous tool per spec v4).
+- Calling relationships "causal" without an experiment backing the claim.
 
 ### 3.6 Known Limitations
 
-<!-- Constraints accepted at v1.0. -->
+- Phase 1 guardrail checks use a simplified "below baseline" rule; richer direction metadata comes later.
+- Hypothesized edges are topology-only; they never enter compute until promoted via ADR + evidence.
+- Only `metric_driver_tree_studio_build_spec_v4.md` is authoritative for implementation detail; older v2/v3 specs are historical until superseded by ADR.
 
 ## 4. Documentation Index
 

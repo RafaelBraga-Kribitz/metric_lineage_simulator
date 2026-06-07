@@ -2,9 +2,9 @@ id: F-005
 title: "PROJECT_CHARTER §3 Business Case is unfilled template"
 category: claim_without_evidence
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-06-07
-closed_at: null
+closed_at: 2026-06-07
 recurrence_count: 0
 evidence: |
   PROJECT_CHARTER.md:57-86 — §3 sections contain HTML comment placeholders only

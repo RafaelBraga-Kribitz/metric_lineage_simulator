@@ -1,5 +1,9 @@
 # Governance Changelog
 
+## 2026-06-07 — F-005 closed
+
+- Filled `PROJECT_CHARTER.md` §3 Business Case; ADR-0001 documents the change.
+
 ## 2026-06-07 — F-004 closed
 
 - Added `montecarlo.test.ts` and `recommend.test.ts`; split MC leaf/edge RNG streams.
