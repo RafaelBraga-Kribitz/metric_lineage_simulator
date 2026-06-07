@@ -1,0 +1,80 @@
+---
+description: Phase 2 UI + engine boundary for Metric Driver-Tree Studio
+alwaysApply: true
+---
+
+# Phase 2 — Metric Driver-Tree Studio (Cursor)
+
+Work from **repo root**. Governance session rules apply first (`make session-start`).
+
+## SSOT (read before UI work)
+
+| Layer | Authority |
+|---|---|
+| Product / phases | `PROJECT_CHARTER.md` + `governance/adrs/` (0003–0008) |
+| Visual / layout / verbatim copy | `CLAUDE_DESIGN_SYSTEM.md` |
+| Phase 1 engine/types | `driver_tree_studio/src/` (import only) |
+| Copy-paste prompts | `tool_workflow_and_prompts_v4.md` (transient; not authority) |
+
+Do **not** put UI rules in `CLAUDE.md` (agent protocol only).
+
+## Prerequisites
+
+- Review Gate 1: **approved**.
+- Figma design ref: **pending** (charter §4). Shell/scaffolding OK with design-system tokens.
+- Do not ship polished visual components until Figma ref exists. Scope: ADR-0008 Phase 2.
+
+## Tool ownership (hard boundary)
+
+**Cursor owns** (under `driver_tree_studio/`):
+
+- `app/`, `public/`, `tailwind.config.ts`
+- `src/components/` (one subdirectory per component)
+- `src/hooks/`
+- UI-only `src/lib/` (e.g. `modelLoader.ts`)
+
+**Claude Code only** — never edit from Cursor:
+
+- `src/engine/**`
+- `src/lib/formula.ts`, `src/lib/rng.ts`
+- `src/schema/**` (including `types.ts`, `validate.ts`)
+- `src/content/**`, `tests/**`
+
+Always **import** from engine/schema. Never duplicate `compute`, `validate`, `parseFormula`, or graph logic.
+
+## Stack (ADR-0008)
+
+Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui, React Flow, Recharts, Framer Motion.
+
+## Component and style conventions
+
+- Tailwind utility classes only; no inline `style` except React Flow node/edge renderers where dynamic values are unavoidable.
+- **No raw hex** in components — CSS custom properties in `app/globals.css` per `CLAUDE_DESIGN_SYSTEM.md` §2.
+- Component file map: design doc §13.
+- Every component file: JSDoc block at top (purpose, props, usage example).
+
+## Load-bearing product invariants
+
+**Three edge encodings** (never deviate; detail in design doc §5 + ADR-0004):
+
+- `identity` — thick (4px) + blue
+- `modeled` — normal (2px) + amber
+- `hypothesized` — dashed (2px) + grey + "?" badge
+
+**Edge-direction (critical):**
+
+- Data model: `{ parent: explainedMetric, child: driverMetric }`
+- React Flow renders **child → parent** (cause flows toward the north star)
+- These directions are opposite. Parent is always the aggregate / north-star side.
+
+**Verbatim copy:** methodology note, assumptions disclaimer, VoI caveat — exact text in `CLAUDE_DESIGN_SYSTEM.md` §7. Never shorten or paraphrase.
+
+**Honesty language:** observational / data-test results never use "causes" or "causal relationship". Use "associated with", "moves together", "consistent with" (design doc §14, ADR-0008).
+
+## Verification before closing a UI session
+
+```bash
+cd driver_tree_studio && npm run typecheck && npm test
+```
+
+If governance files were touched: `make verify` from repo root.

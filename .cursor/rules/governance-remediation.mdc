@@ -26,4 +26,4 @@ Never set `status: closed` without a passing `verification_script`. Never edit `
 
 - `PROJECT_CHARTER.md` changes require an ADR in `governance/adrs/`.
 - No parallel docs: no `TODO.md`, `PLAN.md`, `ROADMAP.md`, `SRS.md`.
-- Charter ≤200 lines; index specs in §4, do not duplicate.
+- Charter ≤200 lines; index ADRs in charter §7; do not duplicate normative detail.

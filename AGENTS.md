@@ -1,6 +1,13 @@
 # Agent instructions
 
-This repository is governed. Cursor always-on rules live in `.cursor/rules/governance-*.mdc`.
+This repository is governed. Cursor always-on rules:
+
+| Rule file | Scope |
+|---|---|
+| `.cursor/rules/governance-*.mdc` | Session protocol, remediation, banned anti-patterns |
+| `.cursor/rules/phase2-driver-tree-studio.mdc` | Phase 2 UI + engine ownership boundary |
+
+Visual SSOT for styled work: `CLAUDE_DESIGN_SYSTEM.md`.
 
 ## Every session
 

@@ -65,18 +65,29 @@
       "status": "closed",
       "title": "Root build spec sprawl eliminated; SSOT in charter + ADRs",
       "verification_script": "tests/governance/test_f006_no_root_spec_sprawl.py"
+    },
+    {
+      "category": "partial_migration",
+      "closed_at": "2026-06-08",
+      "id": "F-007",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-08",
+      "path": "governance/findings/F-007-phase2-ui-invariants.yaml",
+      "status": "closed",
+      "title": "Phase 2 UI: clipped node labels, leaf formula sync, reconciliation badge",
+      "verification_script": "tests/governance/test_f007_phase2_ui_invariants.py"
     }
   ],
-  "generated_at": "2026-06-07T21:03:42.574326+00:00",
+  "generated_at": "2026-06-07T23:57:17.309819+00:00",
   "git_branch": "main",
-  "git_head_sha": "41d089bbe451f41cb49fe7fd4eb6b579d221ab70",
+  "git_head_sha": "6da12fd7f637868f7035ab571ac449d802ed217e",
   "migrations": [],
   "summary": {
-    "findings_closed": 5,
+    "findings_closed": 6,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 0,
-    "findings_total": 6,
+    "findings_total": 7,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,

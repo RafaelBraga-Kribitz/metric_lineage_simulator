@@ -2,7 +2,10 @@
   "id": "dtc_ecommerce",
   "name": "DTC Ecommerce",
   "industry": "dtc_ecommerce",
-  "preset_labels": ["ecommerce", "subscription-optional"],
+  "preset_labels": [
+    "ecommerce",
+    "subscription-optional"
+  ],
   "north_star_id": "contribution_profit",
   "narrative": "Contribution profit per period. Built from a deterministic identity tree (sessions x conversion x AOV minus variable costs). Returning-session lift from email capture is modeled (illustrative elasticity). Page-load -> conversion and loyalty -> LTV are kept hypothesized until experimental evidence exists.",
   "nodes": [
@@ -21,7 +24,9 @@
         "warehouse_table": "fct_period_pnl",
         "calculation_grain": "period",
         "update_frequency": "daily",
-        "dimensions": ["period"]
+        "dimensions": [
+          "period"
+        ]
       }
     },
     {
@@ -39,7 +44,10 @@
         "warehouse_table": "fct_orders",
         "calculation_grain": "period",
         "update_frequency": "daily",
-        "dimensions": ["period", "channel"]
+        "dimensions": [
+          "period",
+          "channel"
+        ]
       }
     },
     {
@@ -57,7 +65,10 @@
         "warehouse_table": "fct_unit_economics",
         "calculation_grain": "period",
         "update_frequency": "daily",
-        "dimensions": ["period", "sku"]
+        "dimensions": [
+          "period",
+          "sku"
+        ]
       }
     },
     {
@@ -75,7 +86,10 @@
         "warehouse_table": "fct_orders",
         "calculation_grain": "period",
         "update_frequency": "hourly",
-        "dimensions": ["period", "channel"]
+        "dimensions": [
+          "period",
+          "channel"
+        ]
       }
     },
     {
@@ -93,7 +107,11 @@
         "warehouse_table": "fct_sessions",
         "calculation_grain": "period",
         "update_frequency": "hourly",
-        "dimensions": ["period", "channel", "device"]
+        "dimensions": [
+          "period",
+          "channel",
+          "device"
+        ]
       }
     },
     {
@@ -106,7 +124,11 @@
       "is_controllable": true,
       "distribution": {
         "kind": "triangular",
-        "params": { "min": 70000, "mode": 100000, "max": 140000 }
+        "params": {
+          "min": 70000,
+          "mode": 100000,
+          "max": 140000
+        }
       },
       "governance": {
         "owner": "acquisition",
@@ -115,7 +137,10 @@
         "warehouse_table": "fct_sessions",
         "calculation_grain": "period",
         "update_frequency": "hourly",
-        "dimensions": ["period", "channel"]
+        "dimensions": [
+          "period",
+          "channel"
+        ]
       }
     },
     {
@@ -133,7 +158,10 @@
         "warehouse_table": "fct_sessions",
         "calculation_grain": "period",
         "update_frequency": "hourly",
-        "dimensions": ["period", "channel"]
+        "dimensions": [
+          "period",
+          "channel"
+        ]
       }
     },
     {
@@ -143,10 +171,36 @@
       "unit": "ratio",
       "layer": "input",
       "baseline": 0.02,
+      "is_controllable": false,
+      "governance": {
+        "owner": "conversion",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_funnel",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": [
+          "period",
+          "device"
+        ]
+      }
+    },
+    {
+      "id": "product_view_rate",
+      "name": "Product View Rate",
+      "definition": "Share of sessions viewing at least one product page.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.6,
       "is_controllable": true,
+      "funnel_stage_order": 1,
       "distribution": {
         "kind": "triangular",
-        "params": { "min": 0.014, "mode": 0.02, "max": 0.028 }
+        "params": {
+          "min": 0.42,
+          "mode": 0.6,
+          "max": 0.84
+        }
       },
       "governance": {
         "owner": "conversion",
@@ -155,7 +209,100 @@
         "warehouse_table": "fct_funnel",
         "calculation_grain": "period",
         "update_frequency": "hourly",
-        "dimensions": ["period", "device"]
+        "dimensions": [
+          "period",
+          "device"
+        ]
+      }
+    },
+    {
+      "id": "add_to_cart_rate",
+      "name": "Add to Cart Rate",
+      "definition": "Share of product viewers who add an item to cart.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.25,
+      "is_controllable": true,
+      "funnel_stage_order": 2,
+      "distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0.175,
+          "mode": 0.25,
+          "max": 0.35
+        }
+      },
+      "governance": {
+        "owner": "conversion",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_funnel",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": [
+          "period",
+          "device"
+        ]
+      }
+    },
+    {
+      "id": "checkout_start_rate",
+      "name": "Checkout Start Rate",
+      "definition": "Share of cart adds that begin checkout.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.5,
+      "is_controllable": true,
+      "funnel_stage_order": 3,
+      "distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0.35,
+          "mode": 0.5,
+          "max": 0.7
+        }
+      },
+      "governance": {
+        "owner": "conversion",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_funnel",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": [
+          "period",
+          "device"
+        ]
+      }
+    },
+    {
+      "id": "purchase_completion_rate",
+      "name": "Purchase Completion Rate",
+      "definition": "Share of checkout starts that complete purchase.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.26666666666666666,
+      "is_controllable": true,
+      "funnel_stage_order": 4,
+      "distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0.18666666666666668,
+          "mode": 0.26666666666666666,
+          "max": 0.3733333333333333
+        }
+      },
+      "governance": {
+        "owner": "conversion",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_funnel",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": [
+          "period",
+          "device"
+        ]
       }
     },
     {
@@ -168,7 +315,11 @@
       "is_controllable": true,
       "distribution": {
         "kind": "triangular",
-        "params": { "min": 56, "mode": 80, "max": 112 }
+        "params": {
+          "min": 56,
+          "mode": 80,
+          "max": 112
+        }
       },
       "governance": {
         "owner": "merch",
@@ -177,7 +328,10 @@
         "warehouse_table": "fct_orders",
         "calculation_grain": "order",
         "update_frequency": "hourly",
-        "dimensions": ["period", "sku"]
+        "dimensions": [
+          "period",
+          "sku"
+        ]
       }
     },
     {
@@ -190,7 +344,11 @@
       "is_controllable": true,
       "distribution": {
         "kind": "triangular",
-        "params": { "min": 44.8, "mode": 64, "max": 89.6 }
+        "params": {
+          "min": 44.8,
+          "mode": 64,
+          "max": 89.6
+        }
       },
       "governance": {
         "owner": "ops",
@@ -199,7 +357,10 @@
         "warehouse_table": "fct_unit_economics",
         "calculation_grain": "order",
         "update_frequency": "daily",
-        "dimensions": ["period", "sku"]
+        "dimensions": [
+          "period",
+          "sku"
+        ]
       }
     },
     {
@@ -212,7 +373,11 @@
       "is_controllable": true,
       "distribution": {
         "kind": "triangular",
-        "params": { "min": 0.175, "mode": 0.25, "max": 0.35 }
+        "params": {
+          "min": 0.175,
+          "mode": 0.25,
+          "max": 0.35
+        }
       },
       "governance": {
         "owner": "lifecycle",
@@ -221,7 +386,10 @@
         "warehouse_table": "fct_email_optins",
         "calculation_grain": "session",
         "update_frequency": "hourly",
-        "dimensions": ["period", "channel"]
+        "dimensions": [
+          "period",
+          "channel"
+        ]
       }
     },
     {
@@ -231,7 +399,15 @@
       "unit": "duration_s",
       "layer": "input",
       "baseline": 2.5,
-      "is_controllable": false,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 1.75,
+          "mode": 2.5,
+          "max": 3.5
+        }
+      },
       "governance": {
         "owner": "platform",
         "business_function": "engineering",
@@ -239,7 +415,10 @@
         "warehouse_table": "fct_web_perf",
         "calculation_grain": "session",
         "update_frequency": "hourly",
-        "dimensions": ["period", "device"]
+        "dimensions": [
+          "period",
+          "device"
+        ]
       }
     },
     {
@@ -249,7 +428,15 @@
       "unit": "ratio",
       "layer": "input",
       "baseline": 0.4,
-      "is_controllable": false,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0.28,
+          "mode": 0.40,
+          "max": 0.56
+        }
+      },
       "governance": {
         "owner": "lifecycle",
         "business_function": "marketing",
@@ -257,7 +444,10 @@
         "warehouse_table": "dim_customer",
         "calculation_grain": "customer",
         "update_frequency": "daily",
-        "dimensions": ["period", "cohort"]
+        "dimensions": [
+          "period",
+          "cohort"
+        ]
       }
     },
     {
@@ -275,21 +465,97 @@
         "warehouse_table": "fct_customer_ltv",
         "calculation_grain": "customer",
         "update_frequency": "weekly",
-        "dimensions": ["cohort"]
+        "dimensions": [
+          "cohort"
+        ]
       }
     }
   ],
   "edges": [
-    { "parent": "contribution_profit", "child": "net_revenue", "kind": "identity", "formula_role": "addend" },
-    { "parent": "contribution_profit", "child": "variable_costs", "kind": "identity", "formula_role": "subtrahend" },
-    { "parent": "net_revenue", "child": "orders", "kind": "identity", "formula_role": "factor" },
-    { "parent": "net_revenue", "child": "average_order_value", "kind": "identity", "formula_role": "factor" },
-    { "parent": "variable_costs", "child": "orders", "kind": "identity", "formula_role": "factor" },
-    { "parent": "variable_costs", "child": "cost_per_order", "kind": "identity", "formula_role": "factor" },
-    { "parent": "orders", "child": "sessions", "kind": "identity", "formula_role": "factor" },
-    { "parent": "orders", "child": "conversion_rate", "kind": "identity", "formula_role": "factor" },
-    { "parent": "sessions", "child": "new_sessions", "kind": "identity", "formula_role": "addend" },
-    { "parent": "sessions", "child": "returning_sessions", "kind": "identity", "formula_role": "addend" },
+    {
+      "parent": "contribution_profit",
+      "child": "net_revenue",
+      "kind": "identity",
+      "formula_role": "addend"
+    },
+    {
+      "parent": "contribution_profit",
+      "child": "variable_costs",
+      "kind": "identity",
+      "formula_role": "subtrahend"
+    },
+    {
+      "parent": "net_revenue",
+      "child": "orders",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "net_revenue",
+      "child": "average_order_value",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "variable_costs",
+      "child": "orders",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "variable_costs",
+      "child": "cost_per_order",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "orders",
+      "child": "sessions",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "orders",
+      "child": "conversion_rate",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "conversion_rate",
+      "child": "product_view_rate",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "conversion_rate",
+      "child": "add_to_cart_rate",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "conversion_rate",
+      "child": "checkout_start_rate",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "conversion_rate",
+      "child": "purchase_completion_rate",
+      "kind": "identity",
+      "formula_role": "factor"
+    },
+    {
+      "parent": "sessions",
+      "child": "new_sessions",
+      "kind": "identity",
+      "formula_role": "addend"
+    },
+    {
+      "parent": "sessions",
+      "child": "returning_sessions",
+      "kind": "identity",
+      "formula_role": "addend"
+    },
     {
       "parent": "returning_sessions",
       "child": "email_capture_rate",
@@ -306,6 +572,17 @@
       "direction": "decreases",
       "evidence_grade": "none",
       "rationale": "Industry lore suggests slower pages reduce conversion. We have no on-platform experimental evidence yet."
+    },
+    {
+      "parent": "customer_ltv",
+      "child": "average_order_value",
+      "kind": "modeled",
+      "functional_form": "linear",
+      "elasticity": 0.6,
+      "mechanism": "Higher AOV per order compounds over repeat purchases into a higher 12-month LTV.",
+      "evidence_grade": "illustrative",
+      "evidence_note": "Illustrative. Derived from a simple repeat-purchase model, not from a survival curve.",
+      "test_cost": 3
     },
     {
       "parent": "customer_ltv",

@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg-app: #0f172a;
+  --color-bg-panel: #1e293b;
+  --color-bg-card: #334155;
+  --color-bg-input: #0f172a;
+
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-text-faint: #64748b;
+
+  --color-border-default: #334155;
+  --color-border-subtle: #2b3a52;
+
+  --color-edge-identity: #2563eb;
+  --color-edge-modeled: #d97706;
+  --color-edge-hypothesized: #9ca3af;
+
+  --color-layer-north-star: #7c3aed;
+  --color-layer-outcome: #0891b2;
+  --color-layer-driver: #475569;
+  --color-layer-input: #1e293b;
+  --color-layer-guardrail: #dc2626;
+  --color-layer-counter: #ea580c;
+
+  --color-grade-none-bg: #374151;
+  --color-grade-none-text: #9ca3af;
+  --color-grade-illustrative-bg: #78350f;
+  --color-grade-illustrative-text: #fcd34d;
+  --color-grade-estimated-bg: #422006;
+  --color-grade-estimated-text: #fdba74;
+  --color-grade-anecdotal-bg: #713f12;
+  --color-grade-anecdotal-text: #fde68a;
+  --color-grade-observational-bg: #164e63;
+  --color-grade-observational-text: #67e8f9;
+  --color-grade-experimental-bg: #064e3b;
+  --color-grade-experimental-text: #6ee7b7;
+
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-error: #dc2626;
+  --color-delta-positive: #6ee7b7;
+  --color-delta-negative: #fca5a5;
+
+  --color-braga-coral: #e8624a;
+  --color-braga-grey: #8b97a6;
+
+  --color-node-north-star-fill: #2563eb;
+  --color-node-north-star-text: #ffffff;
+  --color-node-outcome-fill: #0d9488;
+  --color-node-outcome-text: #ffffff;
+  --color-node-driver-fill: #475569;
+  --color-node-driver-text: #e2e8f0;
+  --color-node-input-fill: #f1f5f9;
+  --color-node-input-text: #0f172a;
+  --color-node-guardrail-fill: #e11d48;
+  --color-node-guardrail-text: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-bg-app text-text-primary antialiased;
+  }
+}
