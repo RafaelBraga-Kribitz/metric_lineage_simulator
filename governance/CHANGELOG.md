@@ -1,5 +1,10 @@
 # Governance Changelog
 
+## 2026-06-07 — F-002 closed
+
+- Relocated Phase 0 `driver-tree-studio.tsx` to `archive/phase-0/`; demo imports updated.
+- Review Gate 1 approved; charter and ADR-0007 updated.
+
 ## 2026-06-07 — F-006 closed
 
 - Deleted superseded root specs; SSOT is charter + ADRs 0003–0008 + transient workflow v4.

@@ -33,7 +33,7 @@ SSOT_METADATA_END -->
 | Codename | `metric_lineage_simulator` |
 | Owner | Rafael Braga |
 | Path | A — single-player, rigorous, no crowdsourcing |
-| Status | Phase 1 complete (35 vitest); Review Gate 1 pending |
+| Status | Phase 1 complete (36 vitest); Review Gate 1 approved 2026-06-07 |
 
 ## 2. Documentation Discipline
 
@@ -65,9 +65,9 @@ prioritize what to test — not an econometric oracle. Never say “causal” wi
 
 | Phase | Tool | Deliverable | Status |
 |---|---|---|---|
-| 0 | Claude Artifacts | Visual demo, honesty layer | Partial (`driver-tree-studio.tsx`) |
+| 0 | Claude Artifacts | Visual demo, honesty layer | Archived (`archive/phase-0/`; demo via `demo/`) |
 | 1 | Claude Code | `driver_tree_studio/` TS core + DTC seed | **Complete** |
-| — | Review Gate 1 | Artifact + vitest + validate + reconciliation | Pending |
+| — | Review Gate 1 | Artifact + vitest + validate + reconciliation | **Approved** 2026-06-07 |
 | — | Figma MCP | Design tokens, canvas ref | Pending |
 | 2 | Cursor | Next.js + React Flow + funnel + verbal builder | Pending |
 | 3a/b | Code + Cursor | BYOD data test, MC worker + UI | Pending |
@@ -83,16 +83,16 @@ Gate 1 + design ref (workflow v4 §0).
 |---|---|
 | Engine matches ADR-0006 | `driver_tree_studio/src/engine/` |
 | Validation ADR-0005 | `tests/schema/validate.test.ts`, `dtc_seed.test.ts` |
-| Full Phase 1 matrix ADR-0007 | `cd driver_tree_studio && npx vitest run` (35 tests) |
+| Full Phase 1 matrix ADR-0007 | `cd driver_tree_studio && npx vitest run` (36 tests) |
 | Governance | `make verify` |
 
-Stop after Gate 1 human review before Phase 2 UI (ADR-0007).
+Gate 1 approved; Phase 2 UI may proceed after Figma design ref (ADR-0008).
 
 ## 6. Out of Scope / Limitations
 
 - No production UI before Gate 1. No VoI/Guesstimate UI before Phase 5.
 - Illustrative DTC numbers until defended authoring pass (public BRAGA link gated Phase 4).
-- Phase 0 TSX prototype coexists until F-002 resolved.
+- Phase 0 TSX prototype archived at `archive/phase-0/` (not product SSOT).
 - `recommend.ts` guardrails: simplified below-baseline check (Phase 1).
 
 ## 7. Normative ADR Index (read for detail)

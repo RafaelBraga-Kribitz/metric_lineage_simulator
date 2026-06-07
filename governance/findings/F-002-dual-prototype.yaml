@@ -2,15 +2,15 @@ id: F-002
 title: "Root prototype coexists with driver_tree_studio package"
 category: partial_migration
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-06-07
-closed_at: null
+closed_at: 2026-06-07
 recurrence_count: 0
 evidence: |
-  driver-tree-studio.tsx:1 — 997-line React prototype at repo root
-  driver_tree_studio/src/schema/types.ts — extracted typed package
-  governance/adrs/0007-phase-1-implementation.md — Phase 1 extracted logic from TSX
+  archive/phase-0/driver-tree-studio.tsx — Phase 0 demo relocated from repo root
+  driver_tree_studio/src/schema/types.ts — extracted typed package (SSOT)
+  demo/src/main.tsx — imports archived artifact for local preview
 verification_script: tests/governance/test_f002_no_dual_prototype.py
 notes: |
-  Remove or relocate driver-tree-studio.tsx once UI work resumes, or mark it
-  deprecated in an ADR and move to an archive/ path outside the repo root.
+  Resolved by moving throwaway Phase 0 TSX to archive/phase-0/. Root must not host
+  parallel prototype once driver_tree_studio/ exists.

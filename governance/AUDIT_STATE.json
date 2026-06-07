@@ -13,12 +13,12 @@
     },
     {
       "category": "partial_migration",
-      "closed_at": null,
+      "closed_at": "2026-06-07",
       "id": "F-002",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-07",
       "path": "governance/findings/F-002-dual-prototype.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Root prototype coexists with driver_tree_studio package",
       "verification_script": "tests/governance/test_f002_no_dual_prototype.py"
     },
@@ -67,22 +67,20 @@
       "verification_script": "tests/governance/test_f006_no_root_spec_sprawl.py"
     }
   ],
-  "generated_at": "2026-06-07T20:07:07.056285+00:00",
+  "generated_at": "2026-06-07T20:57:00.315779+00:00",
   "git_branch": "main",
-  "git_head_sha": "026a859399c12370c8d0e3ebfc27fc924a76f954",
+  "git_head_sha": "b881ee5946bd3b7d5c770967d20c72ea72e20ef0",
   "migrations": [],
   "summary": {
-    "findings_closed": 4,
+    "findings_closed": 5,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 1,
+    "findings_open": 0,
     "findings_total": 6,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,
-    "open_by_category": {
-      "partial_migration": 1
-    }
+    "open_by_category": {}
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"

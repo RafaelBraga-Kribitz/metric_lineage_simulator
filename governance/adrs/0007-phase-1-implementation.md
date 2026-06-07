@@ -85,8 +85,8 @@ Reconciliation: identity parents must reconcile within 1e-6 (covered by validate
 
 ### Phase 1 status
 
-**Complete** as of 2026-06-07: 35 vitest passing. Review Gate 1 pending (Phase 0 artifact +
-full vitest output + validate output for human review per charter §4).
+**Complete** as of 2026-06-07: 36 vitest passing. Review Gate 1 approved 2026-06-07
+(Phase 0 artifact + full vitest output + validate output per charter §4).
 
 ### Out of scope (Phase 1)
 
@@ -97,7 +97,8 @@ full vitest output + validate output for human review per charter §4).
 
 ### Phase 0 artifact
 
-`driver-tree-studio.tsx` is throwaway demo (F-002); logic lives in `driver_tree_studio/`.
+`archive/phase-0/driver-tree-studio.tsx` — throwaway Claude Artifacts demo; logic lives in
+`driver_tree_studio/`. Run via `demo/` Vite shell.
 
 ## References
 
