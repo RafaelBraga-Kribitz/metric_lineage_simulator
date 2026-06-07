@@ -14,12 +14,12 @@ RULES (enforced by CI):
   4. The metadata block below is machine-read by scripts/check_charter_size.py.
 
 DO NOT create separate Charter.md, Requirements.md, SRS.md, etc. Sprawl is
-forbidden. Cap at 200 lines.
+forbidden. Cap at 200 lines. Index long specs in §4; do not paste them here.
 ================================================================================
 -->
 
 <!-- SSOT_METADATA_START
-version: 0.1.0
+version: 0.2.0
 status: active
 last_updated: 2026-06-07
 last_reviewed: 2026-06-07
@@ -29,10 +29,9 @@ SSOT_METADATA_END -->
 
 # Project Charter: Metric Lineage Simulator
 
-> **This is the Single Source of Truth (SSOT).** If you are looking for what
-> the project is, what it does, what it does not do, or why a decision was
-> made, **the answer is here or in [`governance/adrs/`](./governance/adrs/).**
-> Nowhere else. CI enforces this discipline.
+> **This is the Single Source of Truth (SSOT).** Goals, phase status, and which
+> spec is authoritative live here or in [`governance/adrs/`](./governance/adrs/).
+> Engine and UI contracts stay in indexed documents (§4).
 
 ## 1. Quick Facts
 
@@ -40,15 +39,16 @@ SSOT_METADATA_END -->
 |---|---|
 | Project codename | `metric_lineage_simulator` |
 | Owner | Rafael Braga |
-| Primary goal | Typed driver-tree engine for metric lineage, validation, and what-if simulation |
-| Status | Phase 1 core complete; UI deferred |
+| Primary goal | Honest driver-tree studio: definitional, declared, and untested edges separated |
+| Authoritative build spec | `metric_driver_tree_studio_build_spec_v4.md` |
+| Authoritative workflow | `tool_workflow_and_prompts_v4.md` |
+| Status | Phase 1 core complete; Review Gate 1 pending |
 
 ## 2. Documentation Discipline
 
-This file is the SSOT. No parallel requirements, spec, or design documents.
-State it once, link everywhere else. Every scope change needs an ADR in
-`governance/adrs/`. Every content change needs a `governance/CHANGELOG.md`
-entry and a `last_updated` bump.
+This file indexes decisions; it does not replace build spec v4 or workflow v4.
+Every scope change needs an ADR. Every charter edit needs `governance/CHANGELOG.md`
+and a `last_updated` bump. Superseded specs remain as historical lineage only.
 
 Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
@@ -56,51 +56,96 @@ Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ### 3.1 Problem Statement
 
-Marketing and analytics teams model metrics as driver trees, but most tools blur three things that must stay separate: relationships true by definition (`identity`), declared behavioral effects with explicit uncertainty (`modeled`), and directional beliefs not yet tested (`hypothesized`). That blur produces false precision, weak test prioritization, and casual causal language. This project gives a typed, validated engine and seed models that enforce the distinction before any UI ships.
+Marketing and analytics teams build metric driver trees, but most tools blur three
+states that must stay distinct: relationships true by definition (`identity`),
+declared behavioral effects with explicit uncertainty (`modeled`), and directional
+beliefs not yet tested (`hypothesized`). That blur drives false precision, weak
+test prioritization, and casual causal language — especially harmful for a
+portfolio piece that must signal measurement discipline.
 
 ### 3.2 Project Goal
 
-Deliver a strict-mode TypeScript driver-tree core (schema, validation, compute, what-if, sensitivity, Monte Carlo, recommender) with vitest coverage and a reconciled DTC seed — no React or Vite in Phase 1.
+Ship the Metric Driver-Tree Studio as a BRAGA portfolio asset: a personal reference,
+a template for rigorous projects, and a free interactive tool that drives traffic
+by demonstrating honest metric design — starting with a provably correct TS core
+before any production UI.
 
-### 3.3 Success Criteria
+### 3.3 Spec lineage (how we got here)
 
-The project succeeds if **all** of these are true at completion:
+| Version | Focus | Key change from prior |
+|---|---|---|
+| v2 (`metric_lineage_simulator_build_spec_v2.md`) | Lineage simulator | Two edge kinds (`identity`, `assumed`); 3–5 model library |
+| v3 (`metric_driver_tree_studio_build_spec_v3.md`) | Driver-Tree Studio | Three kinds; Path A single-player; one DTC seed; evidence grades |
+| v4 (**authoritative**) | Experimentation Flywheel | Guesstimate = `modeled` + distribution; functional forms; test loop |
+
+Positioning (v4): separate definition, declared assumption, and untested belief;
+make guesses explicit and uncertain; prioritize what to test — not an econometric
+oracle. Never say "causal" without a method that backs it.
+
+### 3.4 Delivery phases (tool workflow)
+
+| Phase | Tool | Deliverable | Status |
+|---|---|---|---|
+| 0 | Claude Artifacts | Visual demo; three edge encodings; honesty layer | Partial (`driver-tree-studio.tsx`) |
+| 1 | Claude Code | `driver_tree_studio/` TS core + tests + DTC JSON | **Complete** (35 vitest) |
+| — | Review Gate 1 | Artifact + vitest + validate + reconciliation | Pending |
+| — | Figma MCP | Design tokens, canvas reference | Pending |
+| 2 | Cursor | Next.js + React Flow; canvas ↔ model sync | Pending |
+| 3a | Claude Code | Data-test engine, MC worker, extra models | Pending |
+| 3b | Cursor | Data-test UI, Monte Carlo panel | Pending |
+| 4 | Cursor | SEO, shareable URLs, BRAGA brand | Pending |
+| 5 | Code + Cursor | Experimentation Flywheel UI + prioritize loop | Pending |
+
+Tool constraints: Claude Code never writes React; Artifacts are throwaway; Cursor
+starts after Gate 1 and a Figma design ref.
+
+### 3.5 Success Criteria (current: Phase 1 + Gate 1 prep)
 
 | Criterion | Measurement | Verification |
 |---|---|---|
-| Typed core matches spec v4 | Schema, engine, formula parser, DTC seed | `driver_tree_studio/` source + `metric_driver_tree_studio_build_spec_v4.md` |
-| Validation gate | DTC seed passes all validate rules incl. reconciliation | `npm test` in `driver_tree_studio/`; `validate.test.ts`, `dtc_seed.test.ts` |
-| Phase 1 test suite | All engine/lib/schema/content tests green | `npx vitest run` in `driver_tree_studio/` |
-| Governance closure | Open Phase 1 findings closed with passing scripts | `make verify` |
+| Typed core matches spec v4 | Schema, engine, parser, seed | `driver_tree_studio/` + build spec v4 |
+| Validation + reconciliation | DTC seed rules + identity math | `validate.test.ts`, `dtc_seed.test.ts` |
+| Test suite | All Phase 1 invariants | `npx vitest run` in `driver_tree_studio/` |
+| Governance | Findings closed with scripts | `make verify` |
 
-### 3.4 Stakeholders
+### 3.6 Stakeholders
 
 | Stakeholder | Role | Engagement |
 |---|---|---|
 | Rafael Braga | Owner | Daily |
 
-### 3.5 Out of Scope
+### 3.7 Out of Scope (now)
 
-- React components, Vite, or any UI (Phase 2+).
-- Value-of-Information panel and experimentation flywheel UI (later phases).
-- Additional business-model seeds beyond DTC ecommerce in Phase 1.
-- Backend, crowdsourcing, or community layers (Path A: single-player rigorous tool per spec v4).
-- Calling relationships "causal" without an experiment backing the claim.
+- Production UI before Gate 1 (Phase 2+).
+- Crowdsourcing or community backend (Path A locked since v3).
+- Public BRAGA link with illustrative-only evidence grades (Gate before Phase 4).
+- Calling edges causal without experiment backing.
+- Flywheel / Guesstimate UI before Phase 5 (engine hooks exist in v4 spec).
 
-### 3.6 Known Limitations
+### 3.8 Known Limitations
 
-- Phase 1 guardrail checks use a simplified "below baseline" rule; richer direction metadata comes later.
-- Hypothesized edges are topology-only; they never enter compute until promoted via ADR + evidence.
-- Only `metric_driver_tree_studio_build_spec_v4.md` is authoritative for implementation detail; older v2/v3 specs are historical until superseded by ADR.
+- DTC seed numbers are illustrative until the one-week authoring pass (v3 gate).
+- Phase 0 artifact and Phase 1 package coexist until F-002 resolves migration.
+- `recommend.ts` guardrail check is simplified (below baseline only).
+- Hypothesized edges are topology-only until promoted via ADR + evidence.
 
 ## 4. Documentation Index
 
 | Document | Purpose | Location |
 |---|---|---|
-| Methodology | Three roles, finding lifecycle | `governance/AUDIT_PROCEDURE.md` |
-| Agent Protocol | LLM session contract | `CLAUDE.md` |
-| Contributor Rules | Standards, PR rules | `CONTRIBUTING.md` |
+| Build spec v2 (historical) | Two-edge lineage simulator origin | `metric_lineage_simulator_build_spec_v2.md` |
+| Build spec v3 (historical) | Three-edge studio; supersedes v2 | `metric_driver_tree_studio_build_spec_v3.md` |
+| Build spec v4 (**authoritative**) | Engine contract + flywheel | `metric_driver_tree_studio_build_spec_v4.md` |
+| Tool workflow v4 (**authoritative**) | Phases, gates, prompts, tool roles | `tool_workflow_and_prompts_v4.md` |
+| Tool workflow v3 (historical) | Superseded by v4 | `tool_workflow_and_prompts_v3.md` |
+| Prompts addendum v4 (historical) | Merged into workflow v4 | `prompts_addendum_v4.md` |
+| Phase 1 handoff | Claude Code checklist (complete) | `phase-1_Metric_Driver-Tree_Studio.md` |
+| Phase 0 artifact | Throwaway React demo | `driver-tree-studio.tsx` |
+| Governance bootstrap kit | Reusable scaffolding templates | `governance-bootstrap/` |
+| Methodology | Steward / Remediator / Adversary | `governance/AUDIT_PROCEDURE.md` |
+| Agent protocol | Session-start contract | `CLAUDE.md` |
+| Contributor rules | PR + finding workflow | `CONTRIBUTING.md` |
 | ADRs | Append-only decision log | `governance/adrs/` |
-| Change Log | Version history | `governance/CHANGELOG.md` |
+| Change log | Version history | `governance/CHANGELOG.md` |
 
 <!-- END OF SSOT. Any content below this line is a violation. -->

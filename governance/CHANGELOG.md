@@ -1,5 +1,10 @@
 # Governance Changelog
 
+## 2026-06-07 — F-001 closed
+
+- Expanded `PROJECT_CHARTER.md` with spec lineage (v2→v3→v4), phase roadmap, full §4 index; ADR-0002.
+- Updated `governance-bootstrap/templates/PROJECT_CHARTER.md` to same structure for future bootstraps.
+
 ## 2026-06-07 — F-005 closed
 
 - Filled `PROJECT_CHARTER.md` §3 Business Case; ADR-0001 documents the change.
