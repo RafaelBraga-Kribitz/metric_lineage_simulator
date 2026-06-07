@@ -1,0 +1,19 @@
+---
+description: Governance session protocol — first action every Cursor session
+alwaysApply: true
+---
+
+# Session start (Steward role)
+
+**First command:** `make session-start` from repo root.
+
+Then read `governance/SESSION_HANDOUT.md` before proposing work. State comes from disk, not chat history.
+
+| Artifact | Role |
+|---|---|
+| `governance/SESSION_HANDOUT.md` | Open queue + recommended next finding |
+| `governance/SESSION_END.md` | Prior session handoff |
+| `governance/AUDIT_STATE.json` | Machine-generated snapshot (never hand-edit) |
+| `governance/findings/F-*.yaml` | Work queue |
+
+Methodology is only `governance/AUDIT_PROCEDURE.md` — three roles: **Steward**, **Remediator**, **Adversary**. No TIER0/1/2, no 11-dim audits, no "comprehensive review first."

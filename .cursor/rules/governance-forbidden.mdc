@@ -1,0 +1,27 @@
+---
+description: Governance banned anti-patterns — stop if you catch yourself doing these
+alwaysApply: true
+---
+
+# Banned behaviors
+
+Stop and report if you are about to:
+
+- Run a "comprehensive audit / review / scan / sweep" as a first action.
+- Invent a new scoring framework or audit tier.
+- Close multiple findings in one PR/commit (except <10-line cross-cutting).
+- Claim "audited / fixed / closed / complete" without a `verification_script` reference.
+- Hand-edit `governance/AUDIT_STATE.json` or `governance/SESSION_HANDOUT.md`.
+- File findings without `verification_script` paths.
+- Add scope without an ADR.
+
+# Banned phrasing in commits, PRs, READMEs
+
+"Audited", "fixed", "closed", "complete" — unless tied to a finding ID and passing verification script.
+
+# Canonical references
+
+- Agent protocol: `CLAUDE.md`
+- Contributor rules: `CONTRIBUTING.md`
+- Methodology: `governance/AUDIT_PROCEDURE.md`
+- SSOT: `PROJECT_CHARTER.md` + `governance/adrs/`
