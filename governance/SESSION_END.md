@@ -2,29 +2,33 @@
 
 ## Findings touched
 
-- F-003: open -> closed (formula addend/subtrahend)
-- F-004: open -> closed (montecarlo + recommend tests)
-- F-005: open -> closed (charter §3 + ADR-0001)
+- F-001: closed → closed_historical (superseded by F-006)
+- F-006: open → closed (charter + ADR consolidation; 6 root specs deleted)
 
 ## ADRs added
 
-- `governance/adrs/0001-charter-business-case.md` — charter §3 business case adoption
+- 0003 documentation consolidation
+- 0004 product model and positioning
+- 0005 schema and validation
+- 0006 engine and formula
+- 0007 Phase 1 implementation (replaces phase-1 handoff)
+- 0008 Phases 2–5
 
 ## Invariants installed
 
-- `.cursor/rules/governance-*.mdc` — always-on Cursor compliance
-- `AGENTS.md` — agent entrypoint pointing at governance protocol
+- tests/governance/test_f006_no_root_spec_sprawl.py — forbids root spec sprawl; charter must list ADRs 0003–0008
 
 ## Open questions for next session
 
-- F-001: index seven root spec/workflow markdown files in charter §4
-- F-002: archive or relocate `driver-tree-studio.tsx` before Phase 2 UI
+- F-002: archive or relocate `driver-tree-studio.tsx`
+- Review Gate 1: human review of Phase 0 artifact + vitest output
 
 ## Recommended next-finding priority
 
-- **F-001** — add Documentation Index rows for all root specs (unblocks SSOT navigation)
+- **F-002** before Phase 2 UI
+- Then Review Gate 1 per charter §5
 
 ## Notes
 
-- Five commits this session: Cursor rules, F-003, F-004, F-005 (one finding each where applicable).
-- `make verify`: 3 closed findings enforced, 2 open xfailing (F-001, F-002).
+- SSOT: PROJECT_CHARTER.md (122 lines) + ADRs 0003–0008. Prompts only in tool_workflow_and_prompts_v4.md.
+- Phase 1 audit vs ADR-0007: 36 vitest pass; validate.test has one fail case per rule; dtc_seed asserts reconciliation.
