@@ -84,10 +84,22 @@ interface Operand {
  *     by the operator that connects the group to the parent.
  */
 
+function exprHasAddSub(p: ParserState): boolean {
+  for (let j = p.i; j < p.toks.length; j++) {
+    const t = p.toks[j];
+    if (t?.kind === "op" && (t.value === "+" || t.value === "-")) return true;
+    if (t?.kind === "rparen") break;
+  }
+  return false;
+}
+
 function parseExpr(p: ParserState): Operand[] {
   const ops: Operand[] = [];
   const first = parseTerm(p);
-  for (const o of first) ops.push({ ids: o.ids, role: o.role });
+  const addSubChain = exprHasAddSub(p);
+  for (const o of first) {
+    ops.push({ ids: o.ids, role: addSubChain ? "addend" : o.role });
+  }
   while (p.i < p.toks.length) {
     const t = p.toks[p.i];
     if (t?.kind === "op" && (t.value === "+" || t.value === "-")) {

@@ -2,9 +2,9 @@ id: F-003
 title: "driver_tree_studio vitest suite has failing test"
 category: fake_completion
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-06-07
-closed_at: null
+closed_at: 2026-06-07
 recurrence_count: 0
 evidence: |
   phase-1_Metric_Driver-Tree_Studio.md:7 — "Stop after tests pass for human review"

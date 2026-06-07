@@ -1,5 +1,9 @@
 # Governance Changelog
 
+## 2026-06-07 — F-003 closed
+
+- Fixed `parseFormula` addend/subtrahend mapping for `+`/`-` expressions.
+
 ## 2026-06-07 — Governance bootstrap (midflight)
 
 - Installed governance scaffolding from `governance-bootstrap/` kit.
