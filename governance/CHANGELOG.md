@@ -1,5 +1,9 @@
 # Governance Changelog
 
+## 2026-06-07 — F-004 closed
+
+- Added `montecarlo.test.ts` and `recommend.test.ts`; split MC leaf/edge RNG streams.
+
 ## 2026-06-07 — F-003 closed
 
 - Fixed `parseFormula` addend/subtrahend mapping for `+`/`-` expressions.

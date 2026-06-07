@@ -46,7 +46,8 @@ export function monteCarlo(
   runs: number,
   seed: number,
 ): MonteCarloResult {
-  const rng = mulberry32(seed);
+  const leafRng = mulberry32(seed);
+  const edgeRng = mulberry32(seed ^ 0x9e3779b9);
   const leafIds: string[] = [];
   for (const n of model.nodes) {
     if (n.is_controllable && n.distribution) leafIds.push(n.id);
@@ -65,14 +66,14 @@ export function monteCarlo(
     for (const id of leafIds) {
       const node = model.nodes.find((n) => n.id === id);
       if (!node?.distribution) continue;
-      const v = sampleDistribution(rng, node.distribution);
+      const v = sampleDistribution(leafRng, node.distribution);
       overrides[id] = v;
       leafSamples[id]?.push(v);
     }
     const elasMap = new Map<MetricEdge, number>();
     for (const e of edgesWithDist) {
       if (e.elasticity_distribution) {
-        elasMap.set(e, sampleDistribution(rng, e.elasticity_distribution));
+        elasMap.set(e, sampleDistribution(edgeRng, e.elasticity_distribution));
       }
     }
     const values = computeForMonteCarlo(model, overrides, elasMap);
