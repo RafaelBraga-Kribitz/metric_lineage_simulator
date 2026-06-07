@@ -2,31 +2,29 @@
 
 ## Findings touched
 
-- F-001 through F-005: filed (new, status open)
+- F-003: open -> closed (formula addend/subtrahend)
+- F-004: open -> closed (montecarlo + recommend tests)
+- F-005: open -> closed (charter §3 + ADR-0001)
 
 ## ADRs added
 
-- none
+- `governance/adrs/0001-charter-business-case.md` — charter §3 business case adoption
 
 ## Invariants installed
 
-- tests/governance/test_f001_charter_indexes_specs.py
-- tests/governance/test_f002_no_dual_prototype.py
-- tests/governance/test_f003_driver_tree_tests_pass.py
-- tests/governance/test_f004_phase1_test_artifacts.py
-- tests/governance/test_f005_charter_business_case.py
+- `.cursor/rules/governance-*.mdc` — always-on Cursor compliance
+- `AGENTS.md` — agent entrypoint pointing at governance protocol
 
 ## Open questions for next session
 
-- Which build spec is authoritative: v2 lineage sim, v3, or v4 driver-tree studio?
-- Should driver-tree-studio.tsx be archived or kept for Phase 2 UI work?
+- F-001: index seven root spec/workflow markdown files in charter §4
+- F-002: archive or relocate `driver-tree-studio.tsx` before Phase 2 UI
 
 ## Recommended next-finding priority
 
-- F-003 first — smallest blast radius (single formula.test failure blocks Phase 1 gate).
-- Then F-005 — fills charter SSOT before F-001 indexing work.
+- **F-001** — add Documentation Index rows for all root specs (unblocks SSOT navigation)
 
 ## Notes
 
-- Bootstrap mode: midflight (~2980 LOC TypeScript, partial vitest, no git/CI prior to this session).
-- `make verify` exits 0 with 5 xfails (expected while findings open).
+- Five commits this session: Cursor rules, F-003, F-004, F-005 (one finding each where applicable).
+- `make verify`: 3 closed findings enforced, 2 open xfailing (F-001, F-002).
