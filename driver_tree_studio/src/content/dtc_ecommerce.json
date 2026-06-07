@@ -1,0 +1,320 @@
+{
+  "id": "dtc_ecommerce",
+  "name": "DTC Ecommerce",
+  "industry": "dtc_ecommerce",
+  "preset_labels": ["ecommerce", "subscription-optional"],
+  "north_star_id": "contribution_profit",
+  "narrative": "Contribution profit per period. Built from a deterministic identity tree (sessions x conversion x AOV minus variable costs). Returning-session lift from email capture is modeled (illustrative elasticity). Page-load -> conversion and loyalty -> LTV are kept hypothesized until experimental evidence exists.",
+  "nodes": [
+    {
+      "id": "contribution_profit",
+      "name": "Contribution Profit",
+      "definition": "Net revenue minus variable costs over the period.",
+      "unit": "currency",
+      "layer": "north_star",
+      "baseline": 48000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "finance",
+        "business_function": "finance",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_period_pnl",
+        "calculation_grain": "period",
+        "update_frequency": "daily",
+        "dimensions": ["period"]
+      }
+    },
+    {
+      "id": "net_revenue",
+      "name": "Net Revenue",
+      "definition": "Orders times average order value.",
+      "unit": "currency",
+      "layer": "outcome",
+      "baseline": 240000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "finance",
+        "business_function": "finance",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_orders",
+        "calculation_grain": "period",
+        "update_frequency": "daily",
+        "dimensions": ["period", "channel"]
+      }
+    },
+    {
+      "id": "variable_costs",
+      "name": "Variable Costs",
+      "definition": "Orders times unit variable cost (COGS + fulfillment + payment).",
+      "unit": "currency",
+      "layer": "outcome",
+      "baseline": 192000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "finance",
+        "business_function": "ops",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_unit_economics",
+        "calculation_grain": "period",
+        "update_frequency": "daily",
+        "dimensions": ["period", "sku"]
+      }
+    },
+    {
+      "id": "orders",
+      "name": "Orders",
+      "definition": "Sessions times conversion rate.",
+      "unit": "count",
+      "layer": "outcome",
+      "baseline": 3000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "growth",
+        "business_function": "growth",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_orders",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "channel"]
+      }
+    },
+    {
+      "id": "sessions",
+      "name": "Sessions",
+      "definition": "New sessions plus returning sessions over the period.",
+      "unit": "count",
+      "layer": "driver",
+      "baseline": 150000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "growth",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_sessions",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "channel", "device"]
+      }
+    },
+    {
+      "id": "new_sessions",
+      "name": "New Sessions",
+      "definition": "Sessions from first-time visitors.",
+      "unit": "count",
+      "layer": "input",
+      "baseline": 100000,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": { "min": 70000, "mode": 100000, "max": 140000 }
+      },
+      "governance": {
+        "owner": "acquisition",
+        "business_function": "marketing",
+        "data_source": "ga4",
+        "warehouse_table": "fct_sessions",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "channel"]
+      }
+    },
+    {
+      "id": "returning_sessions",
+      "name": "Returning Sessions",
+      "definition": "Sessions from known visitors. Driven (illustratively) by email capture rate.",
+      "unit": "count",
+      "layer": "driver",
+      "baseline": 50000,
+      "is_controllable": false,
+      "governance": {
+        "owner": "lifecycle",
+        "business_function": "marketing",
+        "data_source": "ga4",
+        "warehouse_table": "fct_sessions",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "channel"]
+      }
+    },
+    {
+      "id": "conversion_rate",
+      "name": "Conversion Rate",
+      "definition": "Orders divided by sessions.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.02,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": { "min": 0.014, "mode": 0.02, "max": 0.028 }
+      },
+      "governance": {
+        "owner": "conversion",
+        "business_function": "growth",
+        "data_source": "ga4",
+        "warehouse_table": "fct_funnel",
+        "calculation_grain": "period",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "device"]
+      }
+    },
+    {
+      "id": "average_order_value",
+      "name": "Average Order Value",
+      "definition": "Revenue per order.",
+      "unit": "currency",
+      "layer": "input",
+      "baseline": 80,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": { "min": 56, "mode": 80, "max": 112 }
+      },
+      "governance": {
+        "owner": "merch",
+        "business_function": "merchandising",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_orders",
+        "calculation_grain": "order",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "sku"]
+      }
+    },
+    {
+      "id": "cost_per_order",
+      "name": "Cost per Order",
+      "definition": "Variable cost per fulfilled order (COGS + ship + payment).",
+      "unit": "currency",
+      "layer": "input",
+      "baseline": 64,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": { "min": 44.8, "mode": 64, "max": 89.6 }
+      },
+      "governance": {
+        "owner": "ops",
+        "business_function": "ops",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_unit_economics",
+        "calculation_grain": "order",
+        "update_frequency": "daily",
+        "dimensions": ["period", "sku"]
+      }
+    },
+    {
+      "id": "email_capture_rate",
+      "name": "Email Capture Rate",
+      "definition": "Share of new sessions yielding an email opt-in.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.25,
+      "is_controllable": true,
+      "distribution": {
+        "kind": "triangular",
+        "params": { "min": 0.175, "mode": 0.25, "max": 0.35 }
+      },
+      "governance": {
+        "owner": "lifecycle",
+        "business_function": "marketing",
+        "data_source": "esp",
+        "warehouse_table": "fct_email_optins",
+        "calculation_grain": "session",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "channel"]
+      }
+    },
+    {
+      "id": "page_load_speed",
+      "name": "Page Load Speed (s)",
+      "definition": "Median page load duration in seconds.",
+      "unit": "duration_s",
+      "layer": "input",
+      "baseline": 2.5,
+      "is_controllable": false,
+      "governance": {
+        "owner": "platform",
+        "business_function": "engineering",
+        "data_source": "rum",
+        "warehouse_table": "fct_web_perf",
+        "calculation_grain": "session",
+        "update_frequency": "hourly",
+        "dimensions": ["period", "device"]
+      }
+    },
+    {
+      "id": "loyalty_membership",
+      "name": "Loyalty Membership Rate",
+      "definition": "Share of customers enrolled in the loyalty program. WARNING: high LTV correlation is likely selection, not causation. Heavy buyers self-select into programs; the program does not manufacture heavy buyers. Requires a randomized enrollment experiment to isolate lift.",
+      "unit": "ratio",
+      "layer": "input",
+      "baseline": 0.4,
+      "is_controllable": false,
+      "governance": {
+        "owner": "lifecycle",
+        "business_function": "marketing",
+        "data_source": "crm",
+        "warehouse_table": "dim_customer",
+        "calculation_grain": "customer",
+        "update_frequency": "daily",
+        "dimensions": ["period", "cohort"]
+      }
+    },
+    {
+      "id": "customer_ltv",
+      "name": "Customer LTV",
+      "definition": "Long-run contribution per customer (informational; not in current period identity).",
+      "unit": "currency",
+      "layer": "outcome",
+      "baseline": 200,
+      "is_controllable": false,
+      "governance": {
+        "owner": "lifecycle",
+        "business_function": "marketing",
+        "data_source": "warehouse",
+        "warehouse_table": "fct_customer_ltv",
+        "calculation_grain": "customer",
+        "update_frequency": "weekly",
+        "dimensions": ["cohort"]
+      }
+    }
+  ],
+  "edges": [
+    { "parent": "contribution_profit", "child": "net_revenue", "kind": "identity", "formula_role": "addend" },
+    { "parent": "contribution_profit", "child": "variable_costs", "kind": "identity", "formula_role": "subtrahend" },
+    { "parent": "net_revenue", "child": "orders", "kind": "identity", "formula_role": "factor" },
+    { "parent": "net_revenue", "child": "average_order_value", "kind": "identity", "formula_role": "factor" },
+    { "parent": "variable_costs", "child": "orders", "kind": "identity", "formula_role": "factor" },
+    { "parent": "variable_costs", "child": "cost_per_order", "kind": "identity", "formula_role": "factor" },
+    { "parent": "orders", "child": "sessions", "kind": "identity", "formula_role": "factor" },
+    { "parent": "orders", "child": "conversion_rate", "kind": "identity", "formula_role": "factor" },
+    { "parent": "sessions", "child": "new_sessions", "kind": "identity", "formula_role": "addend" },
+    { "parent": "sessions", "child": "returning_sessions", "kind": "identity", "formula_role": "addend" },
+    {
+      "parent": "returning_sessions",
+      "child": "email_capture_rate",
+      "kind": "modeled",
+      "functional_form": "linear",
+      "elasticity": 0.3,
+      "mechanism": "Higher email capture grows the addressable lifecycle audience, lifting returning sessions in subsequent periods (illustrative elasticity, not measured).",
+      "evidence_grade": "illustrative"
+    },
+    {
+      "parent": "conversion_rate",
+      "child": "page_load_speed",
+      "kind": "hypothesized",
+      "direction": "decreases",
+      "evidence_grade": "none",
+      "rationale": "Industry lore suggests slower pages reduce conversion. We have no on-platform experimental evidence yet."
+    },
+    {
+      "parent": "customer_ltv",
+      "child": "loyalty_membership",
+      "kind": "hypothesized",
+      "direction": "increases",
+      "evidence_grade": "none",
+      "rationale": "Loyalty members show higher LTV in cohort data, but this is almost certainly selection: heavy buyers enroll, not vice versa. Do not model as causal without a randomized enrollment experiment."
+    }
+  ],
+  "scenarios": []
+}
