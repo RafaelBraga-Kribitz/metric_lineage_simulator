@@ -2,33 +2,25 @@
 
 ## Findings touched
 
-- F-001: closed → closed_historical (superseded by F-006)
-- F-006: open → closed (charter + ADR consolidation; 6 root specs deleted)
+- F-002: open → closed (Phase 0 prototype archived to `archive/phase-0/`)
 
-## ADRs added
+## Gate status
 
-- 0003 documentation consolidation
-- 0004 product model and positioning
-- 0005 schema and validation
-- 0006 engine and formula
-- 0007 Phase 1 implementation (replaces phase-1 handoff)
-- 0008 Phases 2–5
+- Review Gate 1: **approved** (human review 2026-06-07)
 
-## Invariants installed
+## Other cleanup
 
-- tests/governance/test_f006_no_root_spec_sprawl.py — forbids root spec sprawl; charter must list ADRs 0003–0008
+- `claude_session.txt` removed from git tracking; added to `.gitignore`
 
-## Open questions for next session
+## Open findings
 
-- F-002: archive or relocate `driver-tree-studio.tsx`
-- Review Gate 1: human review of Phase 0 artifact + vitest output
+- None (6 total: 5 closed, 1 historical)
 
-## Recommended next-finding priority
+## Recommended next work
 
-- **F-002** before Phase 2 UI
-- Then Review Gate 1 per charter §5
+- Phase 2: Next.js + React Flow per ADR-0008 (after Figma design ref)
+- Run Phase 0 demo: `cd demo && npm install && npm run dev`
 
 ## Notes
 
-- SSOT: PROJECT_CHARTER.md (122 lines) + ADRs 0003–0008. Prompts only in tool_workflow_and_prompts_v4.md.
-- Phase 1 audit vs ADR-0007: 36 vitest pass; validate.test has one fail case per rule; dtc_seed asserts reconciliation.
+- SSOT: PROJECT_CHARTER.md + ADRs 0003–0008. Phase 1: 36 vitest green; `make verify` clean.

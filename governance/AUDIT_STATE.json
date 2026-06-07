@@ -67,9 +67,9 @@
       "verification_script": "tests/governance/test_f006_no_root_spec_sprawl.py"
     }
   ],
-  "generated_at": "2026-06-07T20:57:00.315779+00:00",
+  "generated_at": "2026-06-07T21:03:42.574326+00:00",
   "git_branch": "main",
-  "git_head_sha": "b881ee5946bd3b7d5c770967d20c72ea72e20ef0",
+  "git_head_sha": "41d089bbe451f41cb49fe7fd4eb6b579d221ab70",
   "migrations": [],
   "summary": {
     "findings_closed": 5,
