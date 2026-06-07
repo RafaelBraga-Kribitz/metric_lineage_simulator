@@ -9,7 +9,7 @@ recurrence_count: 0
 evidence: |
   driver-tree-studio.tsx:1 — 997-line React prototype at repo root
   driver_tree_studio/src/schema/types.ts — extracted typed package
-  phase-1_Metric_Driver-Tree_Studio.md:5-7 — Phase 1 extracted logic from TSX into driver_tree_studio/
+  governance/adrs/0007-phase-1-implementation.md — Phase 1 extracted logic from TSX
 verification_script: tests/governance/test_f002_no_dual_prototype.py
 notes: |
   Remove or relocate driver-tree-studio.tsx once UI work resumes, or mark it

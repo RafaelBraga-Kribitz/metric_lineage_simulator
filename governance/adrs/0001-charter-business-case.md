@@ -5,7 +5,7 @@ status: accepted
 date: 2026-06-07
 deciders: [Rafael Braga]
 supersedes: null
-superseded_by: null
+superseded_by: 0003
 ---
 
 # ADR-0001: Adopt charter business case from Phase 1 and build spec v4

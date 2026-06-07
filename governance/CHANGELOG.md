@@ -1,5 +1,10 @@
 # Governance Changelog
 
+## 2026-06-07 — F-006 draft: charter + ADR consolidation
+
+- ADRs 0003–0008 absorb build specs v2–v4 and Phase 1 handoff.
+- Executive charter v0.3 (122 lines); F-001 → closed_historical; F-006 open until deletes.
+
 ## 2026-06-07 — F-001 closed
 
 - Expanded `PROJECT_CHARTER.md` with spec lineage (v2→v3→v4), phase roadmap, full §4 index; ADR-0002.

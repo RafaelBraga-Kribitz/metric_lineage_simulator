@@ -1,8 +1,14 @@
 # Tool Workflow and Prompts: Metric Driver-Tree Studio v4
 
 Consolidated workflow and prompts. Supersedes `tool_workflow_and_prompts_v3.md` and
-`prompts_addendum_v4.md`. The build spec source of truth is
-`metric_driver_tree_studio_build_spec_v4.md`.
+`prompts_addendum_v4.md`.
+
+**Product SSOT:** [`PROJECT_CHARTER.md`](PROJECT_CHARTER.md) and normative ADRs
+[`governance/adrs/0003-documentation-consolidation.md`](governance/adrs/0003-documentation-consolidation.md)
+through [`0008`](governance/adrs/0008-phases-2-through-5.md). Phase 1 implementation:
+[`governance/adrs/0007-phase-1-implementation.md`](governance/adrs/0007-phase-1-implementation.md).
+
+This file holds **copy-paste prompts only** (transient; will be discarded later).
 
 All prompts are copy-pasteable. Prerequisites are listed before each prompt so you know
 what must exist before you use it. Do not start a phase before its prerequisites are met.
@@ -291,7 +297,7 @@ before any UI exists.
 
 ### How to use
 Open a Claude Code session. If using the file context feature, attach
-`metric_driver_tree_studio_build_spec_v4.md`. Then paste the prompt below.
+Attach [`PROJECT_CHARTER.md`](PROJECT_CHARTER.md) and [`governance/adrs/0007-phase-1-implementation.md`](governance/adrs/0007-phase-1-implementation.md). Then paste the prompt below.
 
 ---
 

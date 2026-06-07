@@ -5,7 +5,7 @@ status: accepted
 date: 2026-06-07
 deciders: [Rafael Braga]
 supersedes: null
-superseded_by: null
+superseded_by: 0003
 ---
 
 # ADR-0002: Expand charter with spec lineage, phase roadmap, and doc index

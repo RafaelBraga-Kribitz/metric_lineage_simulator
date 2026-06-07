@@ -1,0 +1,20 @@
+id: F-006
+title: "Root build spec sprawl eliminated; SSOT in charter + ADRs"
+category: documentation_entropy
+kind: recurrence_invariant
+status: open
+opened_at: 2026-06-07
+closed_at: null
+recurrence_count: 0
+evidence: |
+  metric_lineage_simulator_build_spec_v2.md — parallel SSOT at repo root
+  metric_driver_tree_studio_build_spec_v3.md — parallel SSOT at repo root
+  metric_driver_tree_studio_build_spec_v4.md — parallel SSOT at repo root
+  phase-1_Metric_Driver-Tree_Studio.md — parallel SSOT at repo root
+  prompts_addendum_v4.md — merged duplicate
+  tool_workflow_and_prompts_v3.md — superseded duplicate
+  PROJECT_CHARTER.md — must index ADRs 0003-0008; must not reference deleted specs
+verification_script: tests/governance/test_f006_no_root_spec_sprawl.py
+notes: |
+  Consolidation per ADR-0003. Delete forbidden root files only after charter+ADRs approved.
+  Supersedes F-001 indexing requirement (F-001 → closed_historical).
