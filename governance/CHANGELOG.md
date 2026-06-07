@@ -1,5 +1,9 @@
 # Governance Changelog
 
+## 2026-06-07 — F-006 closed
+
+- Deleted superseded root specs; SSOT is charter + ADRs 0003–0008 + transient workflow v4.
+
 ## 2026-06-07 — F-006 draft: charter + ADR consolidation
 
 - ADRs 0003–0008 absorb build specs v2–v4 and Phase 1 handoff.

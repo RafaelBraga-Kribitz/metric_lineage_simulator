@@ -1,0 +1,450 @@
+Starting implementation. First, set up the project skeleton.
+
+⏺ Bash(mkdir -p driver_tree_studio/src/{schema,engine,lib,content} driver_tree_studio/tests/{schema,engine,lib,content} && cd driver_tree_studio && npm init -y > /dev/…)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ Write(driver_tree_studio/tsconfig.json)
+  ⎿  Wrote 16 lines to driver_tree_studio/tsconfig.json
+       1 {
+       2   "compilerOptions": {
+       3     "target": "ES2022",
+       4     "module": "Node16",
+       5     "moduleResolution": "node16",
+       6     "strict": true,
+       7     "noUncheckedIndexedAccess": true,
+       8     "esModuleInterop": true,
+       9     "resolveJsonModule": true,
+      10     "skipLibCheck": true,
+     … +6 lines (ctrl+o to expand)
+
+⏺ Background command "Create dir tree and install deps" completed (exit code 0)
+
+⏺ Write(driver_tree_studio/src/schema/types.ts)
+  ⎿  Wrote 100 lines to driver_tree_studio/src/schema/types.ts
+       1 /**
+       2  * Core schema types for the Metric Driver-Tree Studio.
+       3  * Mirrors spec v4 section 4. All exports are named; no default export.
+       4  */
+       5
+       6 export type Unit = "currency" | "count" | "ratio" | "percent" | "duration_s";
+       7
+       8 export type MetricLayer =
+       9   | "north_star"
+      10   | "strategic_objective"
+     … +90 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/engine/graph.ts)
+  ⎿  Wrote 62 lines to driver_tree_studio/src/engine/graph.ts
+       1 /**
+       2  * Graph utilities.
+       3  *
+       4  * Direction convention (spec v4 §5): a MetricEdge { parent, child } means the
+       5  * `parent` is the explained metric (aggregate/effect); the `child` is the
+       6  * component or driver. Value flow is child -> parent.
+       7  * topoOrder() therefore returns children before parents.
+       8  */
+       9
+      10 import type { BusinessModel, MetricEdge, MetricNode } from "../schema/types.js";
+     … +52 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/engine/compute.ts)
+  ⎿  Wrote 149 lines to driver_tree_studio/src/engine/compute.ts
+       1 /**
+       2  * Baseline and lever-applied computation.
+       3  *
+       4  * Modeled-edge composition: effective = base * Π applyForm(form, childDeltaPct, edge).
+       5  * ASSUMPTION: modeled effects are multiplicative and independent (spec §5).
+       6  * Hypothesized edges contribute nothing to compute.
+       7  */
+       8
+       9 import type {
+      10   BusinessModel,
+     … +139 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/engine/whatif.ts)
+  ⎿  Wrote 47 lines to driver_tree_studio/src/engine/whatif.ts
+       1 /**
+       2  * Single-leaf what-if analysis.
+       3  */
+       4
+       5 import type { BusinessModel, MetricEdge } from "../schema/types.js";
+       6 import { applyLevers, computeBaseline } from "./compute.js";
+       7 import { buildGraph } from "./graph.js";
+       8
+       9 export interface WhatIfResult {
+      10   values: Record<string, number>;
+     … +37 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/engine/sensitivity.ts)
+  ⎿  Wrote 29 lines to driver_tree_studio/src/engine/sensitivity.ts
+       1 /**
+       2  * Tornado sensitivity analysis.
+       3  */
+       4
+       5 import type { BusinessModel } from "../schema/types.js";
+       6 import { whatIf } from "./whatif.js";
+       7
+       8 export interface TornadoEntry {
+       9   leafId: string;
+      10   northStarDelta: number;
+     … +19 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/lib/rng.ts)
+  ⎿  Wrote 70 lines to driver_tree_studio/src/lib/rng.ts
+       1 /**
+       2  * Seeded RNG and distribution sampling helpers.
+       3  */
+       4
+       5 import type { Distribution } from "../schema/types.js";
+       6
+       7 export type Rng = () => number;
+       8
+       9 /** mulberry32 PRNG. Returns a function that emits values in [0, 1). */
+      10 export function mulberry32(seed: number): Rng {
+     … +60 lines (ctrl+o to expand)
+
+✢ Mulling… (7m 9s · ↓ 10.7k tokens · thought for 1s)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── extract-dts-core-typescript ──
+⏺ Write(driver_tree_studio/src/engine/montecarlo.ts)
+  ⎿  Wrote 102 lines to driver_tree_studio/src/engine/montecarlo.ts
+       1 /**
+       2  * Monte Carlo propagation through identity + modeled edges.
+       3  */
+       4
+       5 import type { BusinessModel, MetricEdge } from "../schema/types.js";
+       6 import { computeForMonteCarlo } from "./compute.js";
+       7 import { mulberry32, percentile, sampleDistribution } from "../lib/rng.js";
+       8
+       9 export interface MonteCarloResult {
+      10   samples: number[];
+     … +92 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/engine/recommend.ts)
+  ⎿  Wrote 36 lines to driver_tree_studio/src/engine/recommend.ts
+       1 /**
+       2  * Recommendation surface for the studio.
+       3  */
+       4
+       5 import type { BusinessModel, MetricEdge } from "../schema/types.js";
+       6 import { applyLevers, computeBaseline, type Levers } from "./compute.js";
+       7 import { tornado, type TornadoEntry } from "./sensitivity.js";
+       8
+       9 export interface RecommendResult {
+      10   topLevers: TornadoEntry[];
+     … +26 lines (ctrl+o to expand)
+
+⏺ Now the validator and formula parser.
+
+⏺ Write(driver_tree_studio/src/schema/validate.ts)
+  ⎿  Wrote 180 lines to driver_tree_studio/src/schema/validate.ts
+       1 /**
+       2  * BusinessModel validation per spec v4 §15/§16.
+       3  */
+       4
+       5 import type { BusinessModel, MetricEdge } from "./types.js";
+       6
+       7 export interface ValidationResult {
+       8   valid: boolean;
+       9   errors: string[];
+      10 }
+     … +170 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/lib/formula.ts)
+  ⎿  Wrote 218 lines to driver_tree_studio/src/lib/formula.ts
+       1 /**
+       2  * Formula parser. Converts strings like
+       3  *   "net_revenue = orders * average_order_value"
+       4  * into identity MetricEdges. Stubs are emitted for unknown ids.
+       5  *
+       6  * Operator -> formula_role:
+       7  *   *  -> factor
+       8  *   +  -> addend
+       9  *   -  -> subtrahend  (only for the right operand of a binary `-`)
+      10  *   /  -> divisor
+     … +208 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/src/content/dtc_ecommerce.json)
+  ⎿  Wrote 320 lines to driver_tree_studio/src/content/dtc_ecommerce.json
+       2   "id": "dtc_ecommerce",
+       3   "name": "DTC Ecommerce",
+       4   "industry": "dtc_ecommerce",
+       5   "preset_labels": ["ecommerce", "subscription-optional"],
+       6   "north_star_id": "contribution_profit",
+       7   "narrative": "Contribution profit per period. Built from a deterministic identity tree (sessions x conversion x AOV minus variable costs). Returning-session lift from email capture is modeled (illustrative elasticity). Page-load -> conversion and loya
+         lty -> LTV are kept hypothesized until experimental evidence exists.",
+       8   "nodes": [
+       9     {
+      10       "id": "contribution_profit",
+     … +312 lines (ctrl+o to expand)
+
+⏺ Update(driver_tree_studio/src/schema/validate.ts)
+  ⎿  Added 9 lines, removed 12 lines
+       90      errors.push(`[north-star] expected exactly one north_star node, got ${northStars.length}`);
+       91    } else {
+       92      const ns = northStars[0];
+       93 -    if (!ns) {
+       94 -      // unreachable
+       95 -    } else if ((incoming.get(ns.id)?.length ?? 0) > 0 && ns.id === model.north_star_id) {
+       96 -      // north star *is* allowed to have incoming edges (it's the explained metric).
+       97 -      // Spec rule is "no parents" — i.e., it is not a child in any edge.
+       98 -      // Skip; we check via outgoing instead.
+       93 +    if (ns) {
+       94 +      // "no parents" per spec: the north star is the topmost aggregate, so it
+       95 +      // must never appear as the `child` of any edge.
+       96 +      if ((outgoing.get(ns.id)?.length ?? 0) > 0) {
+       97 +        errors.push(`[north-star] '${ns.id}' must have no parents (appears as child in some edge)`);
+       98 +      }
+       99 +      if (ns.id !== model.north_star_id) {
+      100 +        errors.push(`[north-star] model.north_star_id '${model.north_star_id}' does not match the sole north_star node '${ns.id}'`);
+      101 +      }
+      102      }
+      100 -    if ((outgoing.get(ns.id)?.length ?? 0) > 0) {
+      101 -      errors.push(`[north-star] '${ns.id}' must have no parents (is a child in some edge)`);
+      102 -    }
+      103 -    if (ns.id !== model.north_star_id) {
+      104 -      errors.push(`[north-star] model.north_star_id '${model.north_star_id}' does not match the sole north_star node '${ns.id}'`);
+      105 -    }
+      103    }
+      104
+      105    // 4. Controllable nodes: leaves in identity tree, must have distribution
+
+⏺ Now the tests and config.
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tsconfig.json)
+  ⎿  Added 4 lines, removed 4 lines
+       1  {
+       2    "compilerOptions": {
+       3      "target": "ES2022",
+       4 -    "module": "Node16",
+       5 -    "moduleResolution": "node16",
+       4 +    "module": "ESNext",
+       5 +    "moduleResolution": "Bundler",
+       6      "strict": true,
+       7      "noUncheckedIndexedAccess": true,
+       8      "esModuleInterop": true,
+       9      "resolveJsonModule": true,
+      10      "skipLibCheck": true,
+      11      "forceConsistentCasingInFileNames": true,
+      12 -    "outDir": "dist",
+      13 -    "rootDir": "."
+      12 +    "allowImportingTsExtensions": false,
+      13 +    "noEmit": true
+      14    },
+      15    "include": ["src/**/*", "tests/**/*"]
+      16  }
+
+⏺ Update(driver_tree_studio/package.json)
+  ⎿  Added 2 lines, removed 1 line
+       7      "test": "tests"
+       8    },
+       9    "scripts": {
+      10 -    "test": "echo \"Error: no test specified\" && exit 1"
+      10 +    "test": "vitest run",
+      11 +    "typecheck": "tsc --noEmit"
+      12    },
+      13    "keywords": [],
+      14    "author": "",
+
+⏺ Write(driver_tree_studio/tests/lib/formula.test.ts)
+  ⎿  Wrote 68 lines to driver_tree_studio/tests/lib/formula.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import { parseFormula } from "../../src/lib/formula.js";
+       3 import type { MetricNode } from "../../src/schema/types.js";
+       4
+       5 describe("parseFormula", () => {
+       6   it("produces factor edges for multiplication", () => {
+       7     const { newEdges } = parseFormula("net_revenue = orders * average_order_value", []);
+       8     expect(newEdges).toHaveLength(2);
+       9     expect(newEdges.every((e) => e.kind === "identity")).toBe(true);
+      10     expect(newEdges.map((e) => e.formula_role)).toEqual(["factor", "factor"]);
+     … +58 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/content/dtc_seed.test.ts)
+  ⎿  Wrote 25 lines to driver_tree_studio/tests/content/dtc_seed.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import seed from "../../src/content/dtc_ecommerce.json";
+       3 import { validate } from "../../src/schema/validate.js";
+       4 import { computeBaseline } from "../../src/engine/compute.js";
+       5 import type { BusinessModel } from "../../src/schema/types.js";
+       6
+       7 const model = seed as unknown as BusinessModel;
+       8
+       9 describe("DTC seed", () => {
+      10   it("validates clean", () => {
+     … +15 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/schema/validate.test.ts)
+  ⎿  Wrote 97 lines to driver_tree_studio/tests/schema/validate.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import seed from "../../src/content/dtc_ecommerce.json";
+       3 import { validate } from "../../src/schema/validate.js";
+       4 import type { BusinessModel, MetricEdge } from "../../src/schema/types.js";
+       5
+       6 function clone(): BusinessModel {
+       7   return JSON.parse(JSON.stringify(seed)) as BusinessModel;
+       8 }
+       9
+      10 describe("validate", () => {
+     … +87 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/engine/graph.test.ts)
+  ⎿  Wrote 22 lines to driver_tree_studio/tests/engine/graph.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import { topoOrder } from "../../src/engine/graph.js";
+       3 import seed from "../../src/content/dtc_ecommerce.json";
+       4 import type { BusinessModel } from "../../src/schema/types.js";
+       5
+       6 const model = seed as unknown as BusinessModel;
+       7
+       8 describe("graph", () => {
+       9   it("topoOrder lists children before parents", () => {
+      10     const order = topoOrder(model);
+     … +12 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/engine/compute.test.ts)
+  ⎿  Wrote 45 lines to driver_tree_studio/tests/engine/compute.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import seed from "../../src/content/dtc_ecommerce.json";
+       3 import { applyForm, applyLevers, computeBaseline } from "../../src/engine/compute.js";
+       4 import type { BusinessModel } from "../../src/schema/types.js";
+       5
+       6 const model = seed as unknown as BusinessModel;
+       7
+       8 describe("compute", () => {
+       9   it("baseline matches stored north star", () => {
+      10     const v = computeBaseline(model);
+     … +35 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/engine/whatif.test.ts)
+  ⎿  Wrote 26 lines to driver_tree_studio/tests/engine/whatif.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import seed from "../../src/content/dtc_ecommerce.json";
+       3 import { whatIf } from "../../src/engine/whatif.js";
+       4 import type { BusinessModel } from "../../src/schema/types.js";
+       5
+       6 const model = seed as unknown as BusinessModel;
+       7
+       8 describe("whatIf", () => {
+       9   it("returns nonzero northStarDelta for an upstream leaf", () => {
+      10     const r = whatIf(model, "new_sessions", 0.1);
+     … +16 lines (ctrl+o to expand)
+
+⏺ Write(driver_tree_studio/tests/engine/sensitivity.test.ts)
+  ⎿  Wrote 23 lines to driver_tree_studio/tests/engine/sensitivity.test.ts
+       1 import { describe, it, expect } from "vitest";
+       2 import seed from "../../src/content/dtc_ecommerce.json";
+       3 import { tornado } from "../../src/engine/sensitivity.js";
+       4 import type { BusinessModel } from "../../src/schema/types.js";
+       5
+       6 const model = seed as unknown as BusinessModel;
+       7
+       8 describe("tornado", () => {
+       9   it("sorted by absolute delta desc", () => {
+      10     const t = tornado(model);
+     … +13 lines (ctrl+o to expand)
+  ⎿  You're out of extra usage · resets 10:20pm (Europe/Vienna)
+
+✻ Brewed for 18m 56s
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/src/content/dtc_ecommerce.json)
+  ⎿  Wrote 320 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/src/content/dtc_ecommerce.json
+
+⏺ Update(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/src/schema/validate.ts)
+  ⎿  Added 9 lines, removed 12 lines
+       90      errors.push(`[north-star] expected exactly one north_star node, got ${northStars.length}`);
+       91    } else {
+       92      const ns = northStars[0];
+       93 -    if (!ns) {
+       94 -      // unreachable
+       95 -    } else if ((incoming.get(ns.id)?.length ?? 0) > 0 && ns.id === model.north_star_id) {
+       96 -      // north star *is* allowed to have incoming edges (it's the explained metric).
+       97 -      // Spec rule is "no parents" — i.e., it is not a child in any edge.
+       98 -      // Skip; we check via outgoing instead.
+       93 +    if (ns) {
+       94 +      // "no parents" per spec: the north star is the topmost aggregate, so it
+       95 +      // must never appear as the `child` of any edge.
+       96 +      if ((outgoing.get(ns.id)?.length ?? 0) > 0) {
+       97 +        errors.push(`[north-star] '${ns.id}' must have no parents (appears as child in some edge)`);
+       98 +      }
+       99 +      if (ns.id !== model.north_star_id) {
+      100 +        errors.push(`[north-star] model.north_star_id '${model.north_star_id}' does not match the sole north_star node '${ns.id}'`);
+      101 +      }
+      102      }
+      100 -    if ((outgoing.get(ns.id)?.length ?? 0) > 0) {
+      101 -      errors.push(`[north-star] '${ns.id}' must have no parents (is a child in some edge)`);
+      102 -    }
+      103 -    if (ns.id !== model.north_star_id) {
+      104 -      errors.push(`[north-star] model.north_star_id '${model.north_star_id}' does not match the sole north_star node '${ns.id}'`);
+      105 -    }
+      103    }
+      104
+      105    // 4. Controllable nodes: leaves in identity tree, must have distribution
+
+                                                                                                                                                                                                                                             09:23 PM claude-opus-4-7
+⏺ Now the tests and config.
+
+⏺ Read(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/package.json)
+  ⎿  Read 23 lines
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tsconfig.json)
+  ⎿  Added 4 lines, removed 4 lines
+       1  {
+       2    "compilerOptions": {
+       3      "target": "ES2022",
+       4 -    "module": "Node16",
+       5 -    "moduleResolution": "node16",
+       4 +    "module": "ESNext",
+       5 +    "moduleResolution": "Bundler",
+       6      "strict": true,
+       7      "noUncheckedIndexedAccess": true,
+       8      "esModuleInterop": true,
+       9      "resolveJsonModule": true,
+      10      "skipLibCheck": true,
+      11      "forceConsistentCasingInFileNames": true,
+      12 -    "outDir": "dist",
+      13 -    "rootDir": "."
+      12 +    "allowImportingTsExtensions": false,
+      13 +    "noEmit": true
+      14    },
+      15    "include": ["src/**/*", "tests/**/*"]
+      16  }
+
+⏺ Update(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/package.json)
+  ⎿  Added 2 lines, removed 1 line
+       7      "test": "tests"
+       8    },
+       9    "scripts": {
+      10 -    "test": "echo \"Error: no test specified\" && exit 1"
+      10 +    "test": "vitest run",
+      11 +    "typecheck": "tsc --noEmit"
+      12    },
+      13    "keywords": [],
+      14    "author": "",
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/lib/formula.test.ts)
+  ⎿  Wrote 68 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/lib/formula.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/content/dtc_seed.test.ts)
+  ⎿  Wrote 25 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/content/dtc_seed.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/schema/validate.test.ts)
+  ⎿  Wrote 97 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/schema/validate.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/graph.test.ts)
+  ⎿  Wrote 22 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/graph.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/compute.test.ts)
+  ⎿  Wrote 45 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/compute.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/whatif.test.ts)
+  ⎿  Wrote 26 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/whatif.test.ts
+
+⏺ Write(/Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/sensitivity.test.ts)
+  ⎿  Wrote 23 lines to /Users/rbk/Desktop/metric_lineage_simulator/driver_tree_studio/tests/engine/sensitivity.test.ts
+
+                                                                                                                                                                                                                                                 09:25 PM <synthetic>
+  ⎿  You're out of extra usage · resets 10:20pm (Europe/Vienna)
+     /upgrade to increase your usage limit.

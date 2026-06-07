@@ -14,6 +14,11 @@ describe("DTC seed", () => {
     expect(r.errors).toEqual([]);
   });
 
+  it("reconciles identity parents within validate", () => {
+    const r = validate(model);
+    expect(r.errors.filter((e) => e.startsWith("[reconciliation]"))).toEqual([]);
+  });
+
   it("reconciles north star to baseline", () => {
     const v = computeBaseline(model);
     expect(v["contribution_profit"]).toBeCloseTo(48000, 6);

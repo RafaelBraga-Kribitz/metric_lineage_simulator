@@ -2,14 +2,14 @@
   "findings": [
     {
       "category": "documentation_entropy",
-      "closed_at": null,
+      "closed_at": "2026-06-07",
       "id": "F-001",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-07",
       "path": "governance/findings/F-001-charter-indexes-specs.yaml",
-      "status": "open",
+      "status": "closed_historical",
       "title": "Root build specs not indexed in PROJECT_CHARTER",
-      "verification_script": "tests/governance/test_f001_charter_indexes_specs.py"
+      "verification_script": null
     },
     {
       "category": "partial_migration",
@@ -54,23 +54,33 @@
       "status": "closed",
       "title": "PROJECT_CHARTER \u00a73 Business Case is unfilled template",
       "verification_script": "tests/governance/test_f005_charter_business_case.py"
+    },
+    {
+      "category": "documentation_entropy",
+      "closed_at": "2026-06-07",
+      "id": "F-006",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-07",
+      "path": "governance/findings/F-006-root-spec-consolidation.yaml",
+      "status": "closed",
+      "title": "Root build spec sprawl eliminated; SSOT in charter + ADRs",
+      "verification_script": "tests/governance/test_f006_no_root_spec_sprawl.py"
     }
   ],
-  "generated_at": "2026-06-07T19:43:42.320032+00:00",
+  "generated_at": "2026-06-07T20:06:11.921872+00:00",
   "git_branch": "main",
-  "git_head_sha": "6ad60a843251616380f9c558c665f95c17c07c99",
+  "git_head_sha": "18208c2b5340aa46cec061e9752ce569d00d6c7c",
   "migrations": [],
   "summary": {
-    "findings_closed": 3,
-    "findings_closed_historical": 0,
+    "findings_closed": 4,
+    "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 2,
-    "findings_total": 5,
+    "findings_open": 1,
+    "findings_total": 6,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,
     "open_by_category": {
-      "documentation_entropy": 1,
       "partial_migration": 1
     }
   },
