@@ -54,15 +54,6 @@ export function modelToEdges(model: BusinessModel): Edge<MetricEdgeData>[] {
   }));
 }
 
-export function edgeId(edge: MetricEdge, index: number): string {
+function edgeId(edge: MetricEdge, index: number): string {
   return `${edge.child}->${edge.parent}:${edge.kind}:${index}`;
-}
-
-export function findEdgeIndex(model: BusinessModel, edge: MetricEdge): number {
-  return model.edges.findIndex(
-    (e) =>
-      e.parent === edge.parent &&
-      e.child === edge.child &&
-      e.kind === edge.kind,
-  );
 }

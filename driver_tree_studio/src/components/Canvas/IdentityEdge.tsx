@@ -37,7 +37,3 @@ export function IdentityEdge({
     />
   );
 }
-
-export const identityEdgeDefaults = {
-  type: "identity" as const,
-};

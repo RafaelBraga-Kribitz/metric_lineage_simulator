@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T13:59:38.885518+00:00",
+  "generated_at": "2026-06-08T14:09:06.113707+00:00",
   "languages": [
     "python",
     "ts-js"
@@ -15,7 +15,7 @@
       "available": true,
       "lower_is_better": true,
       "tool": "knip",
-      "value": 11
+      "value": 0
     },
     "knip_unused_files": {
       "available": true,

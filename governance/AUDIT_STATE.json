@@ -101,12 +101,12 @@
     },
     {
       "category": "dead_artifacts",
-      "closed_at": null,
+      "closed_at": "2026-06-08",
       "id": "F-010",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-08",
       "path": "governance/findings/F-010-knip-unused-exports.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "driver_tree_studio: 11 knip unused exports",
       "verification_script": "tests/governance/test_f010_knip_unused_exports.py"
     },
@@ -122,21 +122,20 @@
       "verification_script": "tests/governance/test_f011_radon_complexity.py"
     }
   ],
-  "generated_at": "2026-06-08T14:07:02.387590+00:00",
-  "git_branch": "fix/f-009-ruff-unused",
-  "git_head_sha": "3915b22a1a5f679b2b4309230a71b48659b2b398",
+  "generated_at": "2026-06-08T14:10:27.680638+00:00",
+  "git_branch": "fix/f-010-knip-exports",
+  "git_head_sha": "d8fa30a9086f255ebcc728b5b565fd7654323d84",
   "migrations": [],
   "summary": {
-    "findings_closed": 8,
+    "findings_closed": 9,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 2,
+    "findings_open": 1,
     "findings_total": 11,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,
     "open_by_category": {
-      "dead_artifacts": 1,
       "fragmented_standards": 1
     }
   },
