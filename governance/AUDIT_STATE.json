@@ -112,32 +112,30 @@
     },
     {
       "category": "fragmented_standards",
-      "closed_at": null,
+      "closed_at": "2026-06-08",
       "id": "F-011",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-08",
       "path": "governance/findings/F-011-radon-complexity.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Governance scripts: 9 Python blocks above complexity cap",
       "verification_script": "tests/governance/test_f011_radon_complexity.py"
     }
   ],
-  "generated_at": "2026-06-08T14:10:27.680638+00:00",
-  "git_branch": "fix/f-010-knip-exports",
-  "git_head_sha": "d8fa30a9086f255ebcc728b5b565fd7654323d84",
+  "generated_at": "2026-06-08T14:19:04.362388+00:00",
+  "git_branch": "fix/f-011-radon-complexity",
+  "git_head_sha": "e1c40db511433c37a2a0cfca5a2cadc6fc755a22",
   "migrations": [],
   "summary": {
-    "findings_closed": 9,
+    "findings_closed": 10,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 1,
+    "findings_open": 0,
     "findings_total": 11,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,
-    "open_by_category": {
-      "fragmented_standards": 1
-    }
+    "open_by_category": {}
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"

@@ -30,20 +30,10 @@ BASELINE_PATH = REPO_ROOT / "governance" / "DEBT_BASELINE.json"
 _EPSILON = 0.05
 
 
-def main() -> int:
-    if not BASELINE_PATH.exists():
-        print("[PASS] check_debt_ratchet.py: no DEBT_BASELINE.json yet — run `make debt-scan`")
-        return 0
-
-    import debt_scan  # local import so the module is optional
-
-    baseline = json.loads(BASELINE_PATH.read_text())
-    current = debt_scan.scan()
-
-    base_metrics = baseline.get("metrics", {})
-    cur_metrics = current.get("metrics", {})
-    thresholds = baseline.get("thresholds", {})
-
+def _compare_baseline_metrics(
+    base_metrics: dict,
+    cur_metrics: dict,
+) -> tuple[list[str], list[str], list[str]]:
     regressions: list[str] = []
     improvements: list[str] = []
     warnings: list[str] = []
@@ -58,7 +48,6 @@ def main() -> int:
         bv, cv = base["value"], cur["value"]
         if bv is None or cv is None:
             continue
-        # Percentages get an epsilon; integer counts are exact.
         grew = (cv - bv) > _EPSILON if isinstance(cv, float) else cv > bv
         shrank = (bv - cv) > _EPSILON if isinstance(cv, float) else cv < bv
         if grew:
@@ -66,15 +55,28 @@ def main() -> int:
         elif shrank:
             improvements.append(f"{name}: {bv} → {cv}")
 
-    # Absolute-threshold gates (fail even when flat).
+    return regressions, improvements, warnings
+
+
+def _check_absolute_caps(cur_metrics: dict, thresholds: dict) -> list[str]:
+    regressions: list[str] = []
     for name, cur in cur_metrics.items():
         if not cur.get("available") or cur["value"] is None:
             continue
-        if name.endswith("duplication_pct"):
-            cap = thresholds.get("duplication_pct_max")
-            if cap is not None and cur["value"] > cap + _EPSILON:
-                regressions.append(f"{name}: {cur['value']:.2f}% exceeds max {cap}%")
+        if not name.endswith("duplication_pct"):
+            continue
+        cap = thresholds.get("duplication_pct_max")
+        if cap is not None and cur["value"] > cap + _EPSILON:
+            regressions.append(f"{name}: {cur['value']:.2f}% exceeds max {cap}%")
+    return regressions
 
+
+def _emit_report(
+    improvements: list[str],
+    warnings: list[str],
+    regressions: list[str],
+    measured_count: int,
+) -> int:
     for line in improvements:
         print(f"[PASS] debt improved — {line}")
     if improvements:
@@ -90,9 +92,29 @@ def main() -> int:
         print("       in a dedicated PR that explains why the baseline moves up.")
         return 1
 
-    measured = sum(1 for v in cur_metrics.values() if v.get("available"))
-    print(f"[PASS] check_debt_ratchet.py: {measured} metric(s) at or below baseline")
+    print(f"[PASS] check_debt_ratchet.py: {measured_count} metric(s) at or below baseline")
     return 0
+
+
+def main() -> int:
+    if not BASELINE_PATH.exists():
+        print("[PASS] check_debt_ratchet.py: no DEBT_BASELINE.json yet — run `make debt-scan`")
+        return 0
+
+    import debt_scan  # local import so the module is optional
+
+    baseline = json.loads(BASELINE_PATH.read_text())
+    current = debt_scan.scan()
+
+    base_metrics = baseline.get("metrics", {})
+    cur_metrics = current.get("metrics", {})
+    thresholds = baseline.get("thresholds", {})
+
+    regressions, improvements, warnings = _compare_baseline_metrics(base_metrics, cur_metrics)
+    regressions.extend(_check_absolute_caps(cur_metrics, thresholds))
+
+    measured = sum(1 for v in cur_metrics.values() if v.get("available"))
+    return _emit_report(improvements, warnings, regressions, measured)
 
 
 if __name__ == "__main__":

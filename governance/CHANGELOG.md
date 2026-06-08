@@ -1,5 +1,10 @@
 # Governance Changelog
 
+## 2026-06-08 — F-011 closed (radon complexity)
+
+- Refactored governance scripts and tests to bring all Python blocks to CC ≤ 10.
+- Baseline `radon_complex_blocks=0`. Debt queue empty.
+
 ## 2026-06-08 — F-010 closed (knip unused exports)
 
 - Trimmed dead UI exports in Canvas + shadcn components; added `driver_tree_studio/knip.json`.

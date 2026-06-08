@@ -121,111 +121,124 @@ def _knip_cwd(ts_paths: list[Path]) -> Path | None:
 # ── Python tools ────────────────────────────────────────────────────────────
 
 
-def scan_python(thresholds: dict, py_paths: list[Path]) -> dict[str, dict]:
-    m: dict[str, dict] = {}
-    targets = [str(p.relative_to(REPO_ROOT)) for p in py_paths] or ["."]
+def _metric_ruff(targets: list[str]) -> dict:
+    if not _have("ruff"):
+        return _metric(None, False, "ruff")
+    _rc, out = _run(
+        ["ruff", "check", "--select", "F401,F811,F841", "--output-format", "json", *targets]
+    )
+    try:
+        n = len(json.loads(out)) if out.strip().startswith("[") else 0
+    except json.JSONDecodeError:
+        n = 0
+    return _metric(n, True, "ruff")
 
-    # ruff — unused imports (F401), unused vars (F841), redefinition (F811)
-    if _have("ruff"):
-        rc, out = _run(
-            ["ruff", "check", "--select", "F401,F811,F841", "--output-format", "json", *targets]
+
+def _metric_vulture(targets: list[str]) -> dict:
+    if not _have("vulture"):
+        return _metric(None, False, "vulture")
+    _rc, out = _run(["vulture", *targets, "--min-confidence", "80"])
+    n = sum(1 for line in out.splitlines() if ":" in line and "unused" in line.lower())
+    return _metric(n, True, "vulture")
+
+
+def _metric_radon(targets: list[str], thresholds: dict) -> dict:
+    if not _have("radon"):
+        return _metric(None, False, "radon")
+    _rc, out = _run(["radon", "cc", "-j", "-n", "C", *targets])
+    try:
+        data = json.loads(out) if out.strip().startswith("{") else {}
+        n = sum(
+            1
+            for blocks in data.values()
+            for b in blocks
+            if isinstance(b, dict) and b.get("complexity", 0) > thresholds["complexity_cc_max"]
         )
-        try:
-            n = len(json.loads(out)) if out.strip().startswith("[") else 0
-        except json.JSONDecodeError:
-            n = 0
-        m["ruff_unused"] = _metric(n, True, "ruff")
-    else:
-        m["ruff_unused"] = _metric(None, False, "ruff")
+    except json.JSONDecodeError:
+        n = 0
+    return _metric(n, True, "radon")
 
-    # vulture — dead code (functions, classes, attrs, vars)
-    if _have("vulture"):
-        rc, out = _run(["vulture", *targets, "--min-confidence", "80"])
-        n = sum(1 for line in out.splitlines() if ":" in line and "unused" in line.lower())
-        m["vulture_dead_code"] = _metric(n, True, "vulture")
-    else:
-        m["vulture_dead_code"] = _metric(None, False, "vulture")
 
-    # radon — cyclomatic complexity blocks worse than threshold
-    if _have("radon"):
-        rc, out = _run(["radon", "cc", "-j", "-n", "C", *targets])
-        try:
-            data = json.loads(out) if out.strip().startswith("{") else {}
-            n = sum(
-                1
-                for blocks in data.values()
-                for b in blocks
-                if isinstance(b, dict) and b.get("complexity", 0) > thresholds["complexity_cc_max"]
-            )
-        except json.JSONDecodeError:
-            n = 0
-        m["radon_complex_blocks"] = _metric(n, True, "radon")
-    else:
-        m["radon_complex_blocks"] = _metric(None, False, "radon")
-
-    return m
+def scan_python(thresholds: dict, py_paths: list[Path]) -> dict[str, dict]:
+    targets = [str(p.relative_to(REPO_ROOT)) for p in py_paths] or ["."]
+    return {
+        "ruff_unused": _metric_ruff(targets),
+        "vulture_dead_code": _metric_vulture(targets),
+        "radon_complex_blocks": _metric_radon(targets, thresholds),
+    }
 
 
 # ── TS/JS tools ─────────────────────────────────────────────────────────────
 
 
+def _metric_fallow(knip_cwd: Path) -> dict[str, dict] | None:
+    if not _have("fallow"):
+        return None
+    _rc, out = _run(["fallow", "scan", "--json"], cwd=knip_cwd)
+    try:
+        data = json.loads(out) if out.strip().startswith("{") else {}
+        return {
+            "fallow_dead_code": _metric(int(data.get("dead_code_count", 0)), True, "fallow"),
+            "fallow_duplication_pct": _metric(
+                float(data.get("duplication_pct", 0.0)), True, "fallow"
+            ),
+        }
+    except (json.JSONDecodeError, ValueError):
+        return None
+
+
+def _metric_knip(knip_cwd: Path) -> tuple[dict, dict]:
+    if not _have("knip"):
+        return _metric(None, False, "knip"), _metric(None, False, "knip")
+    _rc, out = _run(["knip", "--reporter", "json"], cwd=knip_cwd)
+    try:
+        data = json.loads(out) if out.strip().startswith("{") else {}
+        files = len(data.get("files", []))
+        issues = data.get("issues", [])
+        exports = (
+            sum(len(i.get("exports", [])) for i in issues) if isinstance(issues, list) else 0
+        )
+        return _metric(files, True, "knip"), _metric(exports, True, "knip")
+    except json.JSONDecodeError:
+        return _metric(None, False, "knip"), _metric(None, False, "knip")
+
+
+def _metric_jscpd(ts_paths: list[Path]) -> dict:
+    if not _have("jscpd"):
+        return _metric(None, False, "jscpd")
+    jscpd_targets = [str(p.relative_to(REPO_ROOT)) for p in ts_paths] or ["."]
+    with tempfile.TemporaryDirectory(prefix="jscpd-") as tmp:
+        _rc, _out = _run(
+            ["jscpd", "--silent", "--reporters", "json", "--output", tmp, *jscpd_targets]
+        )
+        report = Path(tmp) / "jscpd-report.json"
+        pct = 0.0
+        if report.exists():
+            try:
+                stats = json.loads(report.read_text()).get("statistics", {})
+                pct = float(stats.get("total", {}).get("percentage", 0.0))
+            except (json.JSONDecodeError, ValueError):
+                pct = 0.0
+        return _metric(pct, True, "jscpd")
+
+
 def scan_ts_js(thresholds: dict, ts_paths: list[Path]) -> dict[str, dict]:
+    del thresholds  # TS scan uses absolute caps via check_debt_ratchet, not here
     m: dict[str, dict] = {}
     knip_cwd = _knip_cwd(ts_paths)
 
-    # Fallow supersedes knip+jscpd for TS/JS if installed.
-    if _have("fallow") and knip_cwd:
-        rc, out = _run(["fallow", "scan", "--json"], cwd=knip_cwd)
-        try:
-            data = json.loads(out) if out.strip().startswith("{") else {}
-            m["fallow_dead_code"] = _metric(
-                int(data.get("dead_code_count", 0)), True, "fallow"
-            )
-            m["fallow_duplication_pct"] = _metric(
-                float(data.get("duplication_pct", 0.0)), True, "fallow"
-            )
-            return m
-        except (json.JSONDecodeError, ValueError):
-            pass  # fall through to knip/jscpd
+    if knip_cwd:
+        fallow = _metric_fallow(knip_cwd)
+        if fallow is not None:
+            return fallow
 
-    # knip — unused files, exports, dependencies
-    if _have("knip") and knip_cwd:
-        rc, out = _run(["knip", "--reporter", "json"], cwd=knip_cwd)
-        try:
-            data = json.loads(out) if out.strip().startswith("{") else {}
-            files = len(data.get("files", []))
-            issues = data.get("issues", [])
-            exports = (
-                sum(len(i.get("exports", [])) for i in issues) if isinstance(issues, list) else 0
-            )
-            m["knip_unused_files"] = _metric(files, True, "knip")
-            m["knip_unused_exports"] = _metric(exports, True, "knip")
-        except json.JSONDecodeError:
-            m["knip_unused_files"] = _metric(None, False, "knip")
-            m["knip_unused_exports"] = _metric(None, False, "knip")
+    if knip_cwd:
+        m["knip_unused_files"], m["knip_unused_exports"] = _metric_knip(knip_cwd)
     else:
         m["knip_unused_files"] = _metric(None, False, "knip")
         m["knip_unused_exports"] = _metric(None, False, "knip")
 
-    # jscpd — duplication percentage (scoped to typescript scan roots)
-    if _have("jscpd"):
-        jscpd_targets = [str(p.relative_to(REPO_ROOT)) for p in ts_paths] or ["."]
-        with tempfile.TemporaryDirectory(prefix="jscpd-") as tmp:
-            rc, out = _run(
-                ["jscpd", "--silent", "--reporters", "json", "--output", tmp, *jscpd_targets]
-            )
-            report = Path(tmp) / "jscpd-report.json"
-            pct = 0.0
-            if report.exists():
-                try:
-                    stats = json.loads(report.read_text()).get("statistics", {})
-                    pct = float(stats.get("total", {}).get("percentage", 0.0))
-                except (json.JSONDecodeError, ValueError):
-                    pct = 0.0
-            m["jscpd_duplication_pct"] = _metric(pct, True, "jscpd")
-    else:
-        m["jscpd_duplication_pct"] = _metric(None, False, "jscpd")
-
+    m["jscpd_duplication_pct"] = _metric_jscpd(ts_paths)
     return m
 
 
