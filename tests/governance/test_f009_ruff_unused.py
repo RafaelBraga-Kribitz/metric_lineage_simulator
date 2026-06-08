@@ -2,36 +2,33 @@
 
 from __future__ import annotations
 
-import json
-import subprocess
+import sys
 
 from _ratchet import REPO_ROOT, ratchet
 
 FINDING = "F-009"
-_TARGETS = ("scripts", "tests/governance")
 
 
-def _ruff_unused_count() -> int:
-    proc = subprocess.run(
-        [
-            "ruff",
-            "check",
-            "--select",
-            "F401,F811,F841",
-            "--output-format",
-            "json",
-            *_TARGETS,
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if proc.stdout.strip().startswith("["):
-        return len(json.loads(proc.stdout))
-    return 0
+def _ruff_unused_count() -> tuple[int, bool]:
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    try:
+        import debt_scan  # noqa: PLC0415
+
+        cfg = debt_scan._load_config()
+        py_paths = debt_scan._resolve_paths(cfg["scan_paths"].get("python", []))
+        metrics = debt_scan.scan_python(cfg["thresholds"], py_paths)
+        metric = metrics.get("ruff_unused", {})
+        if not metric.get("available"):
+            return -1, False
+        return int(metric["value"]), True
+    finally:
+        if str(REPO_ROOT / "scripts") in sys.path:
+            sys.path.remove(str(REPO_ROOT / "scripts"))
 
 
 def test_f009_no_ruff_unused() -> None:
-    n = _ruff_unused_count()
+    n, available = _ruff_unused_count()
+    if not available:
+        ratchet(FINDING, False, "ruff not installed — see governance/DEBT_TOOLS.md")
+        return
     ratchet(FINDING, n == 0, f"ruff_unused count is {n}, expected 0")

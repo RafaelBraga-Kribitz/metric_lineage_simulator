@@ -122,9 +122,9 @@
       "verification_script": "tests/governance/test_f011_radon_complexity.py"
     }
   ],
-  "generated_at": "2026-06-08T14:19:04.362388+00:00",
+  "generated_at": "2026-06-08T14:25:48.427187+00:00",
   "git_branch": "fix/f-011-radon-complexity",
-  "git_head_sha": "e1c40db511433c37a2a0cfca5a2cadc6fc755a22",
+  "git_head_sha": "01363fd7a424cc975893746fdda60b610e86cece",
   "migrations": [],
   "summary": {
     "findings_closed": 10,

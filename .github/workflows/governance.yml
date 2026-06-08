@@ -30,8 +30,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
       - name: Install deps
-        run: pip install pyyaml pytest
+        run: |
+          pip install pyyaml pytest ruff vulture radon
+          cd driver_tree_studio && npm ci
+          npm install -g knip jscpd
       - name: Re-verify closed findings
         run: python scripts/check_closed_findings.py
 
