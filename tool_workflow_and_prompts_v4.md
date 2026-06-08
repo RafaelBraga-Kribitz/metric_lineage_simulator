@@ -551,43 +551,9 @@ still equals 48000. Show the passing output. Do not touch the engine or any UI.
 
 ### Step 5b: Next.js app (Cursor)
 
-Open the `driver_tree_studio/` directory in Cursor. Create a `.cursor/rules` file (or add
-to `CLAUDE.md`) with the project rules below, then start a Composer session with the
-starter prompt.
-
----
-
-CURSOR RULES FILE (`.cursor/rules` or `CLAUDE.md`):
-
-Project: Metric Driver-Tree Studio
-Stack: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui, React Flow,
-Recharts, Framer Motion.
-
-HARD RULES:
-- Never touch anything in `src/engine/`, `src/lib/formula.ts`, or `src/schema/types.ts`.
-  These are owned by Claude Code. Cursor only reads them as imports.
-- Never write logic that duplicates engine functions. Always import from `src/engine/`.
-- All components in `src/components/` with a dedicated subdirectory per component.
-- All styles via Tailwind utility classes only; no inline style objects except for React
-  Flow node/edge renderers where dynamic values are unavoidable.
-- No hardcoded colors. Use the CSS custom properties defined in globals.css matching the
-  design tokens.
-- Every component file has a JSDoc block at the top: purpose, props, usage example.
-- After every Composer session, run `npm run typecheck` and `npm run test` and fix all
-  errors before closing.
-- The three edge kinds are always visually encoded as: identity = thick(4) + blue, modeled
-  = normal(2) + amber, hypothesized = dashed(2) + grey + "?" badge. Never deviate.
-- The methodology note panel text is verbatim from the spec and must never be shortened
-  or paraphrased.
-- The data-test engine never prints the word "causes" for observational results.
-  Always: "associated with", "moves together", "consistent with".
-
-EDGE-DIRECTION CONVENTION (critical):
-  Data model edges are { parent: explainedMetric, child: driverMetric }.
-  React Flow edges render child -> parent (cause flows toward the north star).
-  These are opposite. Do not confuse them. Parent is always the aggregate/north-star-side.
-
---- END OF CURSOR RULES ---
+Open the repo in Cursor (engine lives in `driver_tree_studio/`). Phase 2 rules are committed at
+`.cursor/rules/phase2-driver-tree-studio.mdc`. Visual detail: `CLAUDE_DESIGN_SYSTEM.md`. Do not
+duplicate rules here. Start a Composer session with the starter prompt below.
 
 ---
 

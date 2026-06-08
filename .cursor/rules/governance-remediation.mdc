@@ -12,13 +12,15 @@ Pick **one** `open` finding from `governance/findings/`. PR/commit title **must*
 1. Make the fix.
 2. Run its `verification_script`; confirm exit 0 / `[PASS]`.
 3. Update YAML: `status: closed`, `closed_at: <today>`.
-4. Run `make verify`.
+4. Run `make verify` (includes Adversary + `make debt-check`).
 5. One finding per PR (exception: trivial cross-cutting cleanups under 10 lines).
 
 ## Ratchet
 
 - Open finding + broken invariant → xfail / `[GAP]` (suite stays green).
 - Closed finding + regression → hard fail / `[FAIL]` (Adversary re-runs on every PR).
+- Debt metric grew past baseline → hard fail / `[FAIL]` (`check_debt_ratchet.py` on every PR).
+- Debt hotspots surface in `SESSION_HANDOUT.md`; promote one into a finding per `governance/CATEGORIES.md`.
 
 Never set `status: closed` without a passing `verification_script`. Never edit `AUDIT_STATE.json` or `SESSION_HANDOUT.md` by hand.
 
@@ -26,4 +28,4 @@ Never set `status: closed` without a passing `verification_script`. Never edit `
 
 - `PROJECT_CHARTER.md` changes require an ADR in `governance/adrs/`.
 - No parallel docs: no `TODO.md`, `PLAN.md`, `ROADMAP.md`, `SRS.md`.
-- Charter ≤200 lines; index specs in §4, do not duplicate.
+- Charter ≤200 lines; index ADRs in charter §7; do not duplicate normative detail.

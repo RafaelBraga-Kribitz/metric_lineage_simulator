@@ -1,11 +1,12 @@
 # Contributing to metric_lineage_simulator
 
-## The four rules
+## The five rules
 
 1. **Every session begins with `make session-start`.** Read `governance/SESSION_HANDOUT.md` before opening any file.
 2. **One finding per PR.** PR title contains `F-NNN`. Exception: trivial cross-cutting cleanups under 10 lines.
 3. **Close findings only when their `verification_script` exits 0.** Editing `status: closed` without a passing script is forbidden — CI's Adversary job will reopen it.
 4. **No scope changes without an ADR.** Any change to `PROJECT_CHARTER.md` requires a corresponding append-only entry in `governance/adrs/`.
+5. **Debt cannot grow.** `make debt-check` runs in CI and fails any PR where dead code, duplication, or complexity rises past `governance/DEBT_BASELINE.json`. To raise the baseline (rare, intentional) it's a dedicated PR explaining why; to lower it, run `make debt-scan` and commit the smaller numbers.
 
 ## Banned anti-patterns
 
@@ -41,6 +42,20 @@ cp governance/adrs/ADR-TEMPLATE.md governance/adrs/$(date +%N | head -c 4)-short
 ```
 
 ADRs are append-only. To revisit a decision, mark the old one `superseded` and write a new one referencing it via `supersedes`.
+
+## Technical-debt remediation
+
+The debt ratchet (`scripts/debt_scan.py`) measures dead code, unused exports,
+duplication, and complexity using whatever tools are installed (see
+`governance/DEBT_TOOLS.md`). The workflow:
+
+1. `make session-start` surfaces current debt hotspots in the handout.
+2. Promote one hotspot into a finding (`governance/CATEGORIES.md` has the
+   metric→category mapping). Its `verification_script` re-runs the tool scoped
+   to the fixed area and asserts the metric hit zero.
+3. Remediate one PR at a time. Do **not** mass-clean — that produces
+   unreviewable diffs and breaks one-finding-per-PR.
+4. After the fix lands, `make debt-scan` to lock the lower baseline.
 
 ## Coding standards
 

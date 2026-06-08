@@ -2,11 +2,19 @@
 ================================================================================
 PROJECT CHARTER: Single Source of Truth (SSOT)
 ================================================================================
+This document is the ONLY authoritative source for project goals, scope,
+requirements, and design decisions.
+
 RULES (enforced by CI):
-  1. Any project decision not in this file or governance/adrs/ does not exist.
-  2. Charter changes require an ADR. Content changes need CHANGELOG + last_updated bump.
-  3. No parallel Charter.md, Requirements.md, SRS.md, or root build-spec files.
-  4. Metadata block below is machine-read by scripts/check_charter_size.py. Cap: 200 lines.
+  1. Any project decision that is not in this document or in governance/adrs/
+     does not exist.
+  2. Changes to anything in this file require a corresponding ADR entry.
+  3. README.md and code docstrings MAY summarize from this file but MUST link
+     back here for authority.
+  4. The metadata block below is machine-read by scripts/check_charter_size.py.
+
+DO NOT create separate Charter.md, Requirements.md, SRS.md, etc. Sprawl is
+forbidden. Cap at 200 lines.
 ================================================================================
 -->
 
@@ -21,8 +29,10 @@ SSOT_METADATA_END -->
 
 # Project Charter: {PROJECT_TITLE}
 
-> **Executive SSOT.** Normative detail lives in `governance/adrs/` (not root spec files).
-> Read §7 ADR index after this charter. Prompts may live in a transient workflow doc.
+> **This is the Single Source of Truth (SSOT).** If you are looking for what
+> the project is, what it does, what it does not do, or why a decision was
+> made, **the answer is here or in [`governance/adrs/`](./governance/adrs/).**
+> Nowhere else. CI enforces this discipline.
 
 ## 1. Quick Facts
 
@@ -35,69 +45,54 @@ SSOT_METADATA_END -->
 
 ## 2. Documentation Discipline
 
-No root `metric_*_build_spec*.md`, `phase-*.md`, or parallel requirements docs. State
-decisions in this charter or ADRs. Scope changes need ADRs. Bump `last_updated` and
-`governance/CHANGELOG.md` on edits. Full rules: `CONTRIBUTING.md`, `AUDIT_PROCEDURE.md`.
+This file is the SSOT. No parallel requirements, spec, or design documents.
+State it once, link everywhere else. Every scope change needs an ADR in
+`governance/adrs/`. Every content change needs a `governance/CHANGELOG.md`
+entry and a `last_updated` bump.
+
+Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ## 3. Business Case
 
 ### 3.1 Problem Statement
 
-<!-- 2–4 sentences -->
+<!-- 2-4 sentences. What problem does this project address? Who has it? -->
 
 ### 3.2 Project Goal
 
-<!-- One sentence for current phase gate -->
+<!-- 1 sentence. The single thing that, when done, makes this project a success. -->
 
-### 3.3 Product principles
+### 3.3 Success Criteria
 
-<!-- Edge kinds, positioning, flywheel — or pointer to ADR-0004 equivalent -->
-
-### 3.4 Success Criteria
+The project succeeds if **all** of these are true at completion:
 
 | Criterion | Measurement | Verification |
 |---|---|---|
-| <!-- row --> | | |
+| <criterion 1> | <how measured> | <where verified> |
+| <criterion 2> | <how measured> | <where verified> |
 
-### 3.5 Stakeholders
+### 3.4 Stakeholders
 
 | Stakeholder | Role | Engagement |
 |---|---|---|
 | {PROJECT_OWNER} | Owner | Daily |
 
-### 3.6 Out of Scope
+### 3.5 Out of Scope
 
-<!-- Phase locks -->
+<!-- Hard scope locks. Adding anything here requires an ADR + scope-change review. -->
 
-### 3.7 Known Limitations
+### 3.6 Known Limitations
 
-<!-- Accepted constraints -->
+<!-- Constraints accepted at v1.0. -->
 
-## 4. Phase Roadmap
+## 4. Documentation Index
 
-<!-- Table: Phase | Tool | Deliverable | Status -->
-
-## 5. Normative ADR Index
-
-| ADR | Purpose |
-|---|---|
-| 0003 | Documentation consolidation policy |
-| 0004 | Product model and positioning |
-| 0005 | Schema and validation |
-| 0006 | Engine and formula parser |
-| 0007 | Phase 1 implementation |
-| 0008 | Phases 2–5 |
-
-Add project ADRs under `governance/adrs/`; list every normative ADR here.
-
-## 6. Governance Index
-
-| Document | Location |
-|---|---|
-| Methodology | `governance/AUDIT_PROCEDURE.md` |
-| Agent protocol | `CLAUDE.md` |
-| Contributor rules | `CONTRIBUTING.md` |
-| ADRs | `governance/adrs/` |
-| Change log | `governance/CHANGELOG.md` |
+| Document | Purpose | Location |
+|---|---|---|
+| Methodology | Three roles, finding lifecycle | `governance/AUDIT_PROCEDURE.md` |
+| Agent Protocol | LLM session contract | `CLAUDE.md` |
+| Contributor Rules | Standards, PR rules | `CONTRIBUTING.md` |
+| ADRs | Append-only decision log | `governance/adrs/` |
+| Change Log | Version history | `governance/CHANGELOG.md` |
 
 <!-- END OF SSOT. Any content below this line is a violation. -->

@@ -36,31 +36,44 @@ def _run(script: str) -> tuple[int, str]:
     return proc.returncode, (proc.stdout + proc.stderr).strip()
 
 
-def main() -> int:
-    closed = []
+def _load_closed_findings() -> list[tuple[str, str | None]]:
+    closed: list[tuple[str, str | None]] = []
     if not FINDINGS.exists():
-        print(f"[PASS] check_closed_findings.py: no findings directory yet")
-        return 0
+        return closed
     for path in sorted(FINDINGS.glob("F-*.yaml")):
         if path.name == "F-TEMPLATE.yaml":
             continue
         data = yaml.safe_load(path.read_text()) or {}
         if data.get("status") == "closed":
             closed.append((data.get("id"), data.get("verification_script")))
+    return closed
+
+
+def _verify_finding(fid: str, script: str | None) -> tuple[bool, str]:
+    if not script:
+        print(f"[WARN] {fid}: closed but has no verification_script")
+        return True, ""
+    rc, output = _run(script)
+    if rc == 0:
+        print(f"[PASS] {fid}: {script}")
+        return True, ""
+    print(f"[FAIL] {fid}: {script} regressed (rc={rc})")
+    for line in output.splitlines()[-10:]:
+        print(f"       {line}")
+    return False, f"{fid} ({script}) -> rc={rc}"
+
+
+def main() -> int:
+    closed = _load_closed_findings()
+    if not FINDINGS.exists():
+        print("[PASS] check_closed_findings.py: no findings directory yet")
+        return 0
 
     regressions: list[str] = []
     for fid, script in closed:
-        if not script:
-            print(f"[WARN] {fid}: closed but has no verification_script")
-            continue
-        rc, output = _run(script)
-        if rc == 0:
-            print(f"[PASS] {fid}: {script}")
-        else:
-            regressions.append(f"{fid} ({script}) -> rc={rc}")
-            print(f"[FAIL] {fid}: {script} regressed (rc={rc})")
-            for line in output.splitlines()[-10:]:
-                print(f"       {line}")
+        ok, msg = _verify_finding(fid, script)
+        if not ok:
+            regressions.append(msg)
 
     if regressions:
         print(f"\n[FAIL] check_closed_findings.py: {len(regressions)} closed finding(s) regressed")

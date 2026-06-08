@@ -1,0 +1,21 @@
+id: F-010
+title: "driver_tree_studio: 11 knip unused exports"
+category: dead_artifacts
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-08
+closed_at: 2026-06-08
+recurrence_count: 0
+evidence: |
+  governance/DEBT_BASELINE.json — knip_unused_exports=11 (baseline 2026-06-08).
+  src/components/Canvas/IdentityEdge.tsx — identityEdgeDefaults.
+  src/components/Canvas/modelToFlow.ts — edgeId, findEdgeIndex.
+  src/components/ui/button.tsx — buttonVariants, ButtonProps.
+  src/components/ui/dialog.tsx — DialogClose, DialogOverlay, DialogPortal, DialogTrigger.
+  src/components/ui/select.tsx — SelectGroup.
+  src/lib/rng.ts — sampleTriangular, sampleNormal (engine-owned; knip ignore or wire).
+  src/schema/types.ts — MetricLayer, DistributionKind, Scenario (schema-owned).
+verification_script: tests/governance/test_f010_knip_unused_exports.py
+notes: |
+  Remediation: drop or internalize UI-only dead exports; add knip entry/ignore for
+  engine/schema barrels that are imported by tests but not app routes. One PR only.

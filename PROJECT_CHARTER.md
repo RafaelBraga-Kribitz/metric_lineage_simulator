@@ -105,6 +105,7 @@ Gate 1 approved; Phase 2 UI may proceed after Figma design ref (ADR-0008).
 | [0006](governance/adrs/0006-engine-and-formula.md) | Engine modules, applyForm, MC, formula parser |
 | [0007](governance/adrs/0007-phase-1-implementation.md) | Phase 1 layout, DTC seed, tests, verification |
 | [0008](governance/adrs/0008-phases-2-through-5.md) | Phases 2–5, BYOD test, funnel, open decisions |
+| [0009](governance/adrs/0009-tech-debt-ratchet.md) | Technical-debt ratchet, baseline, scan paths |
 
 Superseded: ADR-0001, ADR-0002 → see ADR-0003.
 
@@ -116,6 +117,8 @@ Superseded: ADR-0001, ADR-0002 → see ADR-0003.
 | Agent protocol | `CLAUDE.md` |
 | Contributor rules | `CONTRIBUTING.md` |
 | Findings queue | `governance/findings/` |
+| Finding categories | `governance/CATEGORIES.md` |
+| Debt tooling | `governance/DEBT_TOOLS.md` |
 | Change log | `governance/CHANGELOG.md` |
 | Prompts (transient) | `tool_workflow_and_prompts_v4.md` |
 

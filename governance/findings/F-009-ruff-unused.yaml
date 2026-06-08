@@ -1,0 +1,20 @@
+id: F-009
+title: "Python governance paths: 11 ruff unused imports/vars"
+category: dead_artifacts
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-08
+closed_at: 2026-06-08
+recurrence_count: 0
+evidence: |
+  governance/DEBT_BASELINE.json — ruff_unused=11 (baseline 2026-06-08).
+  scripts/check_charter_size.py:11 — unused Path import.
+  scripts/check_claude_md.py:11 — unused Path import.
+  scripts/check_finding_coverage.py:12 — unused Path import.
+  scripts/session_start.py:74 — unused local `migrations`.
+  tests/governance/test_f002..test_f008 — unused Path imports (7 files).
+  tests/governance/test_f006_no_root_spec_sprawl.py:5 — unused `re` import.
+verification_script: tests/governance/test_f009_ruff_unused.py
+notes: |
+  Remediation: remove dead imports/vars in scripts/ and tests/governance/.
+  Re-run `make debt-scan` to lock ruff_unused=0 into the baseline.

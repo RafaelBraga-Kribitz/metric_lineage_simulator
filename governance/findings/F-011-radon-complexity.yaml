@@ -1,0 +1,21 @@
+id: F-011
+title: "Governance scripts: 9 Python blocks above complexity cap"
+category: fragmented_standards
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-08
+closed_at: 2026-06-08
+recurrence_count: 0
+evidence: |
+  governance/DEBT_BASELINE.json — radon_complex_blocks=9 (cap CC>10 in debt_config.yaml).
+  scripts/check_closed_findings.py:39 main — CC 11.
+  scripts/check_debt_ratchet.py:33 main — CC 24.
+  scripts/debt_scan.py:124 scan_python — CC 17; :172 scan_ts_js — CC 16.
+  scripts/session_start.py:67 main — CC 18; :22 _append_debt_section — CC 13.
+  scripts/write_audit_state.py:63 collect_findings — CC 11.
+  tests/governance/test_f006_no_root_spec_sprawl.py:33 — CC 13.
+  tests/governance/test_f007_phase2_ui_invariants.py:20 _all_checks — CC 15.
+verification_script: tests/governance/test_f011_radon_complexity.py
+notes: |
+  Remediation: extract helpers from check_debt_ratchet main and session_start main
+  first (largest offenders). Target radon_complex_blocks=0 or document wont_fix with ADR.

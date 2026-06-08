@@ -8,7 +8,6 @@ grows past 200 lines, contributors stop reading it and parallel docs
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 from _governance_check import REPO_ROOT, gate
 

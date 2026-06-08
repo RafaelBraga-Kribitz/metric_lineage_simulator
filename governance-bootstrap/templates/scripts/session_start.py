@@ -16,6 +16,53 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 STATE_PATH = REPO_ROOT / "governance" / "AUDIT_STATE.json"
 HANDOUT_PATH = REPO_ROOT / "governance" / "SESSION_HANDOUT.md"
 SESSION_END_PATH = REPO_ROOT / "governance" / "SESSION_END.md"
+DEBT_PATH = REPO_ROOT / "governance" / "DEBT_BASELINE.json"
+
+
+def _append_debt_section(lines: list[str]) -> None:
+    """Surface the technical-debt baseline (read-only; does not re-scan)."""
+    if not DEBT_PATH.exists():
+        lines.append("## Technical debt")
+        lines.append("")
+        lines.append(
+            "No `governance/DEBT_BASELINE.json` yet. Run `make debt-scan` to "
+            "establish a baseline the ratchet can hold."
+        )
+        lines.append("")
+        return
+    try:
+        debt = json.loads(DEBT_PATH.read_text())
+    except json.JSONDecodeError:
+        return
+    metrics = debt.get("metrics", {})
+    measured = {k: v for k, v in metrics.items() if v.get("available")}
+    skipped = sorted({v.get("tool") for v in metrics.values() if not v.get("available")})
+
+    lines.append("## Technical debt (baseline)")
+    lines.append("")
+    lines.append(
+        f"Languages: {', '.join(debt.get('languages', [])) or 'none'} · "
+        f"baseline written {debt.get('generated_at', 'unknown')[:10]}. "
+        "The ratchet (`make debt-check`) fails any PR where these grow."
+    )
+    lines.append("")
+    # Surface the biggest debt items first so the next remediation is obvious.
+    nonzero = {k: v["value"] for k, v in measured.items() if v.get("value")}
+    if nonzero:
+        lines.append("Current hotspots (candidates for the next remediation finding):")
+        lines.append("")
+        for name, value in sorted(nonzero.items(), key=lambda kv: -float(kv[1])):
+            lines.append(f"- `{name}`: {value}")
+        lines.append("")
+    else:
+        lines.append("All measured debt metrics are at zero. 🎯")
+        lines.append("")
+    if skipped:
+        lines.append(
+            f"⚠ Unmeasured (tool not installed): {', '.join(skipped)} — "
+            "see `governance/DEBT_TOOLS.md` to widen coverage."
+        )
+        lines.append("")
 
 
 def main() -> int:
@@ -94,6 +141,8 @@ def main() -> int:
             "`make session-end`."
         )
         lines.append("")
+
+    _append_debt_section(lines)
 
     if SESSION_END_PATH.exists():
         lines.append("## Prior session handoff")

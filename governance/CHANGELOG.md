@@ -1,5 +1,29 @@
 # Governance Changelog
 
+## 2026-06-08 — F-011 closed (radon complexity)
+
+- Refactored governance scripts and tests to bring all Python blocks to CC ≤ 10.
+- Baseline `radon_complex_blocks=0`. Debt queue empty.
+
+## 2026-06-08 — F-010 closed (knip unused exports)
+
+- Trimmed dead UI exports in Canvas + shadcn components; added `driver_tree_studio/knip.json`.
+- Baseline `knip_unused_exports=0`. F-011 (radon complexity) remains open.
+
+## 2026-06-08 — F-009 closed (ruff unused); F-010/F-011 opened
+
+- Filed F-009 (ruff_unused), F-010 (knip_unused_exports), F-011 (radon_complex_blocks) from debt baseline hotspots.
+- F-009 closed: removed 11 unused imports/vars in `scripts/` and `tests/governance/`; baseline `ruff_unused=0`.
+- F-010 and F-011 remain open (11 knip exports, 9 radon blocks above CC cap).
+
+## 2026-06-08 — F-008 closed (tech-debt ratchet)
+
+- Installed `scripts/debt_scan.py`, `scripts/check_debt_ratchet.py`, `governance/debt_config.yaml`.
+- Added CI `tech-debt` job; `make verify` now runs debt ratchet.
+- Baseline (`governance/DEBT_BASELINE.json`): ruff_unused=11, knip_unused_exports=11,
+  radon_complex_blocks=9, jscpd_duplication_pct=0.0, vulture_dead_code=0, knip_unused_files=0.
+- ADR-0009; `governance/DEBT_TOOLS.md`, `governance/CATEGORIES.md`; charter §8 index updated.
+
 ## 2026-06-07 — F-002 closed
 
 - Relocated Phase 0 `driver-tree-studio.tsx` to `archive/phase-0/`; demo imports updated.

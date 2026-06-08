@@ -60,6 +60,34 @@ def _git(*args: str) -> str:
         return "unknown"
 
 
+def _parse_finding_file(path: Path) -> tuple[dict | None, list[str]]:
+    errors: list[str] = []
+    try:
+        data = _load_yaml(path)
+    except yaml.YAMLError as exc:
+        return None, [f"{path}: YAML parse error: {exc}"]
+    for required in ("id", "title", "category", "kind", "status", "opened_at"):
+        if required not in data:
+            errors.append(f"{path}: missing required field '{required}'")
+    status = data.get("status")
+    if status not in VALID_FINDING_STATUSES:
+        errors.append(f"{path}: invalid status '{status}'")
+    if status == "wont_fix" and not data.get("wont_fix_reason"):
+        errors.append(f"{path}: status=wont_fix requires wont_fix_reason")
+    record = {
+        "id": data.get("id"),
+        "title": data.get("title"),
+        "category": data.get("category"),
+        "kind": data.get("kind"),
+        "status": data.get("status"),
+        "opened_at": str(data.get("opened_at")),
+        "closed_at": str(data["closed_at"]) if data.get("closed_at") is not None else None,
+        "verification_script": data.get("verification_script"),
+        "path": str(path.relative_to(REPO_ROOT)),
+    }
+    return record, errors
+
+
 def collect_findings() -> tuple[list[dict], list[str]]:
     findings: list[dict] = []
     errors: list[str] = []
@@ -68,34 +96,10 @@ def collect_findings() -> tuple[list[dict], list[str]]:
     for path in sorted(FINDINGS_DIR.glob("F-*.yaml")):
         if path.name == "F-TEMPLATE.yaml":
             continue
-        try:
-            data = _load_yaml(path)
-        except yaml.YAMLError as exc:
-            errors.append(f"{path}: YAML parse error: {exc}")
-            continue
-        for required in ("id", "title", "category", "kind", "status", "opened_at"):
-            if required not in data:
-                errors.append(f"{path}: missing required field '{required}'")
-        status = data.get("status")
-        if status not in VALID_FINDING_STATUSES:
-            errors.append(f"{path}: invalid status '{status}'")
-        if status == "wont_fix" and not data.get("wont_fix_reason"):
-            errors.append(f"{path}: status=wont_fix requires wont_fix_reason")
-        findings.append(
-            {
-                "id": data.get("id"),
-                "title": data.get("title"),
-                "category": data.get("category"),
-                "kind": data.get("kind"),
-                "status": data.get("status"),
-                "opened_at": str(data.get("opened_at")),
-                "closed_at": (
-                    str(data["closed_at"]) if data.get("closed_at") is not None else None
-                ),
-                "verification_script": data.get("verification_script"),
-                "path": str(path.relative_to(REPO_ROOT)),
-            }
-        )
+        record, path_errors = _parse_finding_file(path)
+        errors.extend(path_errors)
+        if record is not None:
+            findings.append(record)
     return findings, errors
 
 
