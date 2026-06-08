@@ -71,7 +71,6 @@ def main() -> int:
     state = json.loads(STATE_PATH.read_text())
     summary = state["summary"]
     findings = state["findings"]
-    migrations = state["migrations"]
 
     open_findings = [f for f in findings if f["status"] == "open"]
     in_progress_findings = [f for f in findings if f["status"] == "in_progress"]

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T12:46:37.297000+00:00",
+  "generated_at": "2026-06-08T13:59:38.885518+00:00",
   "languages": [
     "python",
     "ts-js"
@@ -33,7 +33,7 @@
       "available": true,
       "lower_is_better": true,
       "tool": "ruff",
-      "value": 11
+      "value": 0
     },
     "vulture_dead_code": {
       "available": true,

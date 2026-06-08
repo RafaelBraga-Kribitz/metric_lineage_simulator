@@ -8,7 +8,6 @@ that drift by requiring the key references stay present.
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 from _governance_check import REPO_ROOT, gate
 

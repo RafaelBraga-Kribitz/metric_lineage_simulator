@@ -1,5 +1,11 @@
 # Governance Changelog
 
+## 2026-06-08 — F-009 closed (ruff unused); F-010/F-011 opened
+
+- Filed F-009 (ruff_unused), F-010 (knip_unused_exports), F-011 (radon_complex_blocks) from debt baseline hotspots.
+- F-009 closed: removed 11 unused imports/vars in `scripts/` and `tests/governance/`; baseline `ruff_unused=0`.
+- F-010 and F-011 remain open (11 knip exports, 9 radon blocks above CC cap).
+
 ## 2026-06-08 — F-008 closed (tech-debt ratchet)
 
 - Installed `scripts/debt_scan.py`, `scripts/check_debt_ratchet.py`, `governance/debt_config.yaml`.

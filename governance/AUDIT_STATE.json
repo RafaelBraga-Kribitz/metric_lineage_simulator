@@ -87,22 +87,58 @@
       "status": "closed",
       "title": "Technical-debt ratchet: measure, gate, and surface hotspots",
       "verification_script": "tests/governance/test_f008_debt_ratchet.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": "2026-06-08",
+      "id": "F-009",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-08",
+      "path": "governance/findings/F-009-ruff-unused.yaml",
+      "status": "closed",
+      "title": "Python governance paths: 11 ruff unused imports/vars",
+      "verification_script": "tests/governance/test_f009_ruff_unused.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": null,
+      "id": "F-010",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-08",
+      "path": "governance/findings/F-010-knip-unused-exports.yaml",
+      "status": "open",
+      "title": "driver_tree_studio: 11 knip unused exports",
+      "verification_script": "tests/governance/test_f010_knip_unused_exports.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": null,
+      "id": "F-011",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-08",
+      "path": "governance/findings/F-011-radon-complexity.yaml",
+      "status": "open",
+      "title": "Governance scripts: 9 Python blocks above complexity cap",
+      "verification_script": "tests/governance/test_f011_radon_complexity.py"
     }
   ],
-  "generated_at": "2026-06-08T12:53:19.890499+00:00",
-  "git_branch": "fix/f-007-phase2-ui",
-  "git_head_sha": "5469b38d968a7705c0882a6881012c9d73cde70a",
+  "generated_at": "2026-06-08T14:07:02.387590+00:00",
+  "git_branch": "fix/f-009-ruff-unused",
+  "git_head_sha": "3915b22a1a5f679b2b4309230a71b48659b2b398",
   "migrations": [],
   "summary": {
-    "findings_closed": 7,
+    "findings_closed": 8,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 0,
-    "findings_total": 8,
+    "findings_open": 2,
+    "findings_total": 11,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 0,
-    "open_by_category": {}
+    "open_by_category": {
+      "dead_artifacts": 1,
+      "fragmented_standards": 1
+    }
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"
