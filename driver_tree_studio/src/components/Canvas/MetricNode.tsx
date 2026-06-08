@@ -33,8 +33,9 @@ function MetricNodeComponent({ data }: NodeProps<Node<MetricNodeData, "metricNod
         borderWidth: selected ? 2 : 1,
       }}
     >
-      <Handle type="target" position={Position.Top} className="!bg-edge-identity !w-2 !h-2" />
-      <Handle type="source" position={Position.Bottom} className="!bg-edge-identity !w-2 !h-2" />
+      {/* child → parent flows upward (NSM on top): source exits top, target enters bottom */}
+      <Handle type="target" position={Position.Bottom} className="!bg-edge-identity !w-2 !h-2" />
+      <Handle type="source" position={Position.Top} className="!bg-edge-identity !w-2 !h-2" />
 
       <div className="flex h-full flex-col gap-0.5 overflow-hidden px-2 py-1">
         <span
