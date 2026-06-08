@@ -4,7 +4,7 @@
 # Only the governance-specific targets are defined here; your project's
 # build/test/lint targets stay separate.
 
-.PHONY: audit verify session-start session-end
+.PHONY: audit verify session-start session-end debt-scan debt-check
 
 PYTHON ?= python
 
@@ -25,7 +25,20 @@ verify: audit
 		echo "(no governance tests yet — skipping pytest)"; \
 	fi
 	@$(PYTHON) scripts/check_closed_findings.py
+	@$(PYTHON) scripts/check_debt_ratchet.py
 	@echo "✓ verify complete"
+
+# Rewrite governance/DEBT_BASELINE.json from a fresh scan. Run this after you
+# have *reduced* debt, to lock the gain so the ratchet can't slide back.
+# Committing a baseline that moves UP requires a dedicated PR that says why.
+debt-scan:
+	@$(PYTHON) scripts/debt_scan.py
+
+# Ratchet gate: re-scan and fail if any measured debt metric grew past the
+# baseline. This is the "remediate before it grows" enforcement. Runs in
+# `verify` and in CI; cheap enough to run locally before pushing.
+debt-check:
+	@$(PYTHON) scripts/check_debt_ratchet.py
 
 session-start: audit
 	@$(PYTHON) scripts/session_start.py

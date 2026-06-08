@@ -34,3 +34,27 @@ jobs:
         run: pip install pyyaml pytest
       - name: Re-verify closed findings
         run: python scripts/check_closed_findings.py
+
+  # Debt ratchet: re-scan technical debt and fail if any metric grew past the
+  # committed baseline (governance/DEBT_BASELINE.json). This is the "remediate
+  # before it grows" gate. Install whatever debt tools apply to the project's
+  # languages; missing tools are skipped, not fatal. See governance/DEBT_TOOLS.md.
+  tech-debt:
+    runs-on: ubuntu-latest
+    needs: governance-audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Python debt tools
+        run: pip install pyyaml ruff vulture radon
+      - name: Install Node deps and debt tools
+        run: |
+          cd driver_tree_studio && npm ci
+          npm install -g knip jscpd
+      - name: Debt ratchet
+        run: python scripts/check_debt_ratchet.py

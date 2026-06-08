@@ -14,24 +14,29 @@ templates/               ← deterministic file drops; do not modify in transit
   CATEGORIES.md          ← sanctioned finding category slugs
   Makefile.governance    ← append to your Makefile (audit, verify, session-start, session-end)
   .pre-commit-config.yaml
+  CATEGORIES.md          ← sanctioned finding category slugs + debt→category map
   scripts/
     _governance_check.py        ← ratchet helper for check_*.py scripts
     write_audit_state.py        ← regenerates AUDIT_STATE.json
-    session_start.py            ← regenerates SESSION_HANDOUT.md
+    session_start.py            ← regenerates SESSION_HANDOUT.md (+ debt hotspots)
     session_end.py              ← scaffolds SESSION_END.md handoff
     check_closed_findings.py    ← the Adversary
     check_claude_md.py          ← CLAUDE.md anti-pattern guard
     check_finding_coverage.py   ← every finding has a real verification_script
     check_charter_size.py       ← ≤200-line charter budget
+    debt_scan.py                ← technical-debt scanner → DEBT_BASELINE.json
+    check_debt_ratchet.py       ← debt ratchet gate (fails if debt grows)
   tests/governance/
     _ratchet.py                 ← ratchet helper for pytest-based verification scripts
     conftest.py                 ← makes _ratchet importable
   governance/
+    DEBT_TOOLS.md               ← per-language debt tool install guide
     findings/F-TEMPLATE.yaml
     migrations/MIGRATION_TEMPLATE.yaml
     adrs/ADR-TEMPLATE.md
+    adrs/0002-tech-debt-ratchet.md  ← example ADR for the debt ratchet
   .github/workflows/
-    governance.yml              ← governance-audit + adversary CI jobs
+    governance.yml              ← governance-audit + adversary + tech-debt CI jobs
 ```
 
 ## How to use
@@ -103,8 +108,19 @@ These are project-specific and remain yours.
 
 ## The deterministic core
 
-The three things that make this system work — and that you should never modify in transit:
+The four things that make this system work — and that you should never modify in transit:
 
 1. **`tests/governance/_ratchet.py`** + **`scripts/_governance_check.py`** — the ratchet pattern. xfail / [GAP] while open, hard-fail / [FAIL] when closed-and-regressed.
 2. **`scripts/check_closed_findings.py`** — the Adversary. Runs every closed finding's script on every PR.
-3. **`governance/AUDIT_PROCEDURE.md`** — the three roles. If you find yourself doing something that doesn't map to Steward / Remediator / Adversary, you are about to drift.
+3. **`scripts/check_debt_ratchet.py`** — the debt ratchet. Re-scans dead code / duplication / complexity and fails any PR where they grow past `DEBT_BASELINE.json`. Same ratchet idea, applied to mechanical debt instead of findings.
+4. **`governance/AUDIT_PROCEDURE.md`** — the three roles. If you find yourself doing something that doesn't map to Steward / Remediator / Adversary, you are about to drift.
+
+## Technical-debt ratchet (the "remediate before it grows" layer)
+
+Inspired by [Fallow](https://github.com/fallow-rs/fallow) (TS/JS), generalized to
+any language. `make debt-scan` measures debt with whatever tools are installed
+(Python: ruff + vulture + radon; TS/JS: knip + jscpd, or Fallow directly) and
+writes `governance/DEBT_BASELINE.json`. `make debt-check` re-scans on every PR
+and **fails if any metric grew** — debt can only move down. The Steward surfaces
+current hotspots in the session handout so the next cleanup is a normal
+one-finding PR, not an ad-hoc sweep. Full guide: `governance/DEBT_TOOLS.md`.

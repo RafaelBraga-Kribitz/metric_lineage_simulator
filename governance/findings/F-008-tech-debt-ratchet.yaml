@@ -1,0 +1,18 @@
+id: F-008
+title: "Technical-debt ratchet: measure, gate, and surface hotspots"
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-08
+closed_at: 2026-06-08
+recurrence_count: 0
+evidence: |
+  scripts/debt_scan.py — absent; no mechanical debt measurement.
+  scripts/check_debt_ratchet.py — absent; no regression gate for dead code / duplication.
+  governance/DEBT_BASELINE.json — absent; Steward could not surface debt hotspots.
+  .github/workflows/governance.yml — no tech-debt CI job.
+verification_script: tests/governance/test_f008_debt_ratchet.py
+notes: |
+  Installed debt ratchet from governance-bootstrap templates with monorepo scan_paths
+  (driver_tree_studio/, scripts/, tests/governance/). ADR-0009 documents the decision.
+  Baseline locks current debt; hotspots in SESSION_HANDOUT become F-009+ candidates.

@@ -1,0 +1,6 @@
+thresholds:
+  duplication_pct_max: 5.0
+  complexity_cc_max: 10
+scan_paths:
+  python: ["scripts", "tests/governance"]
+  typescript: ["driver_tree_studio"]

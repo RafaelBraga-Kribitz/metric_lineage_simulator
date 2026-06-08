@@ -4,7 +4,7 @@ This file is read by Claude Code (and any other LLM agent) at the start of every
 
 ## First action of every session
 
-Run `make session-start`. This regenerates `governance/AUDIT_STATE.json` and writes a fresh `governance/SESSION_HANDOUT.md`. **Read the handout before proposing any work.** The handout names the recommended next finding and surfaces stalled migrations.
+Run `make session-start`. This regenerates `governance/AUDIT_STATE.json` and writes a fresh `governance/SESSION_HANDOUT.md`. **Read the handout before proposing any work.** The handout names the recommended next finding, surfaces stalled migrations, and lists technical-debt hotspots from `governance/DEBT_BASELINE.json`.
 
 Do not skip this step "for speed." The handout is how cross-session memory works in this repo. Skipping it means re-deriving state from chat history, which is the failure mode the governance system was built to prevent.
 
@@ -35,7 +35,7 @@ These claims and behaviors have caused recurrence cycles in prior sessions. They
 1. Make the change.
 2. Run the named script. Confirm it exits 0 with `[PASS]`.
 3. Update the YAML: `status: closed`, `closed_at: <today>`.
-4. Run `make verify` (which runs the Adversary locally).
+4. Run `make verify` (which runs the Adversary and debt ratchet locally).
 5. Open a PR. The title must contain the finding ID.
 
 If a finding has `verification_script: null`, it is either `closed_historical` (no script needed) or it needs a script written first. Writing the script is the first half of the work; the change is the second.
@@ -58,6 +58,7 @@ If you find yourself drifting toward a "let me first audit everything from scrat
 | Architecture decisions | `governance/adrs/` (with YAML frontmatter) |
 | Version history | `governance/CHANGELOG.md` |
 | Contributor rules | `CONTRIBUTING.md` |
+| Debt tooling / categories | `governance/DEBT_TOOLS.md`, `governance/CATEGORIES.md` |
 
 ## What this file does not do
 

@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-06-08 — F-008 closed (tech-debt ratchet)
+
+- Installed `scripts/debt_scan.py`, `scripts/check_debt_ratchet.py`, `governance/debt_config.yaml`.
+- Added CI `tech-debt` job; `make verify` now runs debt ratchet.
+- Baseline (`governance/DEBT_BASELINE.json`): ruff_unused=11, knip_unused_exports=11,
+  radon_complex_blocks=9, jscpd_duplication_pct=0.0, vulture_dead_code=0, knip_unused_files=0.
+- ADR-0009; `governance/DEBT_TOOLS.md`, `governance/CATEGORIES.md`; charter §8 index updated.
+
 ## 2026-06-07 — F-002 closed
 
 - Relocated Phase 0 `driver-tree-studio.tsx` to `archive/phase-0/`; demo imports updated.
