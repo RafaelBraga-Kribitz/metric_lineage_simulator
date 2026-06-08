@@ -1,10 +1,8 @@
 /**
- * Left sidebar: model selector, levers, assumptions ledger (280px).
+ * Left sidebar: model selector and illustrative banner (280px).
  */
 "use client";
 
-import { AssumptionsLedger } from "@/components/AssumptionsLedger/AssumptionsLedger";
-import { LeverPanel } from "@/components/LeverPanel/LeverPanel";
 import {
   Select,
   SelectContent,
@@ -16,10 +14,9 @@ import type { MetricModelState } from "@/hooks/useMetricModel";
 
 interface LeftSidebarProps {
   state: MetricModelState;
-  onSelectNode: (id: string) => void;
 }
 
-export function LeftSidebar({ state, onSelectNode }: LeftSidebarProps) {
+export function LeftSidebar({ state }: LeftSidebarProps) {
   const { model } = state;
 
   return (
@@ -38,13 +35,11 @@ export function LeftSidebar({ state, onSelectNode }: LeftSidebarProps) {
         </Select>
       </div>
 
-      <div className="mb-3 rounded-lg border border-[#78350f] bg-[#78350f33] px-3 py-1.5 text-[11.5px] text-[#FBBF24]">
+      <div className="mb-3 rounded-lg border border-[var(--color-grade-illustrative-bg)] bg-[color-mix(in_srgb,var(--color-grade-illustrative-bg)_20%,transparent)] px-3 py-1.5 text-[11.5px] text-[var(--color-grade-illustrative-text)]">
         Illustrative DTC e-commerce model. Numbers are placeholders, not estimated
         from data.
       </div>
 
-      <LeverPanel state={state} onSelectNode={onSelectNode} />
-      <AssumptionsLedger model={model} />
     </aside>
   );
 }

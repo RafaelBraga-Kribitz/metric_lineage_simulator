@@ -2,6 +2,7 @@
  * Converts BusinessModel nodes/edges to React Flow elements.
  * Edge direction: child → parent (cause flows toward north star).
  */
+import { layoutGraph } from "@/lib/graphLayout";
 import type { BusinessModel, MetricEdge } from "@/schema/types";
 import type { Edge, Node } from "@xyflow/react";
 
@@ -22,13 +23,11 @@ export function modelToNodes(
   baselineValues: Record<string, number>,
   selectedNodeId: string | null,
 ): Node<MetricNodeData>[] {
-  return model.nodes.map((n, i) => ({
+  const auto = layoutGraph(model);
+  return model.nodes.map((n) => ({
     id: n.id,
     type: "metricNode",
-    position: n.position ?? {
-      x: 40 + (i % 6) * 170,
-      y: 40 + Math.floor(i / 6) * 90,
-    },
+    position: n.position ?? auto[n.id] ?? { x: 0, y: 0 },
     data: {
       node: n,
       value: values[n.id] ?? 0,

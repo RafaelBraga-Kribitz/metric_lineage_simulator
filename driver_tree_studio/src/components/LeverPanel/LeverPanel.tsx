@@ -17,7 +17,7 @@ export function LeverPanel({ state, onSelectNode }: LeverPanelProps) {
   const controllable = model.nodes.filter((n) => n.is_controllable);
 
   return (
-    <div className="bg-bg-panel border border-border rounded-xl p-4 mb-4">
+    <div className="rounded-xl border border-border bg-bg-panel p-4">
       <div className="mb-2.5 flex items-baseline justify-between gap-2">
         <h3 className="text-sm font-bold tracking-wide text-text-primary">Levers</h3>
         <span

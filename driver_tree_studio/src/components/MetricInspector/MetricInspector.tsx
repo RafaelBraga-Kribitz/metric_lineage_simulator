@@ -1,5 +1,5 @@
 /**
- * Right inspector panel (320px): node details, governance, incoming edges.
+ * Inspector drawer: node details, governance, incoming edges (slides in from right).
  */
 "use client";
 
@@ -16,44 +16,50 @@ import {
   signedMetricValue,
 } from "@/lib/formatMetric";
 import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 
 interface MetricInspectorProps {
   state: MetricModelState;
+  open: boolean;
+  onClose: () => void;
 }
 
-export function MetricInspector({ state }: MetricInspectorProps) {
+export function MetricInspector({ state, open, onClose }: MetricInspectorProps) {
   const { model, selectedNodeId, values, baselineValues } = state;
   const node = model.nodes.find((n) => n.id === selectedNodeId);
-  const incoming = node
-    ? model.edges.filter((e) => e.parent === node.id)
-    : [];
-
+  const incoming = node ? model.edges.filter((e) => e.parent === node.id) : [];
   const layerStyles = node ? getLayerStyles(node.layer) : null;
 
   return (
-    <aside className="relative w-[320px] shrink-0 overflow-y-auto border-l border-border bg-bg-app p-4">
+    <motion.aside
+      className="fixed right-0 top-0 z-40 h-full w-[min(400px,92vw)] overflow-y-auto border-l border-border bg-bg-app p-4 shadow-[-12px_0_40px_rgba(0,0,0,0.5)]"
+      initial={false}
+      animate={{ x: open && node ? 0 : "101%" }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
+      aria-hidden={!open || !node}
+    >
       <AnimatePresence mode="wait">
-        {!node ? (
-          <motion.div
-            key="empty"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex h-full min-h-[200px] items-center justify-center text-sm text-text-muted"
-          >
-            Select a metric node to inspect
-          </motion.div>
-        ) : (
+        {node && (
           <motion.div
             key={node.id}
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 20, opacity: 0 }}
-            transition={{ duration: 0.28 }}
+            transition={{ duration: 0.22 }}
           >
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-wide text-text-muted">
-              Metric inspector
-            </p>
+            <div className="mb-3 flex items-start justify-between gap-2">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-text-muted">
+                Metric inspector
+              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-md p-1 text-text-muted hover:bg-bg-card hover:text-text-primary"
+                aria-label="Close inspector"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
             <hr className="mb-3 border-border" />
 
             {layerStyles && (
@@ -86,10 +92,11 @@ export function MetricInspector({ state }: MetricInspectorProps) {
                 {formatMetricValue(baselineValues[node.id], node.unit)}
               </span>
               <span
-                className={`text-base font-extrabold ${(values[node.id] ?? 0) >= (baselineValues[node.id] ?? 0)
+                className={`text-base font-extrabold ${
+                  (values[node.id] ?? 0) >= (baselineValues[node.id] ?? 0)
                     ? "text-delta-positive"
                     : "text-delta-negative"
-                  }`}
+                }`}
               >
                 {signedMetricValue(
                   (values[node.id] ?? 0) - (baselineValues[node.id] ?? 0),
@@ -125,9 +132,7 @@ export function MetricInspector({ state }: MetricInspectorProps) {
                     <p className="mt-1 text-xs text-text-secondary">
                       {child?.name ?? e.child}
                       {e.formula_role ? ` (${e.formula_role})` : ""}
-                      {e.elasticity !== undefined
-                        ? ` · e=${e.elasticity}`
-                        : ""}
+                      {e.elasticity !== undefined ? ` · e=${e.elasticity}` : ""}
                     </p>
                     {(e.rationale || e.mechanism || e.evidence_note) && (
                       <p className="mt-1 text-[11px] text-text-muted">
@@ -155,6 +160,6 @@ export function MetricInspector({ state }: MetricInspectorProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </aside>
+    </motion.aside>
   );
 }

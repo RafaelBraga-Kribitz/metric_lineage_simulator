@@ -147,7 +147,7 @@ export function MetricCanvas({ state }: MetricCanvasProps) {
 
   return (
     <>
-      <div className="h-full min-h-[480px] w-full rounded-xl border border-border bg-bg-app">
+      <div className="h-full w-full rounded-xl border border-border bg-bg-app">
         <ReactFlow
           nodes={nodes}
           edges={edges}
