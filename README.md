@@ -1,5 +1,18 @@
 # Metric Driver-Tree Studio
 
+![Metric Driver-Tree Studio — A driver-tree studio that keeps definitional identities, modelled elasticities, and untested beliefs apart. Phase 1 engine built; UI pending.](docs/assets/hero.png)
+
+[![Governance](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml)
+[![License: ISC](https://img.shields.io/badge/license-ISC-green)](LICENSE)
+[![Status: In development](https://img.shields.io/badge/status-In%20development-blue)](#status)
+
+**Status:** In development
+
+**Runtime:** TypeScript / Node 20
+**Codename:** `metric_lineage_simulator`
+
+Metric tools blur definitional identities, declared elasticities, and untested beliefs, which produces false precision and casual causal language. This project is a driver-tree studio that keeps those three kinds of claim separate and ranks which guesses are worth testing — a thinking aid for metric design, not an econometric oracle.
+
 ```mermaid
 flowchart TB
   seed["DTC seed JSON — ILLUSTRATIVE"] --> validate["validate — ADR-0005"]
@@ -9,16 +22,6 @@ flowchart TB
   engine -.-> p2["Phase 2 UI — pending Figma design ref"]
   p2 -.-> later["Phases 3–5 — BYOD data test, VoI UI pending"]
 ```
-
-[![Governance](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml)
-[![License: ISC](https://img.shields.io/badge/license-ISC-green)](LICENSE)
-[![Status: In development](https://img.shields.io/badge/status-In%20development-blue)](#status)
-
-**Status:** In development
-**Runtime:** TypeScript / Node 20
-**Codename:** `metric_lineage_simulator`
-
-Metric tools blur definitional identities, declared elasticities, and untested beliefs, which produces false precision and casual causal language. This project is a driver-tree studio that keeps those three kinds of claim separate and ranks which guesses are worth testing — a thinking aid for metric design, not an econometric oracle.
 
 ## Project status
 
@@ -174,6 +177,13 @@ ISC, as declared in `driver_tree_studio/package.json`. See [`LICENSE`](LICENSE).
 
 <table>
   <tr>
+    <td width="110">
+      <img
+        src="docs/assets/Author_MDS_Rafael_Braga-Kribitz_kroped.png"
+        alt="Rafael Braga-Kribitz"
+        width="96"
+      />
+    </td>
     <td>
       <strong>Rafael Braga-Kribitz</strong><br />
       Seiersberg-Pirka, Austria · Portfolio project, 2026<br />
