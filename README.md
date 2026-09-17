@@ -11,6 +11,8 @@ flowchart TB
 ```
 
 [![Governance](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml)
+[![License: ISC](https://img.shields.io/badge/license-ISC-green)](LICENSE)
+[![Status: In development](https://img.shields.io/badge/status-In%20development-blue)](#status)
 
 **Status:** In development
 **Runtime:** TypeScript / Node 20
@@ -166,7 +168,7 @@ Last validated: 2026-06-07 (Review Gate 1 approved; Phase 1 complete (36 vitest)
 
 ## License
 
-No `LICENSE` file is declared at the repository root.
+ISC, as declared in `driver_tree_studio/package.json`. See [`LICENSE`](LICENSE).
 
 ## Author
 
