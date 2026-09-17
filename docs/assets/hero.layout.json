@@ -1,0 +1,83 @@
+{
+  "output": "C:\\Users\\Benutzer1\\Dev\\portfolio-readme-work\\metric_lineage_simulator\\docs\\assets\\hero.png",
+  "width": 1600,
+  "height": 640,
+  "mode": "light",
+  "fonts": "Söhne from C:\\Users\\Benutzer1\\Dev\\braga-design-system-template\\public\\fonts",
+  "title_size": 112,
+  "descriptor_size": 36,
+  "attempts": 1,
+  "blocks": {
+    "kind": {
+      "bbox": [
+        72,
+        72,
+        376,
+        104
+      ],
+      "lines": [
+        "BRAGA · APPLICATION"
+      ],
+      "font": "SohneMono-Buch.otf"
+    },
+    "status": {
+      "bbox": [
+        1304,
+        72,
+        1528,
+        104
+      ],
+      "lines": [
+        "IN DEVELOPMENT"
+      ],
+      "font": "SohneMono-Buch.otf"
+    },
+    "facts": {
+      "bbox": [
+        72,
+        542,
+        1523,
+        570
+      ],
+      "lines": [
+        "LICENSE  ISC  ·  RUNTIME  TypeScript / Node 20  ·  REPO  github.com/RafaelBraga-Kribitz/metric_lineage_simulator"
+      ],
+      "font": "SohneMono-Buch.otf"
+    },
+    "title": {
+      "bbox": [
+        72,
+        184,
+        1423,
+        298
+      ],
+      "lines": [
+        "Metric Driver-Tree Studio"
+      ],
+      "font": "Sohne-Fett.otf"
+    },
+    "descriptor": {
+      "bbox": [
+        72,
+        326,
+        1205,
+        422
+      ],
+      "lines": [
+        "A driver-tree studio that keeps definitional identities, modelled",
+        "elasticities, and untested beliefs apart. Phase 1 engine built; UI pending."
+      ],
+      "font": "Sohne-Buch.otf"
+    }
+  },
+  "guardrails": [
+    "safe-area",
+    "wrap-and-shrink",
+    "line-length",
+    "no-overlap",
+    "glyph-coverage-per-char",
+    "contrast>=4.5",
+    "pixel-scan"
+  ],
+  "validated": true
+}
