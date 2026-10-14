@@ -75,7 +75,7 @@ export function LeverPanel({ state, onSelectNode }: LeverPanelProps) {
                 accentColor:
                   Math.abs(val - base) > 1e-9
                     ? "var(--color-edge-identity)"
-                    : "#6B7280",
+                    : "var(--color-lever-idle)",
               }}
             />
           </div>

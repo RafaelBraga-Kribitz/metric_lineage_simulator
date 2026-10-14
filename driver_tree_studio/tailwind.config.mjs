@@ -6,6 +6,9 @@ const config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"DM Sans"', "sans-serif"],
+      },
       colors: {
         bg: {
           app: "var(--color-bg-app)",
@@ -50,6 +53,22 @@ const config = {
         delta: {
           positive: "var(--color-delta-positive)",
           negative: "var(--color-delta-negative)",
+        },
+        notice: {
+          text: "var(--color-notice-text)",
+          bg: "var(--color-notice-bg)",
+          border: "var(--color-notice-border)",
+        },
+        recon: {
+          "ok-bg": "var(--color-recon-ok-bg)",
+          "ok-border": "var(--color-recon-ok-border)",
+          "bad-bg": "var(--color-recon-bad-bg)",
+          "bad-border": "var(--color-recon-bad-border)",
+        },
+        caveat: {
+          bg: "var(--color-caveat-bg)",
+          border: "var(--color-caveat-border)",
+          text: "var(--color-caveat-text)",
         },
         braga: {
           coral: "var(--color-braga-coral)",

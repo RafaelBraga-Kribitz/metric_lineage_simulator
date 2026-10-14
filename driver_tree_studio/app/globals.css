@@ -59,6 +59,21 @@
   --color-node-input-text: #0f172a;
   --color-node-guardrail-fill: #e11d48;
   --color-node-guardrail-text: #ffffff;
+
+  /* Derived tokens: values verbatim from CLAUDE_DESIGN_SYSTEM.md §6 patterns */
+  --color-text-on-fill: #ffffff;
+  --color-text-on-driver: #e2e8f0;
+  --color-lever-idle: #6b7280;
+  --color-notice-text: #fbbf24;
+  --color-notice-bg: #78350f33;
+  --color-notice-border: #78350f;
+  --color-recon-ok-bg: #052e1f;
+  --color-recon-ok-border: #065f46;
+  --color-recon-bad-bg: #3f1d1d;
+  --color-recon-bad-border: #7f1d1d;
+  --color-caveat-bg: #3f1d1d;
+  --color-caveat-border: #dc2626;
+  --color-caveat-text: #fca5a5;
 }
 
 @layer base {

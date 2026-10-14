@@ -38,7 +38,7 @@ export function AssumptionsLedger({ model }: AssumptionsLedgerProps) {
 
       {open && (
         <div className="mt-3">
-          <p className="mb-3 rounded-lg border border-[#78350f] bg-[#78350f33] px-3 py-1.5 text-[11.5px] text-[#FBBF24]">
+          <p className="mb-3 rounded-lg border border-notice-border bg-notice-bg px-3 py-1.5 text-[11.5px] text-notice-text">
             {LEDGER_DISCLAIMER}
           </p>
           <p className="mb-2 text-xs font-bold text-text-secondary">

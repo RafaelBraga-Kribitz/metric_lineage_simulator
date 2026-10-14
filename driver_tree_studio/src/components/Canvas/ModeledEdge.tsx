@@ -52,7 +52,7 @@ export function ModeledEdge({
           style={{
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             background: "var(--color-edge-modeled)",
-            color: "#ffffff",
+            color: "var(--color-text-on-fill)",
             border: "1px solid var(--color-edge-modeled)",
           }}
         >

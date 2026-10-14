@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/600.css";
+import "@fontsource/dm-sans/700.css";
+import "@fontsource/dm-sans/800.css";
 import "./globals.css";
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 export const metadata: Metadata = {
   title: "Metric Driver-Tree Studio",
@@ -20,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.className} min-h-screen bg-bg-app text-text-primary`}>
+      <body className="font-sans min-h-screen bg-bg-app text-text-primary">
         {children}
       </body>
     </html>

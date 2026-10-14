@@ -49,6 +49,7 @@ export function modelToEdges(model: BusinessModel): Edge<MetricEdgeData>[] {
           ? "modeled"
           : "hypothesized",
     data: { edge: e },
+    ariaLabel: `${e.kind} edge: ${e.child} to ${e.parent}`,
     deletable: e.kind !== "identity",
     selectable: e.kind !== "identity",
   }));

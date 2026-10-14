@@ -46,8 +46,8 @@ export function AppHeader({
         <div
           className={`flex flex-col gap-0.5 rounded-[10px] px-3 py-2 text-xs font-bold ${
             identityReconciled
-              ? "border border-[#065f46] bg-[#052e1f] text-delta-positive"
-              : "border border-[#7f1d1d] bg-[#3f1d1d] text-delta-negative"
+              ? "border border-recon-ok-border bg-recon-ok-bg text-delta-positive"
+              : "border border-recon-bad-border bg-recon-bad-bg text-delta-negative"
           }`}
         >
           <span>{identityReconciled ? "✓" : "✗"} Identity reconciled</span>

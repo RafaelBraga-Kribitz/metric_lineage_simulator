@@ -1,0 +1,19 @@
+id: F-016
+title: "Studio app had no lint, build, e2e or CI gate; build needed network for fonts"
+category: fake_completion
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  .github/workflows/governance.yml — no job typechecks, lints, builds or tests the Next.js app.
+  driver_tree_studio/package.json — no lint script; eslint 9 installed without a config.
+  driver_tree_studio/app/layout.tsx — next/font/google fetches at build time; `next build`
+    fails offline ("An error occurred in next/font").
+  src/components/** — raw hex literals despite CLAUDE_DESIGN_SYSTEM.md §2.
+verification_script: tests/governance/test_f016_app_quality_gates.py
+notes: |
+  Remediation: eslint flat config (next core-web-vitals + typescript, raw-hex ban in
+  components, framework-free engine imports); self-hosted DM Sans via @fontsource; static
+  export (`output: "export"`); Playwright smoke test against the export; CI `app` job.

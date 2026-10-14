@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-10-14 — F-016 closed (app quality gates)
+
+- ESLint flat config: Next core-web-vitals + TypeScript, raw-hex ban in components,
+  framework-free engine/schema/lib imports. Fixed 2 lint errors (setState in effect, empty interface).
+- DM Sans self-hosted via `@fontsource` (offline, reproducible build); static export.
+- Derived colour tokens documented in `CLAUDE_DESIGN_SYSTEM.md` §2; components carry no raw hex.
+- Playwright smoke test (no console errors, three edge kinds rendered); CI `app` job.
+
 ## 2026-10-14 — F-015 closed (VoI + prioritize engine)
 
 - `valueOfInformation.ts`: per-edge P90−P10 spread of the target under a planned driver
