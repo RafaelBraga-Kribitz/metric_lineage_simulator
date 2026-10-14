@@ -1,0 +1,20 @@
+id: F-020
+title: "Phase 4 launch polish missing: no share URL, embed, metadata or static deploy config"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  governance/adrs/0008-phases-2-through-5.md §Phase 4 — "SEO per model; shareable URL state;
+    iframe embed".
+  driver_tree_studio/app/ — single route, no URL state; layout metadata = title + description.
+  driver_tree_studio/vercel.json — no output directory for a static export.
+verification_script: tests/governance/test_f020_share_embed.py
+notes: |
+  Remediation: src/lib/shareState.ts (versioned `#s=v1.` fragment, deflate-raw + base64url,
+  16k-char and 1 MB decode caps, structural guard), Share link / Embed controls, /embed route
+  (noindex), Open Graph/Twitter metadata with og.png from the real UI, robots.txt, static
+  vercel.json, docs/deploy.md (owner steps). Slider thumbs now have accessible names.
+  Deployment itself stays human-only.

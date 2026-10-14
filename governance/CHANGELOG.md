@@ -1,5 +1,12 @@
 # Governance Changelog
 
+## 2026-10-14 — F-020 closed (share URL, embed, metadata, deploy config)
+
+- Versioned, compressed, size-capped URL-fragment state (`#s=v1.`); Share link / Embed
+  controls; `/embed` route (noindex); Open Graph + Twitter metadata, `og.png` from the real UI;
+  robots.txt; static `vercel.json`; `docs/deploy.md` (owner steps; deploy stays human-only).
+- Slider thumbs get accessible names/value text. vitest 80 → 85; e2e 4 → 6.
+
 ## 2026-10-14 — F-019 closed (seed authoring pass + headline result)
 
 - Page speed edge → modeled/ESTIMATED on `product_view_rate` with two public sources and a
