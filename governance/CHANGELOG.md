@@ -1,5 +1,12 @@
 # Governance Changelog
 
+## 2026-10-14 — F-017 closed (Phase 2 analysis surfaces)
+
+- Analysis panel (accessible tabs): tornado chart (±10%), Monte Carlo forecast range in a Web
+  Worker (P10/P50/P90, histogram, variance shares, GUESS caveat), untested-beliefs list.
+- Illustrative notice banner (verbatim); arrow markers inherit edge colour; keyboard node
+  selection; minimap removed (occluded nodes). e2e 1 → 2 specs; vitest 73 → 75.
+
 ## 2026-10-14 — F-016 closed (app quality gates)
 
 - ESLint flat config: Next core-web-vitals + TypeScript, raw-hex ban in components,

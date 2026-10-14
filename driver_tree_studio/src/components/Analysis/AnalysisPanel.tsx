@@ -1,0 +1,35 @@
+/**
+ * Analysis surface: sensitivity, forecast range, untested beliefs (+ data test, VoI later).
+ */
+"use client";
+
+import { MonteCarloPanel } from "@/components/Analysis/MonteCarloPanel";
+import { TornadoChart } from "@/components/Analysis/TornadoChart";
+import { UntestedBeliefs } from "@/components/Analysis/UntestedBeliefs";
+import { Tabs, type TabDef } from "@/components/shared/Tabs";
+import type { MetricModelState } from "@/hooks/useMetricModel";
+import { useState } from "react";
+
+type AnalysisTab = "sensitivity" | "montecarlo" | "beliefs";
+
+const TABS: TabDef<AnalysisTab>[] = [
+  { id: "sensitivity", label: "Sensitivity" },
+  { id: "montecarlo", label: "Forecast range" },
+  { id: "beliefs", label: "Untested beliefs" },
+];
+
+export function AnalysisPanel({ state }: { state: MetricModelState }) {
+  const [tab, setTab] = useState<AnalysisTab>("sensitivity");
+  return (
+    <section aria-labelledby="analysis-heading" className="rounded-xl border border-border bg-bg-panel p-4">
+      <h3 id="analysis-heading" className="mb-2 text-sm font-bold tracking-wide text-text-primary">
+        Analysis
+      </h3>
+      <Tabs label="Analysis views" tabs={TABS} active={tab} onChange={setTab} idPrefix="analysis">
+        {tab === "sensitivity" && <TornadoChart state={state} />}
+        {tab === "montecarlo" && <MonteCarloPanel state={state} />}
+        {tab === "beliefs" && <UntestedBeliefs model={state.model} />}
+      </Tabs>
+    </section>
+  );
+}

@@ -2,6 +2,7 @@
  * Converts BusinessModel nodes/edges to React Flow elements.
  * Edge direction: child → parent (cause flows toward north star).
  */
+import { MarkerType } from "@xyflow/react";
 import { layoutGraph } from "@/lib/graphLayout";
 import type { BusinessModel, MetricEdge } from "@/schema/types";
 import type { Edge, Node } from "@xyflow/react";
@@ -49,6 +50,13 @@ export function modelToEdges(model: BusinessModel): Edge<MetricEdgeData>[] {
           ? "modeled"
           : "hypothesized",
     data: { edge: e },
+    // Arrow markers inherit the edge colour (CLAUDE_DESIGN_SYSTEM.md §5).
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 14,
+      height: 14,
+      color: `var(--color-edge-${e.kind})`,
+    },
     ariaLabel: `${e.kind} edge: ${e.child} to ${e.parent}`,
     deletable: e.kind !== "identity",
     selectable: e.kind !== "identity",

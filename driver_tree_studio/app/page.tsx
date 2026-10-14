@@ -3,6 +3,7 @@
 /**
  * Main application shell: header, map viewport, scrollable controls, methodology bar.
  */
+import { AnalysisPanel } from "@/components/Analysis/AnalysisPanel";
 import { AppHeader } from "@/components/AppHeader/AppHeader";
 import { AssumptionsLedger } from "@/components/AssumptionsLedger/AssumptionsLedger";
 import { MetricCanvas } from "@/components/Canvas/MetricCanvas";
@@ -11,6 +12,7 @@ import { LeverPanel } from "@/components/LeverPanel/LeverPanel";
 import { MethodologyNote } from "@/components/MethodologyNote/MethodologyNote";
 import { MetricInspector } from "@/components/MetricInspector/MetricInspector";
 import { ResultsPanel } from "@/components/ResultsPanel/ResultsPanel";
+import { IllustrativeNotice } from "@/components/shared/Caveats";
 import { FormulaField } from "@/components/VerbalBuilder/FormulaField";
 import { useMetricModel } from "@/hooks/useMetricModel";
 import { AnimatePresence, motion } from "framer-motion";
@@ -79,10 +81,12 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-4 p-4 pt-0">
+          <IllustrativeNotice model={state.model} />
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.05fr_1fr]">
             <LeverPanel state={state} onSelectNode={setSelectedNodeId} />
             <ResultsPanel state={state} />
           </div>
+          <AnalysisPanel state={state} />
           <AssumptionsLedger model={state.model} />
           <FormulaField state={state} />
         </div>
