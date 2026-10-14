@@ -1,5 +1,12 @@
 # Governance Changelog
 
+## 2026-10-14 — F-018 closed (data-test panel)
+
+- "Test with your data" tab: CSV drop/choose (browser-only), edge and column mapping, design
+  (observed vs randomized), verdict + statistics, fixed note, what-would-prove-this, leakage
+  alert, accept → grade promotion. SYNTHETIC loyalty example demonstrates the selection trap.
+- vitest 75 → 77; e2e 2 → 4.
+
 ## 2026-10-14 — F-017 closed (Phase 2 analysis surfaces)
 
 - Analysis panel (accessible tabs): tornado chart (±10%), Monte Carlo forecast range in a Web

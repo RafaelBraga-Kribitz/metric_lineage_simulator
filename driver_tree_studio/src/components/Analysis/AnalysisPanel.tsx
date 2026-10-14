@@ -6,16 +6,18 @@
 import { MonteCarloPanel } from "@/components/Analysis/MonteCarloPanel";
 import { TornadoChart } from "@/components/Analysis/TornadoChart";
 import { UntestedBeliefs } from "@/components/Analysis/UntestedBeliefs";
+import { DataTestPanel } from "@/components/DataTest/DataTestPanel";
 import { Tabs, type TabDef } from "@/components/shared/Tabs";
 import type { MetricModelState } from "@/hooks/useMetricModel";
 import { useState } from "react";
 
-type AnalysisTab = "sensitivity" | "montecarlo" | "beliefs";
+type AnalysisTab = "sensitivity" | "montecarlo" | "beliefs" | "datatest";
 
 const TABS: TabDef<AnalysisTab>[] = [
   { id: "sensitivity", label: "Sensitivity" },
   { id: "montecarlo", label: "Forecast range" },
   { id: "beliefs", label: "Untested beliefs" },
+  { id: "datatest", label: "Test with your data" },
 ];
 
 export function AnalysisPanel({ state }: { state: MetricModelState }) {
@@ -29,6 +31,7 @@ export function AnalysisPanel({ state }: { state: MetricModelState }) {
         {tab === "sensitivity" && <TornadoChart state={state} />}
         {tab === "montecarlo" && <MonteCarloPanel state={state} />}
         {tab === "beliefs" && <UntestedBeliefs model={state.model} />}
+        {tab === "datatest" && <DataTestPanel state={state} />}
       </Tabs>
     </section>
   );
