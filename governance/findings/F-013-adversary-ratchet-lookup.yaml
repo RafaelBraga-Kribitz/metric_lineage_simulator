@@ -1,0 +1,18 @@
+id: F-013
+title: "Adversary ratchet never enforces: finding_status() looks up F-NNN.yaml, files are slugged"
+category: fake_completion
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  tests/governance/_ratchet.py:finding_status — reads governance/findings/{id}.yaml, but
+    every finding file is F-NNN-<slug>.yaml, so it always returns None.
+  ratchet() therefore xfails (pytest exit 0) instead of failing for closed findings;
+    scripts/check_closed_findings.py reports [PASS] for any regressed recurrence test.
+  Reproduced 2026-10-14: finding_status('F-007') -> None.
+verification_script: tests/governance/test_f013_ratchet_resolves_findings.py
+notes: |
+  Remediation: resolve by ID prefix (F-NNN-*.yaml). The verification test deliberately
+  does not use ratchet() itself, since that is the component under test.
