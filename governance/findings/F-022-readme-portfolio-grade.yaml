@@ -1,0 +1,20 @@
+id: F-022
+title: "README describes a pending UI and 'no results'; images are not from the product"
+category: documentation_entropy
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  README.md — "Phase 2 UI ... is pending a Figma design ref", "There are no results yet",
+    "36 tests"; after F-012..F-021 all three are false.
+  docs/assets/hero.png — banner text "Phase 1 engine built; UI pending".
+  PROJECT_CHARTER.md §4/§5 — Phases 2–5 listed as pending; gate table cites 36 tests.
+verification_script: tests/governance/test_f022_readme_portfolio.py
+notes: |
+  Remediation: README rewritten question → data → method → result → limitations → decision,
+  first screen = decision statement, ranking chart, sourced number with grade, run commands;
+  images captured from the built UI by `npm run screenshots` (hero.png, what-to-test-first.png,
+  data-test.png, demo.gif). Passes the braga-portfolio-docs README gate under the current
+  registry entry and under the proposed Functional entry (checked locally). Charter v0.5.0.

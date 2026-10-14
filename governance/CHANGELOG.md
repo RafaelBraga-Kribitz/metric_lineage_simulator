@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-10-14 — F-022 closed (README portfolio grade); charter v0.5.0
+
+- README rewritten (question → data → method → result → limitations → decision); first
+  screen carries the decision, the ranking chart, the sourced €5,832 figure with its grade,
+  and run commands. Images captured from the built UI (`npm run screenshots`).
+- Charter v0.5.0: Phases 2–5 and the P4 export bridge marked built with finding refs; gates
+  table updated; launch gate still not met.
+
 ## 2026-10-14 — F-021 closed (export bridge + Power BI kit)
 
 - Exports: KPI dictionary CSV, ANSI SQL `kpi_tree` view (identity formulas only), DAX

@@ -1,6 +1,6 @@
 # Metric Driver-Tree Studio
 
-![Metric Driver-Tree Studio — A driver-tree studio that keeps definitional identities, modelled elasticities, and untested beliefs apart. Phase 1 engine built; UI pending.](docs/assets/hero.png)
+![Metric Driver-Tree Studio interface: a contribution-profit driver tree with thick blue identity edges, amber modeled edges with grade chips, and a grey dashed hypothesized edge with a question-mark badge](docs/assets/hero.png)
 
 [![Governance](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml)
 [![License: ISC](https://img.shields.io/badge/license-ISC-green)](LICENSE)
@@ -8,166 +8,181 @@
 
 **Status:** In development
 
-**Runtime:** TypeScript / Node 20
-**Codename:** `metric_lineage_simulator`
+KPI trees (Kennzahlensysteme) usually mix three different kinds of claim: definitions that are true by construction, assumed elasticities, and beliefs nobody has tested. When they sit in one formula, a guess looks as solid as a definition. This studio keeps the three apart, forecasts what the guesses imply, and ranks which guess is worth testing first.
 
-Metric tools blur definitional identities, declared elasticities, and untested beliefs, which produces false precision and casual causal language. This project is a driver-tree studio that keeps those three kinds of claim separate and ranks which guesses are worth testing — a thinking aid for metric design, not an econometric oracle.
+## Decision summary
 
-```mermaid
-flowchart TB
-  seed["DTC seed JSON — ILLUSTRATIVE"] --> validate["validate — ADR-0005"]
-  validate --> engine["Engine: graph, compute, what-if, tornado, MC, recommend"]
-  engine --> tests["36 vitest — Phase 1 Gate 1 approved"]
-  p0["Phase 0 Artifacts demo — archived"] -.-> seed
-  engine -.-> p2["Phase 2 UI — pending Figma design ref"]
-  p2 -.-> later["Phases 3–5 — BYOD data test, VoI UI pending"]
+**Test the page-speed guess first.** On the illustrative DTC e-commerce model, uncertainty about how page load speed moves product-page views blurs a planned "10% faster pages" decision by **€5,832 of contribution profit per period** (P90 − P10, on a €48,000 baseline). That is 5.5× more value of information per unit of test cost than the next guess (email capture, €534). This ranks what to *learn*, not what to *do*.
+
+![Studio panel 'What to test first': page speed → product view rate ranked 1 with a value-of-information bar of €5,832 and grade 'estimated'; email capture ranked 2 at €534 and 'illustrative'; loyalty → LTV unranked because it has no range yet](docs/assets/what-to-test-first.png)
+
+*The ranking panel in the app: bar length is the spread of the north star that each guess's declared range produces; priority divides it by a declared test cost.*
+
+The €5,832 figure comes from an elasticity range graded **estimated**: its bound is translated from the public Deloitte for Google study [*Milliseconds Make Millions* (2020)](https://web.dev/case-studies/milliseconds-make-millions), which associates 0.1 s faster mobile pages with +8.4% retail conversion. The edge's note in the app explains the translation. It is an external, observational benchmark, not a measurement of this shop.
+
+```bash
+git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
+cd metric_lineage_simulator/driver_tree_studio
+npm ci
+npm run dev            # studio at http://localhost:3000
+npm test               # 92 unit tests: engine, statistics, exports
+npm run example        # regenerates the result above into docs/results/
 ```
 
-## Project status
-
-**Phase 1 complete (36 vitest); Review Gate 1 approved** 2026-06-07. The TypeScript engine, schema, formula parser, Monte Carlo, and DTC seed live in `driver_tree_studio/` and match [ADR-0006](governance/adrs/0006-engine-and-formula.md) / [ADR-0007](governance/adrs/0007-phase-1-implementation.md).
-
-Phase 2 UI (Next.js + React Flow + funnel + verbal builder) is **pending** a Figma design ref ([ADR-0008](governance/adrs/0008-phases-2-through-5.md)). Phases 3–5 (BYOD data test, share URLs, Guesstimate / value-of-information UI) are also pending. There are **no results yet** to quote: DTC seed numbers are illustrative until a defended authoring pass; a public BRAGA-branded launch is gated at Phase 4.
-
-Phase 0 is archived (`archive/phase-0/`; runnable via `demo/`). It is not product SSOT.
+What it covers, in analyst terms: KPI and Kennzahlen design as a driver tree (Deckungsbeitrag down to funnel-stage Konversionsraten), forecasting under uncertainty (seeded Monte Carlo ranges), a bring-your-own-CSV relationship test, ETL-style validation (every identity must reconcile to 1e-6), and a hand-off to the BI stack: SQL view DDL, a KPI dictionary CSV and Power BI DAX measures. The engine is plain TypeScript with no statistics library, so every formula is readable in the source; there is no Python in the product.
 
 ## See it running
 
-No hosted live demo. Phase 2 is the interactive product surface; it is not the current gate.
+![Animated walk-through of the real UI: the what-to-test-first ranking, the sensitivity tornado, the Monte Carlo forecast range, a data test on synthetic data with the association-not-effect note, and the SQL / Power BI export tab](docs/assets/demo.gif)
 
-The archived Phase 0 Artifacts prototype can be opened locally:
-
-```bash
-cd demo && npm install && npm run dev
-```
-
-That shell loads `archive/phase-0/driver-tree-studio.tsx`. Logic extracted from it now lives in `driver_tree_studio/` ([ADR-0007](governance/adrs/0007-phase-1-implementation.md)). Intended user workflow (not yet a shipped UI) is the experimentation flywheel in [ADR-0004](governance/adrs/0004-product-model-and-positioning.md): topology → guesstimate → propagate (value of information) → prioritize → test → update.
+No hosted demo. Deployment is an owner step; the static build and Vercel config are ready ([docs/deploy.md](docs/deploy.md)). Every screen above is captured from the built app by `npm run screenshots`.
 
 ## Explore this project
 
 | Audience | Start here |
 |---|---|
-| Fast path | [Project status](#project-status) and the three edge kinds below |
-| Deep path | [ADR-0004](governance/adrs/0004-product-model-and-positioning.md) (product model) → [ADR-0005](governance/adrs/0005-schema-and-validation.md) / [ADR-0006](governance/adrs/0006-engine-and-formula.md) (schema + engine) → `cd driver_tree_studio && npm test` |
+| Hiring manager, 2 minutes | [Decision summary](#decision-summary) → [Results](#results) → [Limitations](#limitations) |
+| Analyst / BI developer | [Power BI build kit](docs/powerbi/README.md) → [`kpi_tree.sql`](docs/powerbi/kpi_tree.sql) → [`measures.dax`](docs/powerbi/measures.dax) |
+| Technical reviewer | [Method](#method) → [`estimate.ts`](driver_tree_studio/src/engine/estimate.ts) → [Validation](#validation) → [ADR-0010](governance/adrs/0010-portfolio-completion-scope.md) |
 
-## Method
+## Question
 
-Input is a `BusinessModel` (nodes, edges, north star, narrative). Transformation is typed validation, then a deterministic engine. Output is recomputed values, what-if / tornado deltas, Monte Carlo percentiles, and a Phase 1 recommender — not a causal claim.
-
-Three edge kinds ([ADR-0004](governance/adrs/0004-product-model-and-positioning.md)):
-
-| Kind | What is known | In compute |
-|---|---|---|
-| `identity` | Locked definitional formula | Yes |
-| `modeled` | Mechanism + elasticity (point or distribution) + functional form | Yes, flagged |
-| `hypothesized` | Direction + rationale only | No (topology) |
-
-Guesstimate is not a fourth kind: it is `modeled` with `elasticity_distribution`. Computation flows child → parent. Observational findings are never labeled causal; “causal” is reserved for a backing method.
-
-```text
-1. TOPOLOGY      hypothesized edge: A may affect B, no number
-2. GUESSTIMATE   modeled edge: elasticity distribution + functional form
-3. PROPAGATE     does uncertainty move the north star? (value of information)
-4. PRIORITIZE    rank tests by impact × uncertainty / test cost
-5. TEST          estimate from the user's data
-6. UPDATE        promote the edge, narrow the distribution → back to 3
-```
-
-Steps 2–3 decide what to test. Step 5 yields association unless an experiment backs causation. VoI / Guesstimate UI is Phase 5, not Phase 1.
+Given a contribution-profit tree for a direct-to-consumer shop, **which uncertain assumption should be tested before acting on it?** A second question runs through the whole tool: how do you show an assumption's uncertainty without dressing it up as evidence?
 
 ## Data
 
-The committed seed `driver_tree_studio/src/content/dtc_ecommerce.json` is an **ILLUSTRATIVE** direct-to-consumer ecommerce tree. North star is contribution profit (baseline 48,000 in the seed), not revenue. Identity identities in the seed:
+| Input | What it is | Epistemic status |
+|---|---|---|
+| [`dtc_ecommerce.json`](driver_tree_studio/src/content/dtc_ecommerce.json) | 18 metrics, 14 identity edges, 3 modeled edges, 1 hypothesized edge; contribution profit €48,000 per period | Baselines **ILLUSTRATIVE** |
+| Page speed → product views range | triangular(−2.1, −0.5, 0) elasticity; two public sources stored on the edge | **Estimated** from public benchmarks |
+| Email capture → returning sessions range | triangular(0, 0.3, 0.6) | **ILLUSTRATIVE**; no public source found, flagged in the UI |
+| Loyalty → LTV | direction only, with a selection-trap warning | **Hypothesized**; never computed |
+| Your CSV (data-test tab) | any two numeric columns; read in the browser, never uploaded | yours |
+| [`kpi_inputs_SYNTHETIC.csv`](docs/powerbi/kpi_inputs_SYNTHETIC.csv) | 12 months generated from the baselines with seeded 5% noise | **SYNTHETIC**, for the BI kit only |
 
-- `contribution_profit = net_revenue - variable_costs`
-- `net_revenue = orders × average_order_value`
-- `variable_costs = orders × cost_per_order`
-- `orders = sessions × conversion_rate`
-- `sessions = new_sessions + returning_sessions`
+German labels (Deckungsbeitrag, Warenkorbwert, Konversionsrate) are illustrative textbook terms, not any company's definitions. No personal, scraped or client data is in this repository.
 
-One modeled edge (`email_capture_rate → returning_sessions`, linear, elasticity 0.3) is tagged illustrative. Two hypothesized edges (`page_load_speed → conversion_rate`; `loyalty_membership → customer_ltv` with a selection-trap warning) carry evidence grade `none`. Austrian preset labels are illustrative labels only, never copies of real internal metrics ([ADR-0004](governance/adrs/0004-product-model-and-positioning.md)).
+## Method
 
-No `VERIFIED` client warehouse feed is in this repository. Seed numbers stay illustrative until the Phase 4 authoring pass.
+Three edge kinds, drawn differently everywhere in the UI:
+
+| Kind | Canvas | What is claimed | Used in numbers |
+|---|---|---|---|
+| `identity` | thick blue | true by definition (`orders = sessions × conversion_rate`) | yes, exactly |
+| `modeled` | amber + grade chip | an elasticity with a named functional form and a declared range | yes, flagged |
+| `hypothesized` | grey dashed + “?” | a direction only | no |
+
+1. **Compute.** Values flow child → parent in topological order. Modeled effects multiply onto their target.
+2. **What-if and tornado.** Move any controllable input; the tornado shows the north-star change at ±10% per lever.
+3. **Forecast range.** Monte Carlo (seeded, in a Web Worker) samples input ranges and elasticity ranges and reports P10 / P50 / P90 plus each input's share of the spread.
+4. **Value of information.** For each modeled edge with a range: move its driver by the planned change, sample only that edge's elasticity (20,000 draws), and take P90 − P10 of the north star. Priority = that spread ÷ declared test cost.
+5. **Test with data.** Pearson r with a Fisher-z 95% CI, OLS with a t-based slope CI, elasticity at the means, and an 80/20 out-of-sample r². The verdict separates *association* from *effect*. Every verdict carries a fixed note and a “what would prove this” design. Accepting promotes the edge's grade to `observational`, or to `experimental` only if the user declares a randomized design.
+
+## Results
+
+### Page speed ranks first: €5,832 value of information, 5.5× the next guess
+
+| Rank | Guess | Grade | Planned change | Contribution profit P10 – P90 | VoI | Test cost | Priority |
+|---|---|---|---|---|---|---|---|
+| 1 | page load speed → product view rate | estimated | −10% load time | €49,534 – €55,366 | €5,832 | 2 | 2,916 |
+| 2 | email capture → returning sessions | illustrative | +10% capture | €48,214 – €48,747 | €534 | 1 | 534 |
+| — | average order value → customer LTV | illustrative | — | does not feed the north star | — | 3 | — |
+| — | loyalty → customer LTV | none | — | needs a range first | — | 5 | — |
+
+Compared with the €48,000 baseline, the page-speed range spans a profit gain of 3% to 15%, while email capture's spans 0.4% to 1.6%. Even after dividing by a test cost twice as high, page speed stays ahead. Reproduce with `npm run example`; the full table and sources are in [docs/results/worked_example.md](docs/results/worked_example.md), and a test fails if the committed file drifts from a fresh run.
+
+> This interval is the uncertainty in your GUESS, not evidence. A distribution looks like data and is not. Its only purpose is to help you decide what to test, never to estimate impact.
 
 ## Validation
 
-How this is kept from producing plausible-looking numbers:
+| Gate | What it checks | Result |
+|---|---|---|
+| `npm test` (vitest) | engine, identity reconciliation, functional forms, Monte Carlo, estimator against Anscombe I reference values, fast-check properties, CSV, share-link limits, exports | 92 tests pass |
+| `npm run coverage` | engine + schema + lib | 94.6% lines; engine 97.6%; `estimate.ts` 99.2% |
+| `npm run e2e` (Playwright) | real static build: three edge kinds, analysis tabs by keyboard, data test, share link → same numbers, embed, export download, **no console errors** | 7 tests pass |
+| SQL export | `kpi_tree` view recomputes every identity; executed in SQLite (and DuckDB during development) | matches the engine within 1e-6 |
+| `make verify` | governance findings re-verified on every PR, debt ratchet | 21 closed findings hold |
+| `npm run lint` / `typecheck` | strict TypeScript; ESLint bans raw hex colours in components and React imports in the engine | clean |
 
-| Gate | What it checks |
-|---|---|
-| `validate()` ([ADR-0005](governance/adrs/0005-schema-and-validation.md)) | Edge refs, DAG, north star, controllable leaves, per-kind fields, double-count, identity reconciliation (`rel error < 1e-6`) |
-| Phase 1 vitest matrix ([ADR-0007](governance/adrs/0007-phase-1-implementation.md)) | Schema fail-per-rule, formula parser, topo/cycles, identity recompute, four functional forms, what-if, tornado, Monte Carlo p10<p50<p90, hypothesized edges in `untestedBeliefs` |
-| `cd driver_tree_studio && npx vitest run` | **36 tests** — Review Gate 1 input |
-| `make verify` | Governance adversary + debt ratchet ([ADR-0009](governance/adrs/0009-tech-debt-ratchet.md)) |
+## Limitations
 
-Monte Carlo is seeded. Modeled effects are assumed multiplicative and independent; that assumption is part of the methodology, not hidden.
+- **Illustrative baselines.** The DTC numbers are a plausible shape, not a real shop. Two of three modeled edges are still illustrative, so the project's own launch gate (ADR-0004) for a public, name-attached launch is not met.
+- **Independence and multiplicativity.** Modeled effects multiply and are independent; Monte Carlo samples inputs independently (order value and cost per order do not co-move), which widens ranges.
+- **Association, not effect.** The data test on observational data reports association only; the verdict says so on every run. Only a randomized design declared by the user is labelled an effect estimate, and the tool cannot check that the randomization was sound.
+- **Value of information is a ranking device.** It measures how much a guess's declared range moves a planned outcome; a wider guess scores higher whether or not it is right.
+- **Benchmark transfer.** The page-speed bound comes from a multi-brand study using four speed metrics, not median load time on one shop.
+- **Single-player.** No accounts, no backend, no collaboration; state lives in the browser and in share links.
+- **DAX is checked by structure, not in Power BI.** The kit lists the values a correct build must show.
+
+## Decision and next test
+
+Run a speed test before any speed roadmap is sized: deliberately add or remove load time for a random share of sessions (or stage a rollout) and measure product-page views. Feed the result back through the data-test tab; the edge's grade then moves from `estimated` to `experimental`, its range narrows, and the ranking updates.
 
 ## Architecture
 
-Hero diagram above. Implemented Phase 1 package ([ADR-0007](governance/adrs/0007-phase-1-implementation.md)):
+The studio is a static Next.js app over a framework-free TypeScript engine. A model is validated, computed, and analysed entirely in the browser; exports and the worked example are produced by the same engine from Node scripts.
 
-```text
-driver_tree_studio/
-  src/schema/     types.ts, validate.ts
-  src/engine/     graph, compute, whatif, sensitivity, montecarlo, recommend
-  src/lib/        formula parser, rng
-  src/content/    dtc_ecommerce.json
-  tests/          schema, engine, lib, content
+```mermaid
+flowchart LR
+  seed["DTC model JSON<br/>(ILLUSTRATIVE + sourced ranges)"] --> validate["validate()<br/>DAG, fields, reconciliation 1e-6"]
+  validate --> engine["engine: compute · what-if · tornado<br/>Monte Carlo · value of information · estimate"]
+  engine --> ui["Next.js studio<br/>canvas · analysis tabs · data test"]
+  csv["your CSV<br/>(in-browser)"] --> engine
+  ui --> share["share link #s=v1 · /embed"]
+  engine --> exports["exports: KPI CSV · SQL view · DAX"]
+  exports --> pbi["docs/powerbi build kit"]
+  engine --> result["npm run example<br/>docs/results"]
 ```
 
-`recommend.ts` uses a Phase 1 simplification: tornado top levers, below-baseline guardrails, all hypothesized edges as untested beliefs. Future modules (`estimate.ts`, `valueOfInformation.ts`, `prioritize.ts`, Monte Carlo worker, canvas) are specified in [ADR-0008](governance/adrs/0008-phases-2-through-5.md) and are not the Gate 1 deliverable.
+## Stack
+
+| Layer | Choice |
+|---|---|
+| Engine | TypeScript 6 (strict), no runtime dependencies |
+| App | Next.js 14 static export, React 18, React Flow 12, Recharts, Tailwind tokens from `CLAUDE_DESIGN_SYSTEM.md` |
+| Tests | Vitest + fast-check, Playwright (Chromium), v8 coverage |
+| Data hand-off | ANSI SQL (SQLite / DuckDB / PostgreSQL), Power BI DAX |
+| Governance | Python 3.11 scripts, pytest, ruff / vulture / radon / knip / jscpd debt ratchet |
 
 ## Reproduce
 
 ```bash
-git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
-cd metric_lineage_simulator
-
-# Phase 1 engine (Gate 1)
 cd driver_tree_studio
 npm ci
-npx vitest run          # 36 tests
-npm run typecheck       # optional
-
-# Governance + closed-finding adversary
-cd ..
-make verify
-
-# Archived Phase 0 demo (throwaway UI)
-cd demo && npm install && npm run dev
+npm run typecheck && npm run lint && npm test
+npm run build && npx playwright install chromium && npm run e2e
+npm run example        # headline result → docs/results/
+npm run export         # SQL / CSV / DAX / theme → docs/powerbi/
+npm run screenshots    # README images from the built UI (after npm run build)
+cd .. && make verify   # governance + debt ratchet (pip install pyyaml pytest)
 ```
 
-Node 20 is what CI uses (`.github/workflows/governance.yml`). Every session on this repo starts with `make session-start` and `governance/SESSION_HANDOUT.md` ([CLAUDE.md](CLAUDE.md)).
-
-## Limitations
-
-- No production UI before the Figma design ref; no VoI / Guesstimate UI before Phase 5.
-- Illustrative DTC numbers until a defended authoring pass. Do not treat seed elasticities as measured effects.
-- Phase 0 TSX at `archive/phase-0/` is not product SSOT.
-- `recommend.ts` guardrails are a simplified below-baseline check (Phase 1).
-- Path A is single-player: no crowdsourcing or community backend.
-- Observational data tests (Phase 3) will not be allowed to say “causes.”
-- Public name-on-portfolio launch is blocked until illustrative-only edges are replaced ([ADR-0004](governance/adrs/0004-product-model-and-positioning.md) launch gate).
-
-Falsification: if identity parents fail reconciliation at `1e-6`, or if copy calls an observational / hypothesized edge causal, the current contract is broken.
+Node 20 matches CI ([governance.yml](.github/workflows/governance.yml)). Contributors start each session with `make session-start` ([CLAUDE.md](CLAUDE.md)).
 
 ## Repository structure
 
 ```text
-PROJECT_CHARTER.md          Executive SSOT (≤200 lines)
-governance/adrs/            Normative ADRs 0003–0009
-governance/findings/        Audit work queue
-driver_tree_studio/         Phase 1 TS core + tests
-demo/                       Vite shell for the Phase 0 artifact
-archive/phase-0/            Throwaway Claude Artifacts prototype
-scripts/, tests/governance/ Debt ratchet and finding verification
+driver_tree_studio/
+  src/engine/        compute, graph, whatif, sensitivity, montecarlo, valueOfInformation, prioritize, estimate, workedExample
+  src/lib/           formula parser, rng, stats, csv, exporters, powerbiKit, shareState
+  src/components/    canvas, analysis tabs, data test, export, share
+  src/workers/       Monte Carlo Web Worker
+  src/content/       dtc_ecommerce.json, labels_de.json
+  tests/, e2e/       vitest and Playwright suites
+  scripts/           worked example, export kit, screenshots
+docs/results/        headline worked example (generated)
+docs/powerbi/        Power BI build kit (generated + guide)
+governance/          ADRs 0003–0010, findings F-001–F-021, debt baseline
+PROJECT_CHARTER.md   executive single source of truth
 ```
 
 ## Status
 
 **Status:** In development
 
-Last validated: 2026-06-07 (Review Gate 1 approved; Phase 1 complete (36 vitest)). Charter metadata `status: active`. Phase 2–5 remain pending in [charter §4](PROJECT_CHARTER.md).
+The product runs end to end on one model: canvas, what-if, tornado, forecast range, data test, value-of-information ranking, share links, embed and exports. Last validated 2026-10-14 (92 unit, 7 end-to-end tests).
+
+What does not exist yet: a hosted deployment, a `.pbix` file built from the kit, a non-illustrative range for the email-capture edge, and additional models (SaaS, marketplace). Scope decisions are recorded as proposals in [ADR-0010](governance/adrs/0010-portfolio-completion-scope.md).
 
 ## License
 

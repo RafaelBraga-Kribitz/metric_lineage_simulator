@@ -17,7 +17,8 @@
     "e2e": "playwright test",
     "serve:out": "serve out -l 4173 --no-clipboard",
     "example": "tsx scripts/workedExample.ts",
-    "export": "tsx scripts/exportKit.ts"
+    "export": "tsx scripts/exportKit.ts",
+    "screenshots": "node scripts/captureScreens.mjs"
   },
   "keywords": [],
   "author": "",
