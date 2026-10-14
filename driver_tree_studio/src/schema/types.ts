@@ -63,6 +63,14 @@ export interface MetricNode {
   funnel_stage_order?: number;
 }
 
+/** A public, verifiable source backing an edge's range (ADR-0010 P5). */
+export interface EvidenceSource {
+  name: string;
+  url: string;
+  year: number;
+  measures: string;
+}
+
 export interface MetricEdge {
   parent: string;
   child: string;
@@ -76,6 +84,7 @@ export interface MetricEdge {
   direction?: Direction;
   evidence_grade?: EvidenceGrade;
   evidence_note?: string;
+  evidence_source?: EvidenceSource[];
   rationale?: string;
   test_cost?: number;
 }

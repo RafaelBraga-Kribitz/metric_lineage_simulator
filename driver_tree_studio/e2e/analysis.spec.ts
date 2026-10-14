@@ -7,8 +7,10 @@ test("analysis tabs: tornado, Monte Carlo worker result, untested beliefs; keybo
   await page.goto("/");
 
   await expect(page.getByRole("note").filter({ hasText: "Illustrative DTC e-commerce model" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "What to test first" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByText(/^Test Page Load Speed \(s\) → Product View Rate first/)).toBeVisible();
   const sensitivity = page.getByRole("tab", { name: "Sensitivity" });
-  await expect(sensitivity).toHaveAttribute("aria-selected", "true");
+  await sensitivity.click();
   await expect(page.getByRole("figure", { name: /Tornado/ })).toBeVisible();
 
   await sensitivity.focus();
@@ -19,6 +21,6 @@ test("analysis tabs: tornado, Monte Carlo worker result, untested beliefs; keybo
   await expect(page.getByText(/uncertainty in your GUESS, not evidence/)).toBeVisible();
 
   await page.keyboard.press("ArrowRight");
-  await expect(page.getByText(/Belief: .*Page Load Speed/)).toBeVisible();
+  await expect(page.getByText(/Belief: .*Loyalty Membership/)).toBeVisible();
   expect(errors).toEqual([]);
 });

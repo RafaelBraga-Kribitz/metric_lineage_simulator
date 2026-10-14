@@ -42,6 +42,8 @@ export interface VoiOptions {
   targetId?: string;
   /** Planned relative change applied to each edge's driver, e.g. 0.1 = +10%. */
   plannedChangePct?: number;
+  /** Per-driver override of the planned change, e.g. { page_load_speed: -0.1 } (faster). */
+  plannedChanges?: Record<string, number>;
   runs?: number;
   seed?: number;
 }
@@ -103,7 +105,8 @@ function scoreEdge(model: BusinessModel, edge: MetricEdge, index: number, opts: 
   const pre = precheck(model, edge, opts.targetId);
   if (pre) return pre;
   const driver = model.nodes.find((n) => n.id === edge.child);
-  const overrides = { [edge.child]: (driver?.baseline ?? 0) * (1 + opts.plannedChangePct) };
+  const change = opts.plannedChanges[edge.child] ?? opts.plannedChangePct;
+  const overrides = { [edge.child]: (driver?.baseline ?? 0) * (1 + change) };
   const fixed = new Map<MetricEdge, number>();
   for (const e of model.edges) if (e.kind === "modeled") fixed.set(e, pointElasticity(e));
   const rng = mulberry32((opts.seed + 7919 * (index + 1)) >>> 0);
@@ -122,7 +125,7 @@ function scoreEdge(model: BusinessModel, edge: MetricEdge, index: number, opts: 
     p10,
     p50: percentile(samples, 0.5),
     p90,
-    note: `Spread of '${opts.targetId}' if '${edge.child}' moves ${(opts.plannedChangePct * 100).toFixed(0)}% and only this guess is uncertain.`,
+    note: `Spread of '${opts.targetId}' if '${edge.child}' moves ${change >= 0 ? "+" : ""}${(change * 100).toFixed(0)}% and only this guess is uncertain.`,
   };
 }
 
@@ -131,6 +134,7 @@ export function valueOfInformation(model: BusinessModel, options: VoiOptions = {
   const opts: Required<VoiOptions> = {
     targetId: options.targetId ?? model.north_star_id,
     plannedChangePct: options.plannedChangePct ?? 0.1,
+    plannedChanges: options.plannedChanges ?? {},
     runs: options.runs ?? 2000,
     seed: options.seed ?? 42,
   };

@@ -7,7 +7,7 @@
     "subscription-optional"
   ],
   "north_star_id": "contribution_profit",
-  "narrative": "Contribution profit per period. Built from a deterministic identity tree (sessions x conversion x AOV minus variable costs). Returning-session lift from email capture is modeled (illustrative elasticity). Page-load -> conversion and loyalty -> LTV are kept hypothesized until experimental evidence exists.",
+  "narrative": "Contribution profit per period, built from a deterministic identity tree (sessions × conversion × AOV minus variable costs; conversion = four funnel stages). Two modeled edges carry declared ranges: page speed → product-view rate is ESTIMATED from public benchmarks; email capture → returning sessions is ILLUSTRATIVE. Loyalty → LTV stays hypothesized (selection trap) until a randomized enrollment test exists.",
   "nodes": [
     {
       "id": "contribution_profit",
@@ -167,9 +167,9 @@
     {
       "id": "conversion_rate",
       "name": "Conversion Rate",
-      "definition": "Orders divided by sessions.",
+      "definition": "Orders divided by sessions; product of the four funnel-stage rates.",
       "unit": "ratio",
-      "layer": "input",
+      "layer": "driver",
       "baseline": 0.02,
       "is_controllable": false,
       "governance": {
@@ -433,7 +433,7 @@
         "kind": "triangular",
         "params": {
           "min": 0.28,
-          "mode": 0.40,
+          "mode": 0.4,
           "max": 0.56
         }
       },
@@ -563,15 +563,50 @@
       "functional_form": "linear",
       "elasticity": 0.3,
       "mechanism": "Higher email capture grows the addressable lifecycle audience, lifting returning sessions in subsequent periods (illustrative elasticity, not measured).",
-      "evidence_grade": "illustrative"
+      "evidence_grade": "illustrative",
+      "elasticity_distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0,
+          "mode": 0.3,
+          "max": 0.6
+        }
+      },
+      "evidence_note": "ILLUSTRATIVE. No public, verifiable source measuring this elasticity was found; the range 0 to 0.6 around 0.3 is a placeholder guess and is flagged as such.",
+      "test_cost": 1
     },
     {
-      "parent": "conversion_rate",
+      "parent": "product_view_rate",
       "child": "page_load_speed",
-      "kind": "hypothesized",
-      "direction": "decreases",
-      "evidence_grade": "none",
-      "rationale": "Industry lore suggests slower pages reduce conversion. We have no on-platform experimental evidence yet."
+      "kind": "modeled",
+      "functional_form": "linear",
+      "elasticity": -0.8667,
+      "elasticity_distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": -2.1,
+          "mode": -0.5,
+          "max": 0
+        }
+      },
+      "mechanism": "Slower pages lose visitors before they reach a product page (bounce), which lowers every later funnel stage's volume. Modeled on the first funnel stage so the identity conversion_rate = product of stages is not double-counted.",
+      "evidence_grade": "estimated",
+      "evidence_note": "ESTIMATED range, not measured on this shop. Lower bound -2.1 translates the Deloitte/Google headline (0.1 s faster ≈ +8.4% retail conversion) to this seed's 2.5 s baseline (0.1 s = 4%; 8.4 / 4 ≈ 2.1). That study is observational, multi-brand and uses four speed metrics, not median load time, so transfer is uncertain. Mode -0.5 is our guess; upper bound 0 allows no effect. Direction is supported by both sources.",
+      "evidence_source": [
+        {
+          "name": "Deloitte Digital for Google — Milliseconds Make Millions (web.dev case study)",
+          "url": "https://web.dev/case-studies/milliseconds-make-millions",
+          "year": 2020,
+          "measures": "Association between a 0.1 s improvement across four mobile speed metrics and conversion, 37 retail and travel brands; retail conversion +8.4%."
+        },
+        {
+          "name": "Think with Google — page load time statistics",
+          "url": "https://www.thinkwithgoogle.com/data/page-load-time-statistics",
+          "year": 2017,
+          "measures": "Probability of bounce rises 32% as mobile page load time goes from 1 s to 3 s."
+        }
+      ],
+      "test_cost": 2
     },
     {
       "parent": "customer_ltv",
@@ -582,7 +617,15 @@
       "mechanism": "Higher AOV per order compounds over repeat purchases into a higher 12-month LTV.",
       "evidence_grade": "illustrative",
       "evidence_note": "Illustrative. Derived from a simple repeat-purchase model, not from a survival curve.",
-      "test_cost": 3
+      "test_cost": 3,
+      "elasticity_distribution": {
+        "kind": "triangular",
+        "params": {
+          "min": 0.3,
+          "mode": 0.6,
+          "max": 0.9
+        }
+      }
     },
     {
       "parent": "customer_ltv",
@@ -590,7 +633,8 @@
       "kind": "hypothesized",
       "direction": "increases",
       "evidence_grade": "none",
-      "rationale": "Loyalty members show higher LTV in cohort data, but this is almost certainly selection: heavy buyers enroll, not vice versa. Do not model as causal without a randomized enrollment experiment."
+      "rationale": "Loyalty members show higher LTV in cohort data, but this is almost certainly selection: heavy buyers enroll, not vice versa. Do not model as causal without a randomized enrollment experiment.",
+      "test_cost": 5
     }
   ],
   "scenarios": []

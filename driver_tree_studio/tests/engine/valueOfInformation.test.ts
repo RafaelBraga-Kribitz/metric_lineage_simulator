@@ -53,10 +53,12 @@ describe("valueOfInformation", () => {
 
   it("classifies the DTC seed edges honestly", () => {
     const byChild = Object.fromEntries(valueOfInformation(dtc).map((e) => [e.edge.child, e]));
-    expect(byChild["page_load_speed"]?.status).toBe("needs_guesstimate");
-    expect(byChild["page_load_speed"]?.voiScore).toBeNull();
+    expect(byChild["page_load_speed"]?.status).toBe("scored");
+    expect(byChild["page_load_speed"]?.voiScore as number).toBeGreaterThan(0);
     expect(byChild["loyalty_membership"]?.status).toBe("needs_guesstimate");
-    expect(byChild["email_capture_rate"]?.status).toBe("point_only");
+    expect(byChild["loyalty_membership"]?.voiScore).toBeNull();
+    expect(byChild["email_capture_rate"]?.status).toBe("scored");
+    expect(byChild["average_order_value"]?.status).toBe("not_on_path");
   });
 
   it("flags edges that do not feed the target and leverability", () => {
@@ -103,10 +105,11 @@ describe("prioritize", () => {
   });
 
   it("assumes cost 1 when missing and sinks unscored edges", () => {
-    const ranked = prioritize(valueOfInformation(dtc));
-    expect(ranked.every((e) => e.testCostAssumed || e.testCost > 0)).toBe(true);
-    const lastScored = ranked.findIndex((e) => e.priorityScore === null);
-    expect(ranked.slice(lastScored).every((e) => e.priorityScore === null)).toBe(true);
-    expect(ranked.filter((e) => e.rank !== null)).toHaveLength(0);
+    const m = twoDrivers(0.4, 0.3);
+    const ranked = prioritize([...valueOfInformation(m), { ...valueOfInformation(dtc).find((e) => e.voiScore === null)! }]);
+    expect(ranked.filter((e) => e.testCostAssumed)).toHaveLength(2);
+    expect(ranked[ranked.length - 1]?.priorityScore).toBeNull();
+    expect(ranked[ranked.length - 1]?.rank).toBeNull();
+    expect(ranked.filter((e) => e.rank !== null)).toHaveLength(2);
   });
 });

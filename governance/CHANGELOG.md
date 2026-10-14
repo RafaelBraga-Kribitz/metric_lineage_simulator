@@ -1,5 +1,14 @@
 # Governance Changelog
 
+## 2026-10-14 — F-019 closed (seed authoring pass + headline result)
+
+- Page speed edge → modeled/ESTIMATED on `product_view_rate` with two public sources and a
+  translation note; email edge keeps a flagged ILLUSTRATIVE range; loyalty stays hypothesized;
+  `conversion_rate` layer corrected to driver. `EvidenceSource` schema type.
+- Headline worked example (`npm run example` → `docs/results/`), reproducibility test,
+  "What to test first" panel, ledger shows notes and source links.
+- Charter §6: ADR-0004 launch gate stated as not yet met. vitest 77 → 80.
+
 ## 2026-10-14 — F-018 closed (data-test panel)
 
 - "Test with your data" tab: CSV drop/choose (browser-only), edge and column mapping, design

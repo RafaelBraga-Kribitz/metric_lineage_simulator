@@ -70,6 +70,22 @@ export function AssumptionsLedger({ model }: AssumptionsLedgerProps) {
                       {e.rationale ?? e.mechanism}
                     </p>
                   )}
+                  {e.evidence_note && (
+                    <p className="mt-1 text-[11px] text-text-faint">{e.evidence_note}</p>
+                  )}
+                  {e.evidence_source && e.evidence_source.length > 0 && (
+                    <ul className="mt-1 space-y-0.5 text-[11px] text-text-muted">
+                      {e.evidence_source.map((src) => (
+                        <li key={src.url}>
+                          Source:{" "}
+                          <a className="underline decoration-dotted hover:text-text-secondary" href={src.url} target="_blank" rel="noreferrer">
+                            {src.name}
+                          </a>{" "}
+                          ({src.year}): {src.measures}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {isTrap && (
                     <p className="mt-1 text-[11px] text-warning">
                       Selection trap: cohort correlation is not causal lift.

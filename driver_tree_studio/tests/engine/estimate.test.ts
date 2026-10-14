@@ -175,7 +175,15 @@ describe("estimateRelationship", () => {
 
 describe("acceptEstimate", () => {
   const loyalty = edgeById("loyalty_membership", "customer_ltv");
-  const pageSpeed = edgeById("page_load_speed", "conversion_rate");
+  // Synthetic hypothesized edge into an identity parent (the seed no longer has one).
+  const pageSpeed: MetricEdge = {
+    parent: "conversion_rate",
+    child: "page_load_speed",
+    kind: "hypothesized",
+    direction: "decreases",
+    evidence_grade: "none",
+    rationale: "test",
+  };
 
   it("promotes a hypothesized edge to modeled/observational and keeps the model valid", () => {
     const d = linearData(80, 3, 1);

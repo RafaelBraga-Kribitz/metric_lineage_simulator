@@ -1,0 +1,81 @@
+{
+  "question": "Which guess about Contribution Profit is most worth testing first?",
+  "target": "contribution_profit",
+  "baseline": 48000,
+  "settings": {
+    "runs": 20000,
+    "seed": 42,
+    "plannedChanges": {
+      "page_load_speed": -0.1,
+      "email_capture_rate": 0.1
+    },
+    "plannedChangePct": 0.1
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "edge": "page_load_speed → product_view_rate",
+      "grade": "estimated",
+      "status": "scored",
+      "plannedChange": -0.1,
+      "p10": 49534,
+      "p50": 51830,
+      "p90": 55366,
+      "voiScore": 5832,
+      "testCost": 2,
+      "testCostAssumed": false,
+      "priorityScore": 2916,
+      "sources": [
+        "Deloitte Digital for Google — Milliseconds Make Millions (web.dev case study) (2020) https://web.dev/case-studies/milliseconds-make-millions",
+        "Think with Google — page load time statistics (2017) https://www.thinkwithgoogle.com/data/page-load-time-statistics"
+      ]
+    },
+    {
+      "rank": 2,
+      "edge": "email_capture_rate → returning_sessions",
+      "grade": "illustrative",
+      "status": "scored",
+      "plannedChange": 0.1,
+      "p10": 48214,
+      "p50": 48480,
+      "p90": 48747,
+      "voiScore": 534,
+      "testCost": 1,
+      "testCostAssumed": false,
+      "priorityScore": 534,
+      "sources": []
+    },
+    {
+      "rank": null,
+      "edge": "average_order_value → customer_ltv",
+      "grade": "illustrative",
+      "status": "not_on_path",
+      "plannedChange": null,
+      "p10": null,
+      "p50": null,
+      "p90": null,
+      "voiScore": 0,
+      "testCost": 3,
+      "testCostAssumed": false,
+      "priorityScore": 0,
+      "sources": []
+    },
+    {
+      "rank": null,
+      "edge": "loyalty_membership → customer_ltv",
+      "grade": "none",
+      "status": "needs_guesstimate",
+      "plannedChange": null,
+      "p10": null,
+      "p50": null,
+      "p90": null,
+      "voiScore": null,
+      "testCost": 5,
+      "testCostAssumed": false,
+      "priorityScore": null,
+      "sources": []
+    }
+  ],
+  "decision": "Test Page Load Speed (s) → Product View Rate first: its declared range blurs the planned outcome most per unit of test cost (5.5× the next guess). This ranks what to learn, not what to do.",
+  "caveat": "This interval is the uncertainty in your GUESS, not evidence. A distribution looks like data and is not. Its only purpose is to help you decide what to test, never to estimate impact."
+}

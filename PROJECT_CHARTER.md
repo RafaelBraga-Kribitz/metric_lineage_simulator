@@ -91,7 +91,8 @@ Gate 1 approved; Phase 2+ proceeds against `CLAUDE_DESIGN_SYSTEM.md` (ADR-0010).
 ## 6. Out of Scope / Limitations
 
 - No production UI before Gate 1. No VoI/Guesstimate UI before Phase 5.
-- Illustrative DTC numbers until defended authoring pass (public BRAGA link gated Phase 4).
+- Authoring pass done (F-019): page speed edge ESTIMATED from public sources; email and AOV→LTV
+  edges stay ILLUSTRATIVE and flagged, so the ADR-0004 public-launch gate is **not** yet met.
 - Phase 0 TSX prototype archived at `archive/phase-0/` (not product SSOT).
 - `recommend.ts` guardrails: simplified below-baseline check (Phase 1).
 
