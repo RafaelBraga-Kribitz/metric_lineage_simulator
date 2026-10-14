@@ -1,0 +1,20 @@
+id: F-014
+title: "BYOD data test (estimate.ts) specified in ADR-0008 Phase 3a but not implemented"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  governance/adrs/0008-phases-2-through-5.md §Phase 3 — estimateRelationship: correlation+CI,
+    manual OLS, 80/20 out-of-sample r², association-vs-effect verdict, fixed causal_note,
+    what_would_prove_this, leakage_warning for identity edges, grade promotion on accept.
+  driver_tree_studio/src/engine/ — no estimate.ts on main (2026-10-14).
+verification_script: tests/governance/test_f014_estimate_engine.py
+notes: |
+  Remediation: src/engine/estimate.ts + src/lib/csv.ts (`,`/`;` + decimal comma) +
+  src/lib/stats.ts (pearson shared with montecarlo.ts). acceptEstimate refuses identity
+  edges, non-supporting verdicts and modeled edges into identity parents (double-count).
+  Tests: tests/engine/estimate.test.ts (Anscombe I reference values, fast-check properties),
+  tests/lib/csv.test.ts.
