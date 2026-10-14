@@ -101,6 +101,29 @@ function VerdictCard({ result }: { result: EstimateResult }) {
   );
 }
 
+interface ColumnSelectProps {
+  id: string;
+  label: string;
+  headers: string[];
+  value: string;
+  onChange: (v: string) => void;
+}
+
+function ColumnSelect({ id, label, headers, value, onChange }: ColumnSelectProps) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-1 block text-xs font-bold text-text-secondary">
+        {label}
+      </label>
+      <select id={id} className={fieldClass} value={value} onChange={(e) => onChange(e.target.value)}>
+        {headers.map((h) => (
+          <option key={h}>{h}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export function DataTestPanel({ state }: { state: MetricModelState }) {
   const { model, setModel } = state;
   const ids = useId();
@@ -250,26 +273,8 @@ export function DataTestPanel({ state }: { state: MetricModelState }) {
 
       {table && (
         <div className="grid gap-3 md:grid-cols-2">
-          <div>
-            <label htmlFor={`${ids}-x`} className="mb-1 block text-xs font-bold text-text-secondary">
-              Driver column ({edge ? nameOf(edge.child) : "x"})
-            </label>
-            <select id={`${ids}-x`} className={fieldClass} value={xCol} onChange={(e) => setXCol(e.target.value)}>
-              {table.headers.map((h) => (
-                <option key={h}>{h}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor={`${ids}-y`} className="mb-1 block text-xs font-bold text-text-secondary">
-              Metric column ({edge ? nameOf(edge.parent) : "y"})
-            </label>
-            <select id={`${ids}-y`} className={fieldClass} value={yCol} onChange={(e) => setYCol(e.target.value)}>
-              {table.headers.map((h) => (
-                <option key={h}>{h}</option>
-              ))}
-            </select>
-          </div>
+          <ColumnSelect id={`${ids}-x`} label={`Driver column (${edge ? nameOf(edge.child) : "x"})`} headers={table.headers} value={xCol} onChange={setXCol} />
+          <ColumnSelect id={`${ids}-y`} label={`Metric column (${edge ? nameOf(edge.parent) : "y"})`} headers={table.headers} value={yCol} onChange={setYCol} />
           <p className="text-[11px] text-text-faint md:col-span-2">
             {source}: {table.rows.length} rows, {table.headers.length} columns, delimiter “{table.delimiter}”.
           </p>

@@ -199,9 +199,9 @@
       "verification_script": "tests/governance/test_f018_data_test_panel.py"
     }
   ],
-  "generated_at": "2026-10-14T21:53:32.961192+00:00",
+  "generated_at": "2026-10-14T21:54:04.923836+00:00",
   "git_branch": "claude/f-018-data-test-panel",
-  "git_head_sha": "71474238dd7ca182a6b47bd86b555b748c2c6d57",
+  "git_head_sha": "d4012a8117e311b672da4950128834da6384a697",
   "migrations": [],
   "summary": {
     "findings_closed": 17,
