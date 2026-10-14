@@ -15,3 +15,4 @@ This is a record of what landed and the gate evidence, not a plan: the work queu
 | 2026-10-14 | F-018 | `claude/f-018-data-test-panel` | Data-test panel (BYOD CSV, mapping, verdict, accept), SYNTHETIC selection-trap example | vitest 77/77; e2e 4/4; lint clean; `make verify` green |
 | 2026-10-14 | F-019 | `claude/f-019-authoring-pass` | Seed authoring pass (2 public sources, flagged illustrative edges), headline worked example + "What to test first" panel | vitest 80/80; e2e 4/4; `npm run example` reproduces `docs/results/`; `make verify` green |
 | 2026-10-14 | F-020 | `claude/f-020-share-embed` | Share URL (`#s=v1.`), embed route, metadata + og.png, static deploy config, slider a11y names | vitest 85/85; e2e 6/6; `make verify` green |
+| 2026-10-14 | F-021 | `claude/f-021-export-bridge` | KPI CSV / SQL view / DAX exports, Export tab, Power BI kit in `docs/powerbi/` | vitest 92/92; e2e 7/7; SQL runs in SQLite + DuckDB (48,000 at baseline); `make verify` green |

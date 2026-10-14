@@ -7,12 +7,13 @@ import { MonteCarloPanel } from "@/components/Analysis/MonteCarloPanel";
 import { TornadoChart } from "@/components/Analysis/TornadoChart";
 import { UntestedBeliefs } from "@/components/Analysis/UntestedBeliefs";
 import { WhatToTestFirst } from "@/components/Analysis/WhatToTestFirst";
+import { ExportPanel } from "@/components/Export/ExportPanel";
 import { DataTestPanel } from "@/components/DataTest/DataTestPanel";
 import { Tabs, type TabDef } from "@/components/shared/Tabs";
 import type { MetricModelState } from "@/hooks/useMetricModel";
 import { useState } from "react";
 
-type AnalysisTab = "testfirst" | "sensitivity" | "montecarlo" | "beliefs" | "datatest";
+type AnalysisTab = "testfirst" | "sensitivity" | "montecarlo" | "beliefs" | "datatest" | "export";
 
 const TABS: TabDef<AnalysisTab>[] = [
   { id: "testfirst", label: "What to test first" },
@@ -20,6 +21,7 @@ const TABS: TabDef<AnalysisTab>[] = [
   { id: "montecarlo", label: "Forecast range" },
   { id: "beliefs", label: "Untested beliefs" },
   { id: "datatest", label: "Test with your data" },
+  { id: "export", label: "Export (SQL / Power BI)" },
 ];
 
 export function AnalysisPanel({ state }: { state: MetricModelState }) {
@@ -35,6 +37,7 @@ export function AnalysisPanel({ state }: { state: MetricModelState }) {
         {tab === "montecarlo" && <MonteCarloPanel state={state} />}
         {tab === "beliefs" && <UntestedBeliefs model={state.model} />}
         {tab === "datatest" && <DataTestPanel state={state} />}
+        {tab === "export" && <ExportPanel state={state} />}
       </Tabs>
     </section>
   );

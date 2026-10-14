@@ -16,7 +16,8 @@
     "lint": "eslint .",
     "e2e": "playwright test",
     "serve:out": "serve out -l 4173 --no-clipboard",
-    "example": "tsx scripts/workedExample.ts"
+    "example": "tsx scripts/workedExample.ts",
+    "export": "tsx scripts/exportKit.ts"
   },
   "keywords": [],
   "author": "",

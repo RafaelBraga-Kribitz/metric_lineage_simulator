@@ -1,0 +1,21 @@
+id: F-021
+title: "No bridge from a validated model to the analyst stack (SQL, CSV, Power BI)"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  governance/adrs/0010-portfolio-completion-scope.md P4 — KPI definition CSV + SQL view DDL,
+    DAX measures for identity edges, Power BI build kit, illustrative German labels.
+  driver_tree_studio/src/ — no exporter; GovernanceMeta (owner, warehouse_table, grain) is
+    collected per metric but never leaves the app.
+verification_script: tests/governance/test_f021_export_bridge.py
+notes: |
+  Remediation: src/lib/exporters.ts (CSV, ANSI SQL kpi_tree view by dependency level, DAX with
+  SUM/AVERAGE/SUMX rules and optional node `aggregation` override), src/lib/powerbiKit.ts
+  (theme parsed from CSS tokens, SYNTHETIC inputs), `npm run export` → docs/powerbi/ with a
+  hand-written build guide whose expected values this script recomputes in SQLite. SQL also
+  checked against the engine (vitest, rel err < 1e-6) and run in DuckDB during development.
+  Export tab in the app; labels_de.json marked ILLUSTRATIVE.

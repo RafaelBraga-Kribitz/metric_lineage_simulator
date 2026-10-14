@@ -1,5 +1,12 @@
 # Governance Changelog
 
+## 2026-10-14 — F-021 closed (export bridge + Power BI kit)
+
+- Exports: KPI dictionary CSV, ANSI SQL `kpi_tree` view (identity formulas only), DAX
+  measures; illustrative German controlling labels; Export tab; `npm run export` →
+  `docs/powerbi/` (kit README, theme from tokens, SYNTHETIC inputs, expected values).
+- vitest 85 → 92; e2e 6 → 7.
+
 ## 2026-10-14 — F-020 closed (share URL, embed, metadata, deploy config)
 
 - Versioned, compressed, size-capped URL-fragment state (`#s=v1.`); Share link / Embed
