@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-10-14 — F-015 closed (VoI + prioritize engine)
+
+- `valueOfInformation.ts`: per-edge P90−P10 spread of the target under a planned driver
+  change, sampling only that edge's elasticity (seeded). Statuses for hypothesized,
+  point-only, off-path and non-leverable edges. Verbatim GUESS caveat.
+- `prioritize.ts`: priorityScore = voiScore / test_cost (cost 1 assumed and flagged).
+- vitest 65 → 73.
+
 ## 2026-10-14 — F-014 closed (BYOD estimate engine)
 
 - `src/engine/estimate.ts`: correlation + Fisher CI, transparent OLS with t-based slope CI,
