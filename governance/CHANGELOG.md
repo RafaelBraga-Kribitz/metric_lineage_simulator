@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-10-14 — F-012 closed (charter scope drift → ADR-0010)
+
+- ADR-0010 (status **proposed**): P1 thin vertical slice, P2 Claude may author the Next.js
+  app (supersedes the single no-React constraint), P3 design system as design reference,
+  P4 SQL/DAX/Power BI export bridge, P5 defended authoring pass, P6 governance unchanged.
+- Charter v0.4.0: roadmap reflects the F-007 shell; ADR index adds 0010; `docs/PROGRESS.md` log.
+- CI `governance.yml` now runs on pull requests against any base (stacked PRs).
+
 ## 2026-06-08 — F-011 closed (radon complexity)
 
 - Refactored governance scripts and tests to bring all Python blocks to CC ≤ 10.

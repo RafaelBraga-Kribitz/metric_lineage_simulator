@@ -1,0 +1,20 @@
+id: F-012
+title: "Charter blocks Phase 2-4 on Figma and a no-React tool rule the repo already broke"
+category: documentation_entropy
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  PROJECT_CHARTER.md §4 — Phase 2 "Pending" behind "Figma MCP | Design tokens | Pending",
+    while driver_tree_studio/app/ + src/components/ (F-007, 2026-06-08) already ship a
+    React Flow shell.
+  PROJECT_CHARTER.md §4 — "Claude Code never writes React" contradicts how the owner now
+    finishes the product.
+  No ADR records the portfolio-completion scope (thin slice, export bridge, authoring pass).
+verification_script: tests/governance/test_f012_charter_scope_adr.py
+notes: |
+  Remediation: ADR-0010 (status proposed, P1–P6 labelled as proposals) supersedes the
+  single tool constraint and adopts CLAUDE_DESIGN_SYSTEM.md as design reference. Charter
+  v0.4.0 indexes ADR-0010 and points to docs/PROGRESS.md (append-only PR log).

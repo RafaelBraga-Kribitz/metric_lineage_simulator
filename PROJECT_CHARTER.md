@@ -11,17 +11,17 @@ RULES (enforced by CI):
 -->
 
 <!-- SSOT_METADATA_START
-version: 0.3.0
+version: 0.4.0
 status: active
-last_updated: 2026-06-07
-last_reviewed: 2026-06-07
+last_updated: 2026-10-14
+last_reviewed: 2026-10-14
 owner: Rafael Braga
 project_codename: metric_lineage_simulator
 SSOT_METADATA_END -->
 
 # Project Charter: Metric Lineage Simulator
 
-> **Executive SSOT.** Read this first, then normative ADRs 0003–0008. Prompts only in
+> **Executive SSOT.** Read this first, then normative ADRs 0003–0010. Prompts only in
 > [`tool_workflow_and_prompts_v4.md`](tool_workflow_and_prompts_v4.md) (transient). Types in
 > [`driver_tree_studio/src/schema/types.ts`](driver_tree_studio/src/schema/types.ts).
 
@@ -33,11 +33,11 @@ SSOT_METADATA_END -->
 | Codename | `metric_lineage_simulator` |
 | Owner | Rafael Braga |
 | Path | A — single-player, rigorous, no crowdsourcing |
-| Status | Phase 1 complete (36 vitest); Review Gate 1 approved 2026-06-07 |
+| Status | Phase 1 complete; Gate 1 approved 2026-06-07; portfolio completion per ADR-0010 (proposed) |
 
 ## 2. Documentation Discipline
 
-**Normative:** this charter + `governance/adrs/0003` through `0008`. **Forbidden at repo
+**Normative:** this charter + `governance/adrs/0003` through `0010`. **Forbidden at repo
 root:** `metric_*_build_spec*.md`, `phase-*.md`, `prompts_addendum*.md`,
 `tool_workflow_and_prompts_v3.md`. **Transient:** `tool_workflow_and_prompts_v4.md` (copy-paste
 prompts only; not product authority). **Implementation types:** `driver_tree_studio/`.
@@ -68,14 +68,14 @@ prioritize what to test — not an econometric oracle. Never say “causal” wi
 | 0 | Claude Artifacts | Visual demo, honesty layer | Archived (`archive/phase-0/`; demo via `demo/`) |
 | 1 | Claude Code | `driver_tree_studio/` TS core + DTC seed | **Complete** |
 | — | Review Gate 1 | Artifact + vitest + validate + reconciliation | **Approved** 2026-06-07 |
-| — | Figma MCP | Design tokens, canvas ref | Pending |
-| 2 | Cursor | Next.js + React Flow + funnel + verbal builder | Pending |
-| 3a/b | Code + Cursor | BYOD data test, MC worker + UI | Pending |
-| 4 | Cursor | SEO, share URLs, BRAGA launch | Pending |
-| 5 | Code + Cursor | Guesstimate + VoI + prioritize UI | Pending |
+| — | Design ref | `CLAUDE_DESIGN_SYSTEM.md` (Figma optional, not a gate; ADR-0010 P3) | Adopted |
+| 2 | Claude Code / Cursor | Next.js + React Flow + funnel + verbal builder | In progress (shell F-007) |
+| 3 | Claude Code / Cursor | BYOD data test, MC worker + UI | Pending |
+| 4 | Claude Code / Cursor | Share URLs, embed, metadata, static deploy config | Pending |
+| 5 | Claude Code | VoI + prioritize engine; minimal read-only UI if time (ADR-0010 P1) | Pending |
 
-**Tool constraints:** Claude Code never writes React; Artifacts are throwaway; Cursor after
-Gate 1 + design ref (workflow v4 §0).
+**Tool constraints:** Artifacts are throwaway. Claude Code may author the Next.js app
+(ADR-0010 P2 supersedes "Claude Code never writes React"). Progress log: `docs/PROGRESS.md`.
 
 ## 5. Current Gate (Phase 1 + Gate 1)
 
@@ -86,7 +86,7 @@ Gate 1 + design ref (workflow v4 §0).
 | Full Phase 1 matrix ADR-0007 | `cd driver_tree_studio && npx vitest run` (36 tests) |
 | Governance | `make verify` |
 
-Gate 1 approved; Phase 2 UI may proceed after Figma design ref (ADR-0008).
+Gate 1 approved; Phase 2+ proceeds against `CLAUDE_DESIGN_SYSTEM.md` (ADR-0010).
 
 ## 6. Out of Scope / Limitations
 
@@ -106,6 +106,7 @@ Gate 1 approved; Phase 2 UI may proceed after Figma design ref (ADR-0008).
 | [0007](governance/adrs/0007-phase-1-implementation.md) | Phase 1 layout, DTC seed, tests, verification |
 | [0008](governance/adrs/0008-phases-2-through-5.md) | Phases 2–5, BYOD test, funnel, open decisions |
 | [0009](governance/adrs/0009-tech-debt-ratchet.md) | Technical-debt ratchet, baseline, scan paths |
+| [0010](governance/adrs/0010-portfolio-completion-scope.md) | Portfolio-completion scope P1–P6 (**proposed**) |
 
 Superseded: ADR-0001, ADR-0002 → see ADR-0003.
 
