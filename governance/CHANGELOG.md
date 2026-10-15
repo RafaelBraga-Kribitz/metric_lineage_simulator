@@ -1,5 +1,10 @@
 # Governance Changelog
 
+## 2026-10-14 — F-013 closed (Adversary ratchet lookup)
+
+- `_ratchet.finding_status()` resolved `F-NNN.yaml`, but files are `F-NNN-slug.yaml`; every
+  closed-finding regression degraded to xfail (exit 0). Now resolves by ID prefix.
+
 ## 2026-10-14 — F-012 closed (charter scope drift → ADR-0010)
 
 - ADR-0010 (status **proposed**): P1 thin vertical slice, P2 Claude may author the Next.js

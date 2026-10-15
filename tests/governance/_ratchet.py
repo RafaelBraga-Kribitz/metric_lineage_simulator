@@ -25,9 +25,18 @@ FINDINGS = REPO_ROOT / "governance" / "findings"
 ENFORCING = {"closed", "closed_historical"}
 
 
+def finding_path(finding_id: str) -> Path | None:
+    """Finding files are named F-NNN-slug.yaml; match on the ID prefix."""
+    exact = FINDINGS / f"{finding_id}.yaml"
+    if exact.exists():
+        return exact
+    matches = sorted(FINDINGS.glob(f"{finding_id}-*.yaml"))
+    return matches[0] if matches else None
+
+
 def finding_status(finding_id: str) -> str | None:
-    path = FINDINGS / f"{finding_id}.yaml"
-    if not path.exists():
+    path = finding_path(finding_id)
+    if path is None:
         return None
     return (yaml.safe_load(path.read_text()) or {}).get("status")
 
