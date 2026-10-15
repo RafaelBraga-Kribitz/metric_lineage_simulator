@@ -166,9 +166,9 @@
       "verification_script": "tests/governance/test_f015_voi_prioritize.py"
     }
   ],
-  "generated_at": "2026-10-14T21:39:24.222026+00:00",
+  "generated_at": "2026-10-15T11:36:34.548565+00:00",
   "git_branch": "claude/f-015-voi-prioritize",
-  "git_head_sha": "1fcece28c8125ae4d6c781e032d7af865d4fe4ad",
+  "git_head_sha": "0174a5fe42df7caa89c177485eb3b86e3e86c7ae",
   "migrations": [],
   "summary": {
     "findings_closed": 14,
