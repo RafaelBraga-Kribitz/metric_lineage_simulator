@@ -1,5 +1,79 @@
 # Governance Changelog
 
+## 2026-10-14 — F-022 closed (README portfolio grade); charter v0.5.0
+
+- README rewritten (question → data → method → result → limitations → decision); first
+  screen carries the decision, the ranking chart, the sourced €5,832 figure with its grade,
+  and run commands. Images captured from the built UI (`npm run screenshots`).
+- Charter v0.5.0: Phases 2–5 and the P4 export bridge marked built with finding refs; gates
+  table updated; launch gate still not met.
+
+## 2026-10-14 — F-021 closed (export bridge + Power BI kit)
+
+- Exports: KPI dictionary CSV, ANSI SQL `kpi_tree` view (identity formulas only), DAX
+  measures; illustrative German controlling labels; Export tab; `npm run export` →
+  `docs/powerbi/` (kit README, theme from tokens, SYNTHETIC inputs, expected values).
+- vitest 85 → 92; e2e 6 → 7.
+
+## 2026-10-14 — F-020 closed (share URL, embed, metadata, deploy config)
+
+- Versioned, compressed, size-capped URL-fragment state (`#s=v1.`); Share link / Embed
+  controls; `/embed` route (noindex); Open Graph + Twitter metadata, `og.png` from the real UI;
+  robots.txt; static `vercel.json`; `docs/deploy.md` (owner steps; deploy stays human-only).
+- Slider thumbs get accessible names/value text. vitest 80 → 85; e2e 4 → 6.
+
+## 2026-10-14 — F-019 closed (seed authoring pass + headline result)
+
+- Page speed edge → modeled/ESTIMATED on `product_view_rate` with two public sources and a
+  translation note; email edge keeps a flagged ILLUSTRATIVE range; loyalty stays hypothesized;
+  `conversion_rate` layer corrected to driver. `EvidenceSource` schema type.
+- Headline worked example (`npm run example` → `docs/results/`), reproducibility test,
+  "What to test first" panel, ledger shows notes and source links.
+- Charter §6: ADR-0004 launch gate stated as not yet met. vitest 77 → 80.
+
+## 2026-10-14 — F-018 closed (data-test panel)
+
+- "Test with your data" tab: CSV drop/choose (browser-only), edge and column mapping, design
+  (observed vs randomized), verdict + statistics, fixed note, what-would-prove-this, leakage
+  alert, accept → grade promotion. SYNTHETIC loyalty example demonstrates the selection trap.
+- vitest 75 → 77; e2e 2 → 4.
+
+## 2026-10-14 — F-017 closed (Phase 2 analysis surfaces)
+
+- Analysis panel (accessible tabs): tornado chart (±10%), Monte Carlo forecast range in a Web
+  Worker (P10/P50/P90, histogram, variance shares, GUESS caveat), untested-beliefs list.
+- Illustrative notice banner (verbatim); arrow markers inherit edge colour; keyboard node
+  selection; minimap removed (occluded nodes). e2e 1 → 2 specs; vitest 73 → 75.
+
+## 2026-10-14 — F-016 closed (app quality gates)
+
+- ESLint flat config: Next core-web-vitals + TypeScript, raw-hex ban in components,
+  framework-free engine/schema/lib imports. Fixed 2 lint errors (setState in effect, empty interface).
+- DM Sans self-hosted via `@fontsource` (offline, reproducible build); static export.
+- Derived colour tokens documented in `CLAUDE_DESIGN_SYSTEM.md` §2; components carry no raw hex.
+- Playwright smoke test (no console errors, three edge kinds rendered); CI `app` job.
+
+## 2026-10-14 — F-015 closed (VoI + prioritize engine)
+
+- `valueOfInformation.ts`: per-edge P90−P10 spread of the target under a planned driver
+  change, sampling only that edge's elasticity (seeded). Statuses for hypothesized,
+  point-only, off-path and non-leverable edges. Verbatim GUESS caveat.
+- `prioritize.ts`: priorityScore = voiScore / test_cost (cost 1 assumed and flagged).
+- vitest 65 → 73.
+
+## 2026-10-14 — F-014 closed (BYOD estimate engine)
+
+- `src/engine/estimate.ts`: correlation + Fisher CI, transparent OLS with t-based slope CI,
+  seeded 80/20 out-of-sample r², association-vs-effect verdict, fixed causal notes,
+  leakage warning for identity edges, `acceptEstimate` grade promotion.
+- `src/lib/csv.ts` (German `;` + decimal-comma exports), `src/lib/stats.ts` (shared pearson).
+- vitest 44 → 65 (Anscombe I reference values, fast-check properties); `npm run coverage`.
+
+## 2026-10-14 — F-013 closed (Adversary ratchet lookup)
+
+- `_ratchet.finding_status()` resolved `F-NNN.yaml`, but files are `F-NNN-slug.yaml`; every
+  closed-finding regression degraded to xfail (exit 0). Now resolves by ID prefix.
+
 ## 2026-10-14 — F-012 closed (charter scope drift → ADR-0010)
 
 - ADR-0010 (status **proposed**): P1 thin vertical slice, P2 Claude may author the Next.js

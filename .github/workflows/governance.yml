@@ -6,6 +6,28 @@ on:
   pull_request:
 
 jobs:
+  # Product gates for the studio app (ADR-0010): typecheck, lint, unit tests with
+  # coverage, static build, and a Playwright smoke test against the built export.
+  app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: driver_tree_studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: driver_tree_studio/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run coverage
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+
   # Steward-equivalent: regenerate state, fail on validation errors.
   governance-audit:
     runs-on: ubuntu-latest

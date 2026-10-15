@@ -11,7 +11,7 @@ RULES (enforced by CI):
 -->
 
 <!-- SSOT_METADATA_START
-version: 0.4.0
+version: 0.5.0
 status: active
 last_updated: 2026-10-14
 last_reviewed: 2026-10-14
@@ -33,7 +33,7 @@ SSOT_METADATA_END -->
 | Codename | `metric_lineage_simulator` |
 | Owner | Rafael Braga |
 | Path | A — single-player, rigorous, no crowdsourcing |
-| Status | Phase 1 complete; Gate 1 approved 2026-06-07; portfolio completion per ADR-0010 (proposed) |
+| Status | Phases 1–4 + Phase 5 read-only view built on the DTC model (ADR-0010, proposed); launch gate not met |
 
 ## 2. Documentation Discipline
 
@@ -69,29 +69,33 @@ prioritize what to test — not an econometric oracle. Never say “causal” wi
 | 1 | Claude Code | `driver_tree_studio/` TS core + DTC seed | **Complete** |
 | — | Review Gate 1 | Artifact + vitest + validate + reconciliation | **Approved** 2026-06-07 |
 | — | Design ref | `CLAUDE_DESIGN_SYSTEM.md` (Figma optional, not a gate; ADR-0010 P3) | Adopted |
-| 2 | Claude Code / Cursor | Next.js + React Flow + funnel + verbal builder | In progress (shell F-007) |
-| 3 | Claude Code / Cursor | BYOD data test, MC worker + UI | Pending |
-| 4 | Claude Code / Cursor | Share URLs, embed, metadata, static deploy config | Pending |
-| 5 | Claude Code | VoI + prioritize engine; minimal read-only UI if time (ADR-0010 P1) | Pending |
+| 2 | Claude Code / Cursor | Next.js + React Flow + funnel + formula builder (row-style verbal builder not built) | **Built** (F-007, F-016, F-017) |
+| 3 | Claude Code / Cursor | BYOD data test, MC worker + UI | **Built** (F-014, F-017, F-018) |
+| 4 | Claude Code / Cursor | Share URLs, embed, metadata, static deploy config; deploy is owner action | **Built** (F-020) |
+| 5 | Claude Code | VoI + prioritize engine; read-only “What to test first” view | **Built** (F-015, F-019); Guesstimate editor pending |
+| P4 | Claude Code | KPI CSV / SQL / DAX exports + Power BI kit (`docs/powerbi/`) | **Built** (F-021) |
 
 **Tool constraints:** Artifacts are throwaway. Claude Code may author the Next.js app
 (ADR-0010 P2 supersedes "Claude Code never writes React"). Progress log: `docs/PROGRESS.md`.
 
-## 5. Current Gate (Phase 1 + Gate 1)
+## 5. Current Gates
 
 | Criterion | Verification |
 |---|---|
 | Engine matches ADR-0006 | `driver_tree_studio/src/engine/` |
 | Validation ADR-0005 | `tests/schema/validate.test.ts`, `dtc_seed.test.ts` |
-| Full Phase 1 matrix ADR-0007 | `cd driver_tree_studio && npx vitest run` (36 tests) |
+| Engine + exports | `cd driver_tree_studio && npm test` (vitest) and `npm run coverage` |
+| App | `npm run typecheck && npm run lint && npm run build && npm run e2e` (CI job `app`) |
+| Headline result | `npm run example` reproduces `docs/results/` (test-guarded) |
 | Governance | `make verify` |
 
 Gate 1 approved; Phase 2+ proceeds against `CLAUDE_DESIGN_SYSTEM.md` (ADR-0010).
 
 ## 6. Out of Scope / Limitations
 
-- No production UI before Gate 1. No VoI/Guesstimate UI before Phase 5.
-- Illustrative DTC numbers until defended authoring pass (public BRAGA link gated Phase 4).
+- No Guesstimate range editor yet (ranges are edited in the model JSON); no hosted deploy.
+- Authoring pass done (F-019): page speed edge ESTIMATED from public sources; email and AOV→LTV
+  edges stay ILLUSTRATIVE and flagged, so the ADR-0004 public-launch gate is **not** yet met.
 - Phase 0 TSX prototype archived at `archive/phase-0/` (not product SSOT).
 - `recommend.ts` guardrails: simplified below-baseline check (Phase 1).
 

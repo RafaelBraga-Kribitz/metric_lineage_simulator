@@ -98,6 +98,25 @@ guardrail:  fill #E11D48, text #FFFFFF
 --color-braga-grey:  #8B97A6;      /* cool grey, BRAGA identity    */
 ```
 
+### Derived tokens (pattern values promoted to variables)
+The component patterns in §6 and §7 quote a few literal colors. They are exposed as
+tokens so components never carry raw hex (enforced by ESLint `no-restricted-syntax`):
+```css
+--color-text-on-fill:      #FFFFFF;   /* text on filled chips/badges */
+--color-text-on-driver:    #E2E8F0;   /* text on driver badge */
+--color-lever-idle:        #6B7280;   /* lever accent when unchanged (§6 Lever) */
+--color-notice-text:       #FBBF24;   /* illustrative notice (§6) */
+--color-notice-bg:         #78350F33;
+--color-notice-border:     #78350F;
+--color-recon-ok-bg:       #052E1F;   /* reconciliation badge (§6) */
+--color-recon-ok-border:   #065F46;
+--color-recon-bad-bg:      #3F1D1D;
+--color-recon-bad-border:  #7F1D1D;
+--color-caveat-bg:         #3F1D1D;   /* GUESS caveat red box (§7) */
+--color-caveat-border:     #DC2626;   /* = --color-error */
+--color-caveat-text:       #FCA5A5;   /* = --color-delta-negative */
+```
+
 ### Tailwind config (tailwind.config.ts)
 Map ALL above tokens into the Tailwind theme so utility classes are available:
 ```typescript

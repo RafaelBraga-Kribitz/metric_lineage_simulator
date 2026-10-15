@@ -4,8 +4,11 @@ import * as React from "react";
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
+    thumbLabel?: string;
+    thumbValueText?: string;
+  }
+>(({ className, thumbLabel, thumbValueText, ...props }, ref) => (
   <SliderPrimitive.Root
     ref={ref}
     className={cn(
@@ -17,7 +20,7 @@ const Slider = React.forwardRef<
     <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-bg-card">
       <SliderPrimitive.Range className="absolute h-full bg-edge-identity" />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-edge-identity bg-bg-panel shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-edge-identity" />
+    <SliderPrimitive.Thumb aria-label={thumbLabel} aria-valuetext={thumbValueText} className="block h-4 w-4 rounded-full border border-edge-identity bg-bg-panel shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-edge-identity" />
   </SliderPrimitive.Root>
 ));
 Slider.displayName = SliderPrimitive.Root.displayName;

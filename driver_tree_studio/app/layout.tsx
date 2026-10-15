@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/600.css";
+import "@fontsource/dm-sans/700.css";
+import "@fontsource/dm-sans/800.css";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const DESCRIPTION =
+  "Driver-tree studio for KPI design: keeps definitional identities, declared elasticities and untested beliefs apart, forecasts ranges, tests relationships on your own CSV, and ranks which guess to test first.";
 
 export const metadata: Metadata = {
-  title: "Metric Driver-Tree Studio",
-  description:
-    "Honest driver-tree studio separating identities, declared assumptions, and untested beliefs.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Metric Driver-Tree Studio", template: "%s" },
+  description: DESCRIPTION,
+  applicationName: "Metric Driver-Tree Studio",
+  authors: [{ name: "Rafael Braga-Kribitz" }],
+  keywords: ["driver tree", "KPI", "Kennzahlen", "contribution margin", "value of information", "Monte Carlo", "e-commerce analytics"],
+  openGraph: { type: "website", title: "Metric Driver-Tree Studio", description: DESCRIPTION, images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Metric Driver-Tree Studio", description: DESCRIPTION, images: ["/og.png"] },
 };
 
 export default function RootLayout({
@@ -20,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.className} min-h-screen bg-bg-app text-text-primary`}>
+      <body className="font-sans min-h-screen bg-bg-app text-text-primary">
         {children}
       </body>
     </html>

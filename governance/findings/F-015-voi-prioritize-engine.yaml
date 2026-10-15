@@ -1,0 +1,18 @@
+id: F-015
+title: "Phase 5a engine (valueOfInformation.ts, prioritize.ts) specified but not implemented"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  governance/adrs/0008-phases-2-through-5.md §Phase 5 — VoI = north-star spread from edge
+    uncertainty; priorityScore = voiScore / test_cost; output is value of information,
+    never impact; verbatim GUESS caveat.
+  driver_tree_studio/src/engine/ — neither module exists on main (2026-10-14).
+verification_script: tests/governance/test_f015_voi_prioritize.py
+notes: |
+  VoI is computed under a planned driver change (default +10%): with the driver at baseline
+  every elasticity multiplies a zero delta, so uncertainty in a guess only matters for a
+  decision that moves the driver. Hypothesized edges are listed as needs_guesstimate.

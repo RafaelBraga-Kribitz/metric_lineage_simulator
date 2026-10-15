@@ -61,6 +61,16 @@ export interface MetricNode {
   explainer?: string;
   position?: { x: number; y: number };
   funnel_stage_order?: number;
+  /** BI aggregation across periods. Default: counts sum; rates and per-unit values average. */
+  aggregation?: "sum" | "average";
+}
+
+/** A public, verifiable source backing an edge's range (ADR-0010 P5). */
+export interface EvidenceSource {
+  name: string;
+  url: string;
+  year: number;
+  measures: string;
 }
 
 export interface MetricEdge {
@@ -76,6 +86,7 @@ export interface MetricEdge {
   direction?: Direction;
   evidence_grade?: EvidenceGrade;
   evidence_note?: string;
+  evidence_source?: EvidenceSource[];
   rationale?: string;
   test_cost?: number;
 }

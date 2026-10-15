@@ -64,6 +64,8 @@ export function LeverPanel({ state, onSelectNode }: LeverPanelProps) {
               max={2}
               step={0.01}
               value={[multiplier]}
+              thumbLabel={`${n.name} lever`}
+              thumbValueText={`${formatMetricValue(val, n.unit)} (${pctChange(val, base)} vs baseline)`}
               onValueChange={([v]) => {
                 const next = v ?? 1;
                 setLevers((prev) => ({
@@ -75,7 +77,7 @@ export function LeverPanel({ state, onSelectNode }: LeverPanelProps) {
                 accentColor:
                   Math.abs(val - base) > 1e-9
                     ? "var(--color-edge-identity)"
-                    : "#6B7280",
+                    : "var(--color-lever-idle)",
               }}
             />
           </div>

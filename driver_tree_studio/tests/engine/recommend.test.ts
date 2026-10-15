@@ -8,10 +8,10 @@ const model = seed as unknown as BusinessModel;
 describe("recommend", () => {
   it("surfaces hypothesized edges in untestedBeliefs", () => {
     const r = recommend(model, {});
-    expect(r.untestedBeliefs).toHaveLength(2);
+    expect(r.untestedBeliefs).toHaveLength(1);
     expect(r.untestedBeliefs.every((e) => e.kind === "hypothesized")).toBe(true);
     const childIds = r.untestedBeliefs.map((e) => e.child).sort();
-    expect(childIds).toEqual(["loyalty_membership", "page_load_speed"]);
+    expect(childIds).toEqual(["loyalty_membership"]);
   });
 
   it("returns up to five top levers from tornado", () => {

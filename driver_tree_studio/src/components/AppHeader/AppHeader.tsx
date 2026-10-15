@@ -4,6 +4,7 @@
 "use client";
 
 import type { MetricModelState } from "@/hooks/useMetricModel";
+import { ShareControls } from "@/components/Share/ShareControls";
 import { PanelLeft } from "lucide-react";
 
 interface AppHeaderProps {
@@ -39,15 +40,20 @@ export function AppHeader({
           <h1 className="text-[22px] font-extrabold tracking-tight text-text-primary">
             Metric Driver-Tree Studio
           </h1>
-          <p className="text-xs text-text-muted">{state.model.name}</p>
+          <p className="text-xs text-text-muted">
+            {state.model.name}
+            {state.fromSharedLink && " · loaded from a shared link"}
+          </p>
         </div>
       </div>
+      <div className="flex items-start gap-3">
+      <ShareControls state={state} />
       <div className="flex max-w-md flex-col items-end gap-1">
         <div
           className={`flex flex-col gap-0.5 rounded-[10px] px-3 py-2 text-xs font-bold ${
             identityReconciled
-              ? "border border-[#065f46] bg-[#052e1f] text-delta-positive"
-              : "border border-[#7f1d1d] bg-[#3f1d1d] text-delta-negative"
+              ? "border border-recon-ok-border bg-recon-ok-bg text-delta-positive"
+              : "border border-recon-bad-border bg-recon-bad-bg text-delta-negative"
           }`}
         >
           <span>{identityReconciled ? "✓" : "✗"} Identity reconciled</span>
@@ -63,6 +69,7 @@ export function AppHeader({
               : ""}
           </p>
         )}
+      </div>
       </div>
     </header>
   );

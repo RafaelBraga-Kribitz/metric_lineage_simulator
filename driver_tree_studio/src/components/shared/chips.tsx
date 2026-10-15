@@ -10,13 +10,13 @@ const EDGE_KIND_STYLES: Record<
 > = {
   identity: {
     bg: "var(--color-edge-identity)",
-    text: "#ffffff",
+    text: "var(--color-text-on-fill)",
     border: "var(--color-edge-identity)",
     label: "identity",
   },
   modeled: {
     bg: "var(--color-edge-modeled)",
-    text: "#ffffff",
+    text: "var(--color-text-on-fill)",
     border: "var(--color-edge-modeled)",
     label: "modeled",
   },
@@ -115,7 +115,7 @@ export function getLayerStyles(layer: string): {
     case "north_star":
       return {
         badgeBg: "var(--color-layer-north-star)",
-        badgeText: "#ffffff",
+        badgeText: "var(--color-text-on-fill)",
         fill: "var(--color-node-north-star-fill)",
         text: "var(--color-node-north-star-text)",
         hoverBorder: "var(--color-layer-north-star)",
@@ -124,7 +124,7 @@ export function getLayerStyles(layer: string): {
     case "strategic_objective":
       return {
         badgeBg: "var(--color-layer-outcome)",
-        badgeText: "#ffffff",
+        badgeText: "var(--color-text-on-fill)",
         fill: "var(--color-node-outcome-fill)",
         text: "var(--color-node-outcome-text)",
         hoverBorder: "var(--color-layer-outcome)",
@@ -132,7 +132,7 @@ export function getLayerStyles(layer: string): {
     case "guardrail":
       return {
         badgeBg: "var(--color-layer-guardrail)",
-        badgeText: "#ffffff",
+        badgeText: "var(--color-text-on-fill)",
         fill: "var(--color-node-guardrail-fill)",
         text: "var(--color-node-guardrail-text)",
         hoverBorder: "var(--color-layer-guardrail)",
@@ -140,7 +140,7 @@ export function getLayerStyles(layer: string): {
     case "counter":
       return {
         badgeBg: "var(--color-layer-counter)",
-        badgeText: "#ffffff",
+        badgeText: "var(--color-text-on-fill)",
         fill: "var(--color-node-driver-fill)",
         text: "var(--color-node-driver-text)",
         hoverBorder: "var(--color-layer-counter)",
@@ -148,7 +148,7 @@ export function getLayerStyles(layer: string): {
     case "input":
       return {
         badgeBg: "var(--color-layer-input)",
-        badgeText: "#ffffff",
+        badgeText: "var(--color-text-on-fill)",
         fill: "var(--color-node-input-fill)",
         text: "var(--color-node-input-text)",
         hoverBorder: "var(--color-text-muted)",
@@ -156,7 +156,7 @@ export function getLayerStyles(layer: string): {
     default:
       return {
         badgeBg: "var(--color-layer-driver)",
-        badgeText: "#e2e8f0",
+        badgeText: "var(--color-text-on-driver)",
         fill: "var(--color-node-driver-fill)",
         text: "var(--color-node-driver-text)",
         hoverBorder: "var(--color-layer-driver)",

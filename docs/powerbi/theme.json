@@ -1,0 +1,62 @@
+{
+  "name": "Metric Driver-Tree Studio (dark, from CLAUDE_DESIGN_SYSTEM.md tokens)",
+  "dataColors": [
+    "#2563eb",
+    "#d97706",
+    "#9ca3af",
+    "#0891b2",
+    "#7c3aed",
+    "#6ee7b7",
+    "#fca5a5",
+    "#e8624a"
+  ],
+  "background": "#0f172a",
+  "foreground": "#f8fafc",
+  "tableAccent": "#2563eb",
+  "good": "#6ee7b7",
+  "bad": "#fca5a5",
+  "neutral": "#94a3b8",
+  "textClasses": {
+    "title": {
+      "fontFace": "DM Sans",
+      "fontSize": 14,
+      "color": "#f8fafc"
+    },
+    "label": {
+      "fontFace": "DM Sans",
+      "fontSize": 10,
+      "color": "#94a3b8"
+    },
+    "callout": {
+      "fontFace": "DM Sans",
+      "fontSize": 28,
+      "color": "#f8fafc"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#1e293b"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "color": {
+              "solid": {
+                "color": "#334155"
+              }
+            },
+            "show": true
+          }
+        ]
+      }
+    }
+  }
+}

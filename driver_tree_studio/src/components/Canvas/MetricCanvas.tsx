@@ -8,8 +8,6 @@ import type { MetricEdge } from "@/schema/types";
 import {
   Background,
   Controls,
-  MarkerType,
-  MiniMap,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -42,14 +40,6 @@ const edgeTypes = {
   identity: IdentityEdge,
   modeled: ModeledEdge,
   hypothesized: HypEdge,
-};
-
-const defaultEdgeOptions = {
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-    width: 16,
-    height: 16,
-  },
 };
 
 interface MetricCanvasProps {
@@ -105,6 +95,14 @@ export function MetricCanvas({ state }: MetricCanvasProps) {
     [setSelectedNodeId],
   );
 
+  // Keyboard selection (Tab to a node, Enter/Space selects) opens the inspector too.
+  const onSelectionChange = useCallback(
+    ({ nodes: selected }: { nodes: Node[] }) => {
+      if (selected.length === 1 && selected[0]) setSelectedNodeId(selected[0].id);
+    },
+    [setSelectedNodeId],
+  );
+
   const onConnect = useCallback((connection: Connection) => {
     if (!connection.source || !connection.target) return;
     setPending({
@@ -155,21 +153,18 @@ export function MetricCanvas({ state }: MetricCanvasProps) {
           onEdgesChange={onEdgesChange}
           onNodeDragStop={onNodeDragStop}
           onNodeClick={onNodeClick}
+          onSelectionChange={onSelectionChange}
+          ariaLabelConfig={{ "node.a11yDescription.default": "Press Enter to select a metric and open its inspector. Arrow keys move a selected node." }}
           onConnect={onConnect}
           onEdgesDelete={onEdgesDelete}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
-          defaultEdgeOptions={defaultEdgeOptions}
           fitView
           proOptions={{ hideAttribution: true }}
           deleteKeyCode={["Backspace", "Delete"]}
         >
           <Background color="var(--color-border-subtle)" gap={16} />
           <Controls className="!bg-bg-panel !border-border !shadow-none [&>button]:!bg-bg-panel [&>button]:!border-border [&>button]:!text-text-muted" />
-          <MiniMap
-            className="!bg-bg-panel !border-border"
-            nodeColor={() => "var(--color-bg-card)"}
-          />
         </ReactFlow>
       </div>
       <EdgeCreateDialog

@@ -12,7 +12,7 @@ import {
   defaultFormulaParent,
   identityEdgesToFormula,
 } from "@/lib/formulaDisplay";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface FormulaFieldProps {
   state: MetricModelState;
@@ -40,10 +40,14 @@ export function FormulaField({ state }: FormulaFieldProps) {
     (e) => e.parent === activeParent && e.kind === "identity",
   );
 
-  useEffect(() => {
+  // Re-sync the text from the model when the parent or the edges change (render-time
+  // state adjustment; avoids a cascading effect render).
+  const [syncedFrom, setSyncedFrom] = useState<{ parent: string; edges: unknown } | null>(null);
+  if (syncedFrom?.parent !== activeParent || syncedFrom.edges !== model.edges) {
+    setSyncedFrom({ parent: activeParent, edges: model.edges });
     setFormula(identityEdgesToFormula(activeParent, model.edges));
     setError(null);
-  }, [activeParent, model.edges]);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

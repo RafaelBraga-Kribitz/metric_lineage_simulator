@@ -1,0 +1,23 @@
+{
+  "_note": "ILLUSTRATIVE German controlling labels (Kennzahlen) for display and export only. Generic textbook terms; not any company's internal metric definitions (ADR-0004, ADR-0010 P4).",
+  "labels": {
+    "contribution_profit": "Deckungsbeitrag",
+    "net_revenue": "Nettoumsatz",
+    "variable_costs": "Variable Kosten",
+    "orders": "Anzahl Bestellungen",
+    "sessions": "Sitzungen",
+    "new_sessions": "Neue Sitzungen",
+    "returning_sessions": "Wiederkehrende Sitzungen",
+    "conversion_rate": "Konversionsrate",
+    "product_view_rate": "Produktansichtsrate",
+    "add_to_cart_rate": "Warenkorbrate",
+    "checkout_start_rate": "Checkout-Startrate",
+    "purchase_completion_rate": "Kaufabschlussrate",
+    "average_order_value": "Warenkorbwert (Ø Bestellwert)",
+    "cost_per_order": "Variable Kosten je Bestellung",
+    "email_capture_rate": "E-Mail-Erfassungsrate",
+    "page_load_speed": "Ladezeit (s)",
+    "loyalty_membership": "Kundenbindungsquote (Treueprogramm)",
+    "customer_ltv": "Kundenwert (CLV)"
+  }
+}

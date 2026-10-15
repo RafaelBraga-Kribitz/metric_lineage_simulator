@@ -1,0 +1,17 @@
+id: F-018
+title: "Phase 3b data-test hero panel (BYOD CSV, column mapping, verdict) missing from the app"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  governance/adrs/0008-phases-2-through-5.md §Phase 3b — "Data-test hero panel" in the app.
+  driver_tree_studio/src/engine/estimate.ts (F-014) has no UI caller; users cannot run it.
+verification_script: tests/governance/test_f018_data_test_panel.py
+notes: |
+  Remediation: DataTestPanel (drop/choose CSV, in-browser only, 5 MB cap; edge + column
+  mapping; observational vs randomized design; verdict, CI, OLS, OOS r², fixed note,
+  what-would-prove-this, leakage alert; accept → acceptEstimate). SYNTHETIC example data
+  (seeded, selection effect built in) demonstrates the loyalty trap. e2e datatest spec.

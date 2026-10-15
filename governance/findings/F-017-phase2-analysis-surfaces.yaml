@@ -1,0 +1,20 @@
+id: F-017
+title: "Phase 2 UI lacks tornado, Monte Carlo panel, untested-beliefs list, coloured markers"
+category: partial_migration
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-14
+closed_at: 2026-10-14
+recurrence_count: 0
+evidence: |
+  driver_tree_studio/app/page.tsx — renders levers/results/ledger only; engine tornado(),
+    monteCarlo() and recommend().untestedBeliefs have no UI surface.
+  src/components/Canvas/MetricCanvas.tsx — defaultEdgeOptions arrow markers are grey for every
+    kind, contradicting CLAUDE_DESIGN_SYSTEM.md §5 ("Arrow markers must inherit the edge color").
+  Illustrative notice banner (design system §6) not shown anywhere on the page.
+  ADR-0008 Phase 3a — Monte Carlo Web Worker not implemented.
+verification_script: tests/governance/test_f017_phase2_analysis.py
+notes: |
+  Remediation: AnalysisPanel with accessible tabs (Sensitivity / Forecast range / Untested
+  beliefs), src/workers/montecarlo.worker.ts + tested pure protocol, IllustrativeNotice and
+  GuessCaveat (verbatim), per-kind markers, keyboard node selection, e2e analysis spec.
