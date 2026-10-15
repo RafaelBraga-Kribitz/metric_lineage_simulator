@@ -5,6 +5,7 @@
 import type { BusinessModel, MetricEdge } from "../schema/types.js";
 import { computeForMonteCarlo } from "./compute.js";
 import { mulberry32, percentile, sampleDistribution } from "../lib/rng.js";
+import { pearson } from "../lib/stats.js";
 
 export interface MonteCarloResult {
   samples: number[];
@@ -13,31 +14,6 @@ export interface MonteCarloResult {
   p90: number;
   /** Normalized squared Pearson correlation per controllable leaf id. Sums to 1. */
   varianceContribution: Record<string, number>;
-}
-
-function pearson(xs: number[], ys: number[]): number {
-  const n = xs.length;
-  if (n === 0) return 0;
-  let sx = 0;
-  let sy = 0;
-  for (let i = 0; i < n; i++) {
-    sx += xs[i] as number;
-    sy += ys[i] as number;
-  }
-  const mx = sx / n;
-  const my = sy / n;
-  let num = 0;
-  let dx = 0;
-  let dy = 0;
-  for (let i = 0; i < n; i++) {
-    const a = (xs[i] as number) - mx;
-    const b = (ys[i] as number) - my;
-    num += a * b;
-    dx += a * a;
-    dy += b * b;
-  }
-  const den = Math.sqrt(dx * dy);
-  return den < 1e-12 ? 0 : num / den;
 }
 
 /** Run Monte Carlo. Samples controllable-leaf distributions and edge elasticity distributions. */

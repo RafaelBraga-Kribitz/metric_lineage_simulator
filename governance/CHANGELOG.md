@@ -1,5 +1,13 @@
 # Governance Changelog
 
+## 2026-10-14 — F-014 closed (BYOD estimate engine)
+
+- `src/engine/estimate.ts`: correlation + Fisher CI, transparent OLS with t-based slope CI,
+  seeded 80/20 out-of-sample r², association-vs-effect verdict, fixed causal notes,
+  leakage warning for identity edges, `acceptEstimate` grade promotion.
+- `src/lib/csv.ts` (German `;` + decimal-comma exports), `src/lib/stats.ts` (shared pearson).
+- vitest 44 → 65 (Anscombe I reference values, fast-check properties); `npm run coverage`.
+
 ## 2026-10-14 — F-013 closed (Adversary ratchet lookup)
 
 - `_ratchet.finding_status()` resolved `F-NNN.yaml`, but files are `F-NNN-slug.yaml`; every
