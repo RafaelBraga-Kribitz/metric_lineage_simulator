@@ -9,7 +9,7 @@ jobs:
   # Product gates for the studio app (ADR-0010): typecheck, lint, unit tests with
   # coverage, static build, and a Playwright smoke test against the built export.
   app:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # Playwright 1.56 cannot install Chromium on the ubuntu-26.04 image ubuntu-latest now resolves to
     defaults:
       run:
         working-directory: driver_tree_studio
