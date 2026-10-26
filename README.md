@@ -3,8 +3,8 @@
 ![Metric Driver-Tree Studio interface: a contribution-profit driver tree with thick blue identity edges, amber modeled edges with grade chips, and a grey dashed hypothesized edge with a question-mark badge](docs/assets/hero.png)
 
 [![Governance](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator/actions/workflows/governance.yml)
-[![License: ISC](https://img.shields.io/badge/license-ISC-green)](LICENSE)
-[![Status: In development](https://img.shields.io/badge/status-In%20development-blue)](#status)
+[![License: ISC](https://img.shields.io/badge/license-ISC-5A5C61?labelColor=26282C)](LICENSE)
+[![Status: In development](https://img.shields.io/badge/status-In%20development-5A5C61?labelColor=26282C)](#status)
 
 **Status:** In development
 
@@ -123,6 +123,33 @@ Run a speed test before any speed roadmap is sized: deliberately add or remove l
 The studio is a static Next.js app over a framework-free TypeScript engine. A model is validated, computed, and analysed entirely in the browser; exports and the worked example are produced by the same engine from Node scripts.
 
 ```mermaid
+%%{init: {
+  "theme": "base",
+  "fontFamily": "BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif",
+  "themeVariables": {
+    "background": "#E4E6EA",
+    "primaryColor": "#DCDEE2",
+    "primaryTextColor": "#26282C",
+    "primaryBorderColor": "#26282C",
+    "secondaryColor": "#E4E6EA",
+    "secondaryTextColor": "#26282C",
+    "secondaryBorderColor": "#5A5C61",
+    "tertiaryColor": "#E4E6EA",
+    "tertiaryTextColor": "#26282C",
+    "tertiaryBorderColor": "#C2C4CA",
+    "lineColor": "#5A5C61",
+    "textColor": "#26282C",
+    "mainBkg": "#DCDEE2",
+    "nodeBorder": "#26282C",
+    "clusterBkg": "#E4E6EA",
+    "clusterBorder": "#C2C4CA",
+    "edgeLabelBackground": "#E4E6EA",
+    "titleColor": "#26282C",
+    "fontFamily": "BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif",
+    "fontSize": "14px"
+  },
+  "flowchart": { "curve": "linear", "htmlLabels": true, "padding": 8 }
+}}%%
 flowchart LR
   seed["DTC model JSON<br/>(ILLUSTRATIVE + sourced ranges)"] --> validate["validate()<br/>DAG, fields, reconciliation 1e-6"]
   validate --> engine["engine: compute · what-if · tornado<br/>Monte Carlo · value of information · estimate"]
