@@ -74,13 +74,13 @@
       "bbox": [
         72,
         309,
-        946,
+        981,
         450
       ],
       "lines": [
         "A driver-tree studio that keeps definitional identities,",
-        "modelled elasticities, and untested beliefs apart. Phase 1",
-        "engine built; UI pending."
+        "modelled elasticities, and untested beliefs apart, and ranks",
+        "which guess to test first."
       ],
       "font": "BKribitz-400.woff2"
     }
