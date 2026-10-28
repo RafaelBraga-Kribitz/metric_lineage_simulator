@@ -16,7 +16,7 @@ A KPI tree (German: Kennzahlensystem) breaks one key metric into the drivers beh
 - **Main caveat:** the shop is illustrative, not a real one. The result ranks what to learn, not what to do.
 - **Chart:** [the ranking panel](docs/assets/what-to-test-first.png), shown below.
 
-## What it does
+## Decision summary
 
 The studio draws a contribution-profit tree for a direct-to-consumer (DTC) online shop. Contribution profit is net revenue minus variable costs. It is the north star: the one metric at the top of the tree.
 
@@ -27,6 +27,17 @@ The studio draws a contribution-profit tree for a direct-to-consumer (DTC) onlin
 *The ranking panel in the app. Bar length is the spread of the north star that each guess's declared range produces. Priority divides that spread by a declared test cost.*
 
 The €5,832 figure comes from an elasticity range graded **estimated**. Its bound is translated from the public Deloitte for Google study [*Milliseconds Make Millions* (2020)](https://web.dev/case-studies/milliseconds-make-millions). That study associates 0.1 s faster mobile pages with +8.4 % retail conversion. The edge's note in the app explains the translation. The study is an external, observational benchmark. It is not a measurement of this shop.
+
+To run the studio on your machine, use Node 20:
+
+```bash
+git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
+cd metric_lineage_simulator/driver_tree_studio
+npm ci
+npm run dev            # studio at http://localhost:3000
+npm test               # 92 unit tests: engine, statistics, exports
+npm run example        # regenerates the result above into docs/results/
+```
 
 The studio shows these skills in analyst terms:
 
@@ -49,7 +60,7 @@ No hosted demo exists. Deployment is an owner step. The static build and the Ver
 
 | Audience | Start here |
 |---|---|
-| Hiring manager, 2 minutes | [What it does](#what-it-does) → [Results](#results) → [Known limits](#known-limits) |
+| Hiring manager, 2 minutes | [Decision summary](#decision-summary) → [Results](#results) → [Known limits](#known-limits) |
 | Analyst / BI developer | [Power BI build kit](docs/powerbi/README.md) → [`kpi_tree.sql`](docs/powerbi/kpi_tree.sql) → [`measures.dax`](docs/powerbi/measures.dax) |
 | Technical reviewer | [How it works](#how-it-works) → [`estimate.ts`](driver_tree_studio/src/engine/estimate.ts) → [Validation](#validation) → [scope decision record](governance/adrs/0010-portfolio-completion-scope.md) |
 
