@@ -8,75 +8,70 @@
 
 **Status:** In development
 
-KPI trees (Kennzahlensysteme) usually mix three different kinds of claim: definitions that are true by construction, assumed elasticities, and beliefs nobody has tested. When they sit in one formula, a guess looks as solid as a definition. This studio keeps the three apart, forecasts what the guesses imply, and ranks which guess is worth testing first.
+A KPI tree (German: Kennzahlensystem) breaks one key metric into the drivers behind it. Most trees mix three kinds of claim in one formula. The first kind is a definition, true by construction. The second kind is an assumed elasticity: the percent change in one metric when another metric changes by 1 %. The third kind is a belief that nobody has tested. In one formula, a guess looks as solid as a definition. This studio keeps the three kinds apart. It forecasts what the guesses imply. It ranks which guess to test first.
+
+- **Who decides:** a growth or experimentation lead at an online shop.
+- **What they choose:** which untested guess to test first.
+- **Answer:** test page speed first. Its uncertainty blurs contribution profit by €5,832 per period, 5.5× the value of the next guess per unit of test cost.
+- **Main caveat:** the shop is illustrative, not a real one. The result ranks what to learn, not what to do.
+- **Chart:** [the ranking panel](docs/assets/what-to-test-first.png), shown below.
 
 ## Decision summary
 
-**Test the page-speed guess first.** On the illustrative DTC e-commerce model, uncertainty about how page load speed moves product-page views blurs a planned "10% faster pages" decision by **€5,832 of contribution profit per period** (P90 − P10, on a €48,000 baseline). That is 5.5× more value of information per unit of test cost than the next guess (email capture, €534). This ranks what to *learn*, not what to *do*.
+The studio draws a contribution-profit tree for a direct-to-consumer (DTC) online shop. Contribution profit is net revenue minus variable costs. It is the north star: the one metric at the top of the tree.
+
+**Test the page-speed guess first.** The illustrative DTC model has a baseline of €48,000 contribution profit per period. A planned "10 % faster pages" decision has an uncertain outcome. One guess drives that uncertainty: how page load speed moves product-page views. This guess blurs the outcome by **€5,832 of contribution profit per period**. The blur is P90 − P10, the gap between the 90th and the 10th percentile of 20,000 simulated outcomes. The next guess, email capture, blurs the outcome by €534. Page speed gives 5.5× more value of information per unit of test cost. Value of information (VoI) measures how far a guess's uncertainty moves a planned outcome. The result ranks what to *learn*, not what to *do*.
 
 ![Studio panel 'What to test first': page speed → product view rate ranked 1 with a value-of-information bar of €5,832 and grade 'estimated'; email capture ranked 2 at €534 and 'illustrative'; loyalty → LTV unranked because it has no range yet](docs/assets/what-to-test-first.png)
 
-*The ranking panel in the app: bar length is the spread of the north star that each guess's declared range produces; priority divides it by a declared test cost.*
+*The ranking panel in the app. Bar length is the spread of the north star that each guess's declared range produces. Priority divides that spread by a declared test cost.*
 
-The €5,832 figure comes from an elasticity range graded **estimated**: its bound is translated from the public Deloitte for Google study [*Milliseconds Make Millions* (2020)](https://web.dev/case-studies/milliseconds-make-millions), which associates 0.1 s faster mobile pages with +8.4% retail conversion. The edge's note in the app explains the translation. It is an external, observational benchmark, not a measurement of this shop.
+The €5,832 figure comes from an elasticity range graded **estimated**. Its bound is translated from the public Deloitte for Google study [*Milliseconds Make Millions* (2020)](https://web.dev/case-studies/milliseconds-make-millions). That study associates 0.1 s faster mobile pages with +8.4 % retail conversion. The edge's note in the app explains the translation. The study is an external, observational benchmark. It is not a measurement of this shop.
+
+To run the studio on your machine, use Node 20. These commands finish and return:
 
 ```bash
 git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
 cd metric_lineage_simulator/driver_tree_studio
 npm ci
-npm run dev            # studio at http://localhost:3000
 npm test               # 92 unit tests: engine, statistics, exports
 npm run example        # regenerates the result above into docs/results/
 ```
 
-What it covers, in analyst terms: KPI and Kennzahlen design as a driver tree (Deckungsbeitrag down to funnel-stage Konversionsraten), forecasting under uncertainty (seeded Monte Carlo ranges), a bring-your-own-CSV relationship test, ETL-style validation (every identity must reconcile to 1e-6), and a hand-off to the BI stack: SQL view DDL, a KPI dictionary CSV and Power BI DAX measures. The engine is plain TypeScript with no statistics library, so every formula is readable in the source; there is no Python in the product.
+Then start the studio. This command keeps running until you stop it:
+
+```bash
+npm run dev            # studio at http://localhost:3000
+```
+
+The studio shows these skills in analyst terms:
+
+- KPI and Kennzahlen design as a driver tree: Deckungsbeitrag (contribution profit) down to the conversion rate (Konversionsrate) of each funnel stage.
+- Forecasting under uncertainty. Seeded Monte Carlo runs draw many random values from the declared ranges.
+- A relationship test on your own CSV file.
+- ETL-style validation (extract, transform, load): every identity must reconcile to 1e-6.
+- A hand-off to the BI stack: SQL view definitions, a KPI dictionary CSV and Power BI DAX measures. DAX is the formula language of Power BI.
+- A plain TypeScript engine with no statistics library, so every formula is readable in the source. The product contains no Python.
 
 ## See it running
 
 ![Animated walk-through of the real UI: the what-to-test-first ranking, the sensitivity tornado, the Monte Carlo forecast range, a data test on synthetic data with the association-not-effect note, and the SQL / Power BI export tab](docs/assets/demo.gif)
 
-No hosted demo. Deployment is an owner step; the static build and Vercel config are ready ([docs/deploy.md](docs/deploy.md)). Every screen above is captured from the built app by `npm run screenshots`.
+*The walk-through shows the ranking, a tornado chart (bars sorted by how far each lever moves the north star), the forecast range, a data test and the export tab.*
 
-## Explore this project
+No hosted demo exists. Deployment is an owner step. The static build and the Vercel config are ready ([docs/deploy.md](docs/deploy.md)). The command `npm run screenshots` captures every screen above from the built app.
+
+## Start here
 
 | Audience | Start here |
 |---|---|
-| Hiring manager, 2 minutes | [Decision summary](#decision-summary) → [Results](#results) → [Limitations](#limitations) |
+| Hiring manager, 2 minutes | [Decision summary](#decision-summary) → [Results](#results) → [Known limits](#known-limits) |
 | Analyst / BI developer | [Power BI build kit](docs/powerbi/README.md) → [`kpi_tree.sql`](docs/powerbi/kpi_tree.sql) → [`measures.dax`](docs/powerbi/measures.dax) |
-| Technical reviewer | [Method](#method) → [`estimate.ts`](driver_tree_studio/src/engine/estimate.ts) → [Validation](#validation) → [ADR-0010](governance/adrs/0010-portfolio-completion-scope.md) |
+| Technical reviewer | [How it works](#how-it-works) → [`estimate.ts`](driver_tree_studio/src/engine/estimate.ts) → [Validation](#validation) → [scope decision record](governance/adrs/0010-portfolio-completion-scope.md) |
 
 ## Question
 
-Given a contribution-profit tree for a direct-to-consumer shop, **which uncertain assumption should be tested before acting on it?** A second question runs through the whole tool: how do you show an assumption's uncertainty without dressing it up as evidence?
-
-## Data
-
-| Input | What it is | Epistemic status |
-|---|---|---|
-| [`dtc_ecommerce.json`](driver_tree_studio/src/content/dtc_ecommerce.json) | 18 metrics, 14 identity edges, 3 modeled edges, 1 hypothesized edge; contribution profit €48,000 per period | Baselines **ILLUSTRATIVE** |
-| Page speed → product views range | triangular(−2.1, −0.5, 0) elasticity; two public sources stored on the edge | **Estimated** from public benchmarks |
-| Email capture → returning sessions range | triangular(0, 0.3, 0.6) | **ILLUSTRATIVE**; no public source found, flagged in the UI |
-| Loyalty → LTV | direction only, with a selection-trap warning | **Hypothesized**; never computed |
-| Your CSV (data-test tab) | any two numeric columns; read in the browser, never uploaded | yours |
-| [`kpi_inputs_SYNTHETIC.csv`](docs/powerbi/kpi_inputs_SYNTHETIC.csv) | 12 months generated from the baselines with seeded 5% noise | **SYNTHETIC**, for the BI kit only |
-
-German labels (Deckungsbeitrag, Warenkorbwert, Konversionsrate) are illustrative textbook terms, not any company's definitions. No personal, scraped or client data is in this repository.
-
-## Method
-
-Three edge kinds, drawn differently everywhere in the UI:
-
-| Kind | Canvas | What is claimed | Used in numbers |
-|---|---|---|---|
-| `identity` | thick blue | true by definition (`orders = sessions × conversion_rate`) | yes, exactly |
-| `modeled` | amber + grade chip | an elasticity with a named functional form and a declared range | yes, flagged |
-| `hypothesized` | grey dashed + “?” | a direction only | no |
-
-1. **Compute.** Values flow child → parent in topological order. Modeled effects multiply onto their target.
-2. **What-if and tornado.** Move any controllable input; the tornado shows the north-star change at ±10% per lever.
-3. **Forecast range.** Monte Carlo (seeded, in a Web Worker) samples input ranges and elasticity ranges and reports P10 / P50 / P90 plus each input's share of the spread.
-4. **Value of information.** For each modeled edge with a range: move its driver by the planned change, sample only that edge's elasticity (20,000 draws), and take P90 − P10 of the north star. Priority = that spread ÷ declared test cost.
-5. **Test with data.** Pearson r with a Fisher-z 95% CI, OLS with a t-based slope CI, elasticity at the means, and an 80/20 out-of-sample r². The verdict separates *association* from *effect*. Every verdict carries a fixed note and a “what would prove this” design. Accepting promotes the edge's grade to `observational`, or to `experimental` only if the user declares a randomized design.
+Take a contribution-profit tree for a direct-to-consumer shop. **Which uncertain assumption should the team test before it acts on the tree?** A second question runs through the whole tool. How do you show an assumption's uncertainty without dressing it up as evidence?
 
 ## Results
 
@@ -89,38 +84,70 @@ Three edge kinds, drawn differently everywhere in the UI:
 | — | average order value → customer LTV | illustrative | — | does not feed the north star | — | 3 | — |
 | — | loyalty → customer LTV | none | — | needs a range first | — | 5 | — |
 
-Compared with the €48,000 baseline, the page-speed range spans a profit gain of 3% to 15%, while email capture's spans 0.4% to 1.6%. Even after dividing by a test cost twice as high, page speed stays ahead. Reproduce with `npm run example`; the full table and sources are in [docs/results/worked_example.md](docs/results/worked_example.md), and a test fails if the committed file drifts from a fresh run.
+VoI is value of information (P90 − P10). Test cost is a declared relative effort unit. Priority is VoI divided by test cost.
+
+On the €48,000 baseline, the page-speed range spans a profit gain of 3% to 15%. The email-capture range spans 0.4% to 1.6%. Page speed stays ahead after the division by a test cost that is twice as high. Run `npm run example` to reproduce the result. The full table and the sources are in [docs/results/worked_example.md](docs/results/worked_example.md). A test fails if the committed file drifts from a fresh run.
 
 > This interval is the uncertainty in your GUESS, not evidence. A distribution looks like data and is not. Its only purpose is to help you decide what to test, never to estimate impact.
+
+## Decision and next test
+
+Run a speed test before you size any speed roadmap. Add or remove load time for a random share of sessions, or stage a rollout. Measure product-page views. Feed the result into the data-test tab. The edge's grade then moves from `estimated` to `experimental`. Its range narrows and the ranking updates.
+
+## Data
+
+| Input | What it is | Epistemic status |
+|---|---|---|
+| [`dtc_ecommerce.json`](driver_tree_studio/src/content/dtc_ecommerce.json) | 18 metrics, 14 identity edges, 3 modeled edges, 1 hypothesized edge; contribution profit €48,000 per period | Baselines **ILLUSTRATIVE** |
+| Page speed → product views range | triangular(−2.1, −0.5, 0) elasticity; two public sources stored on the edge | **Estimated** from public benchmarks |
+| Email capture → returning sessions range | triangular(0, 0.3, 0.6) | **ILLUSTRATIVE**; no public source found, flagged in the UI |
+| Loyalty → LTV | direction only, with a selection-trap warning | **Hypothesized**; never computed |
+| Your CSV (data-test tab) | any two numeric columns; read in the browser, never uploaded | yours |
+| [`kpi_inputs_SYNTHETIC.csv`](docs/powerbi/kpi_inputs_SYNTHETIC.csv) | 12 months generated from the baselines with seeded 5% noise | **SYNTHETIC**, for the BI kit only |
+
+ILLUSTRATIVE means a plausible value, not a measurement. SYNTHETIC means generated by code. A triangular range is set by its lowest, most likely and highest value. LTV is customer lifetime value.
+
+German labels (Deckungsbeitrag, Warenkorbwert, Konversionsrate) are illustrative textbook terms. They are not any company's definitions. This repository holds no personal, scraped or client data.
 
 ## Validation
 
 | Gate | What it checks | Result |
 |---|---|---|
-| `npm test` (vitest) | engine, identity reconciliation, functional forms, Monte Carlo, estimator against Anscombe I reference values, fast-check properties, CSV, share-link limits, exports | 92 tests pass |
+| `npm test` (vitest) | engine, identity reconciliation, functional forms, Monte Carlo, CSV, share-link limits, exports; the estimator against Anscombe's quartet set I (a small public dataset with known statistics); property-based tests (fast-check) | 92 tests pass |
 | `npm run coverage` | engine + schema + lib | 94.6% lines; engine 97.6%; `estimate.ts` 99.2% |
 | `npm run e2e` (Playwright) | real static build: three edge kinds, analysis tabs by keyboard, data test, share link → same numbers, embed, export download, **no console errors** | 7 tests pass |
-| SQL export | `kpi_tree` view recomputes every identity; executed in SQLite (and DuckDB during development) | matches the engine within 1e-6 |
-| `make verify` | governance findings re-verified on every PR, debt ratchet | 21 closed findings hold |
+| SQL export | the `kpi_tree` view recomputes every identity; executed in SQLite (and DuckDB during development) | matches the engine within 1e-6 |
 | `npm run lint` / `typecheck` | strict TypeScript; ESLint bans raw hex colours in components and React imports in the engine | clean |
 
-## Limitations
+## Known limits
 
-- **Illustrative baselines.** The DTC numbers are a plausible shape, not a real shop. Two of three modeled edges are still illustrative, so the project's own launch gate (ADR-0004) for a public, name-attached launch is not met.
-- **Independence and multiplicativity.** Modeled effects multiply and are independent; Monte Carlo samples inputs independently (order value and cost per order do not co-move), which widens ranges.
-- **Association, not effect.** The data test on observational data reports association only; the verdict says so on every run. Only a randomized design declared by the user is labelled an effect estimate, and the tool cannot check that the randomization was sound.
-- **Value of information is a ranking device.** It measures how much a guess's declared range moves a planned outcome; a wider guess scores higher whether or not it is right.
-- **Benchmark transfer.** The page-speed bound comes from a multi-brand study using four speed metrics, not median load time on one shop.
-- **Single-player.** No accounts, no backend, no collaboration; state lives in the browser and in share links.
+- **Illustrative baselines.** The DTC numbers are a plausible shape, not a real shop. Two of three modeled edges are still illustrative. So the project's own launch rule is not met. The rule says: do not attach the author's name to a public launch until a defended one-week authoring pass replaces the illustrative numbers.
+- **Independence and multiplicativity.** Modeled effects multiply and are independent. Monte Carlo samples inputs independently, so order value and cost per order do not move together. This widens the ranges.
+- **Association, not effect.** The data test on observational data reports association only. The verdict says so on every run. Only a randomized design that the user declares is labelled an effect estimate. The tool cannot check that the randomization was sound.
+- **Value of information is a ranking device.** It measures how far a guess's declared range moves a planned outcome. A wider guess scores higher, whether or not it is right.
+- **Benchmark transfer.** The page-speed bound comes from a multi-brand study that uses four speed metrics. It is not the median load time of one shop.
+- **Single-player.** The studio has no accounts, no backend and no collaboration. State lives in the browser and in share links.
 - **DAX is checked by structure, not in Power BI.** The kit lists the values a correct build must show.
 
-## Decision and next test
+## How it works
 
-Run a speed test before any speed roadmap is sized: deliberately add or remove load time for a random share of sessions (or stage a rollout) and measure product-page views. Feed the result back through the data-test tab; the edge's grade then moves from `estimated` to `experimental`, its range narrows, and the ranking updates.
+The studio draws three edge kinds. Each kind looks different everywhere in the UI.
 
-## Architecture
+| Kind | Canvas | What is claimed | Used in numbers |
+|---|---|---|---|
+| `identity` | thick blue | true by definition (`orders = sessions × conversion_rate`) | yes, exactly |
+| `modeled` | amber + grade chip | an elasticity with a named functional form and a declared range | yes, flagged |
+| `hypothesized` | grey dashed + “?” | a direction only | no |
 
-The studio is a static Next.js app over a framework-free TypeScript engine. A model is validated, computed, and analysed entirely in the browser; exports and the worked example are produced by the same engine from Node scripts.
+1. **Compute.** Values flow from child to parent, each metric after its inputs. Modeled effects multiply onto their target.
+2. **What-if and tornado.** Move any controllable input. A tornado chart lists the levers as bars, sorted by effect. It shows the north-star change at ±10% per lever.
+3. **Forecast range.** A seeded Monte Carlo run in a Web Worker samples the input ranges and the elasticity ranges. It reports P10, P50 and P90: the 10th, 50th and 90th percentiles of the simulated north star. It also reports each input's share of the spread.
+4. **Value of information.** For each modeled edge with a range, move its driver by the planned change. Sample only that edge's elasticity (20,000 draws). Take P90 − P10 of the north star. Priority is that spread divided by the declared test cost.
+5. **Test with data.** The test reports Pearson r (the correlation) with a 95% confidence interval. The interval uses the Fisher-z transform, which makes the sampling distribution of r roughly normal. It also reports OLS (ordinary least squares, a straight-line fit) with a t-based slope interval, the elasticity at the means, and an 80/20 out-of-sample r². The verdict separates *association* from *effect*. Every verdict carries a fixed note and a “what would prove this” design. Accepting a result promotes the edge's grade to `observational`. It promotes the grade to `experimental` only if the user declares a randomized design.
+
+## How it fits together
+
+The studio is a static Next.js app over a framework-free TypeScript engine. The browser validates, computes and analyses a model. Node scripts produce the exports and the worked example with the same engine.
 
 ```mermaid
 %%{init: {"theme":"base","fontFamily":"BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif","themeVariables":{"background":"#E4E6EA","primaryColor":"#DCDEE2","primaryTextColor":"#26282C","primaryBorderColor":"#26282C","secondaryColor":"#E4E6EA","secondaryTextColor":"#26282C","secondaryBorderColor":"#5A5C61","tertiaryColor":"#E4E6EA","tertiaryTextColor":"#26282C","tertiaryBorderColor":"#C2C4CA","lineColor":"#5A5C61","textColor":"#26282C","mainBkg":"#DCDEE2","nodeBorder":"#26282C","clusterBkg":"#E4E6EA","clusterBorder":"#C2C4CA","edgeLabelBackground":"#E4E6EA","titleColor":"#26282C","fontFamily":"BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif","fontSize":"14px"},"flowchart":{"curve":"linear","htmlLabels":true,"padding":8}}}%%
@@ -148,7 +175,8 @@ flowchart LR
 ## Reproduce
 
 ```bash
-cd driver_tree_studio
+git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
+cd metric_lineage_simulator/driver_tree_studio
 npm ci
 npm run typecheck && npm run lint && npm test
 npm run build && npx playwright install chromium && npm run e2e
@@ -158,7 +186,18 @@ npm run screenshots    # README images from the built UI (after npm run build)
 cd .. && make verify   # governance + debt ratchet (pip install pyyaml pytest)
 ```
 
-Node 20 matches CI ([governance.yml](.github/workflows/governance.yml)). Contributors start each session with `make session-start` ([CLAUDE.md](CLAUDE.md)).
+To open the studio, run this from the repository root in a second terminal. It keeps running until you stop it:
+
+```bash
+cd driver_tree_studio
+npm run dev            # studio at http://localhost:3000
+```
+
+`npm test` runs 92 unit tests: engine, statistics and exports. Node 20 matches CI ([governance.yml](.github/workflows/governance.yml)). Contributors start each session with `make session-start` ([CLAUDE.md](CLAUDE.md)).
+
+### Governance checks
+
+`make verify` re-verifies every closed governance finding on every pull request. It also runs the debt ratchet, which fails if a measured debt metric grows past its baseline. Result: all closed findings hold.
 
 ## Repository structure
 
@@ -173,24 +212,34 @@ driver_tree_studio/
   scripts/           worked example, export kit, screenshots
 docs/results/        headline worked example (generated)
 docs/powerbi/        Power BI build kit (generated + guide)
-governance/          ADRs 0003–0010, findings F-001–F-021, debt baseline
+governance/          decision records, closed findings, debt baseline
 PROJECT_CHARTER.md   executive single source of truth
 ```
+
+### Legend: codes in file names
+
+Files in `governance/` carry short codes. Each code has a plain name here.
+
+| Code in file names | Plain name |
+|---|---|
+| ADR-0004 | Product model and launch rule (decision record 0004) |
+| ADR-0010 | Scope proposals for finishing the portfolio piece (decision record 0010) |
+| ADR-0003 to ADR-0010 | Decision records in `governance/adrs/` |
+| F-001 to F-022 | Governance findings, one file each in `governance/findings/` |
 
 ## Status
 
 **Status:** In development
 
-The product runs end to end on one model: canvas, what-if, tornado, forecast range, data test, value-of-information ranking, share links, embed and exports. Last validated 2026-10-14 (92 unit, 7 end-to-end tests).
+The product runs end to end on one model. It has the canvas, what-if, tornado chart, forecast range, data test, value-of-information ranking, share links, embed and exports. Last validated 2026-10-14 (92 unit tests, 7 end-to-end tests).
 
-What does not exist yet: a hosted deployment, a `.pbix` file built from the kit, a non-illustrative range for the email-capture edge, and additional models (SaaS, marketplace). Scope decisions are recorded as proposals in [ADR-0010](governance/adrs/0010-portfolio-completion-scope.md).
+What does not exist yet: a hosted deployment, a `.pbix` file built from the kit, a non-illustrative range for the email-capture edge, and more models (SaaS, marketplace). The [scope decision record](governance/adrs/0010-portfolio-completion-scope.md) holds the scope decisions as proposals.
 
 ## License
 
 ISC, as declared in `driver_tree_studio/package.json`. See [`LICENSE`](LICENSE).
 
 ## Author
-
 <table>
   <tr>
     <td width="110">
