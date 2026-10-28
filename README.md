@@ -28,15 +28,20 @@ The studio draws a contribution-profit tree for a direct-to-consumer (DTC) onlin
 
 The €5,832 figure comes from an elasticity range graded **estimated**. Its bound is translated from the public Deloitte for Google study [*Milliseconds Make Millions* (2020)](https://web.dev/case-studies/milliseconds-make-millions). That study associates 0.1 s faster mobile pages with +8.4 % retail conversion. The edge's note in the app explains the translation. The study is an external, observational benchmark. It is not a measurement of this shop.
 
-To run the studio on your machine, use Node 20:
+To run the studio on your machine, use Node 20. These commands finish and return:
 
 ```bash
 git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
 cd metric_lineage_simulator/driver_tree_studio
 npm ci
-npm run dev            # studio at http://localhost:3000
 npm test               # 92 unit tests: engine, statistics, exports
 npm run example        # regenerates the result above into docs/results/
+```
+
+Then start the studio. This command keeps running until you stop it:
+
+```bash
+npm run dev            # studio at http://localhost:3000
 ```
 
 The studio shows these skills in analyst terms:
@@ -173,13 +178,19 @@ flowchart LR
 git clone https://github.com/RafaelBraga-Kribitz/metric_lineage_simulator.git
 cd metric_lineage_simulator/driver_tree_studio
 npm ci
-npm run dev            # studio at http://localhost:3000
 npm run typecheck && npm run lint && npm test
 npm run build && npx playwright install chromium && npm run e2e
 npm run example        # headline result → docs/results/
 npm run export         # SQL / CSV / DAX / theme → docs/powerbi/
 npm run screenshots    # README images from the built UI (after npm run build)
 cd .. && make verify   # governance + debt ratchet (pip install pyyaml pytest)
+```
+
+To open the studio, run this from the repository root in a second terminal. It keeps running until you stop it:
+
+```bash
+cd driver_tree_studio
+npm run dev            # studio at http://localhost:3000
 ```
 
 `npm test` runs 92 unit tests: engine, statistics and exports. Node 20 matches CI ([governance.yml](.github/workflows/governance.yml)). Contributors start each session with `make session-start` ([CLAUDE.md](CLAUDE.md)).
